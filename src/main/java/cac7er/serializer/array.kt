@@ -2,7 +2,23 @@ package cac7er.serializer
 
 import cac7er.*
 
-private const val BUFFER_SIZE = 256
+inline fun <T> CacheOutput.writeArray(value: Array<out T>,
+                                      serializer: Serializer<T>)
+{
+   writeInt(value.size)
+
+   for (t in value) {
+      serializer(t)
+   }
+}
+
+inline fun <reified T> CacheInput.readArray
+      (deserializer: Deserializer<T>): Array<T>
+{
+   val size = readInt()
+
+   return Array(size) { deserializer() }
+}
 
 fun CacheOutput.writeBooleanArray(value: BooleanArray) {
    writeInt(value.size)
