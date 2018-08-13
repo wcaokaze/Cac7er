@@ -5,7 +5,7 @@ import cac7er.*
 
 fun CacheOutput.writeBoolean(value: Boolean) {
    val b = if (value) 1 else 0
-   stream.write(b.toInt())
+   stream.write(b)
 }
 
 fun CacheInput.readBoolean(): Boolean {
