@@ -3,21 +3,21 @@ package cac7er.serializer
 import cac7er.*
 
 inline fun <T> CacheOutput.writeArray(value: Array<out T>,
-                                      serializer: Serializer<T>)
+                                      elementSerializer: Serializer<T>)
 {
    writeInt(value.size)
 
    for (t in value) {
-      serializer(t)
+      elementSerializer(t)
    }
 }
 
 inline fun <reified T> CacheInput.readArray
-      (deserializer: Deserializer<T>): Array<T>
+      (elementDeserializer: Deserializer<T>): Array<T>
 {
    val size = readInt()
 
-   return Array(size) { deserializer() }
+   return Array(size) { elementDeserializer() }
 }
 
 fun CacheOutput.writeBooleanArray(value: BooleanArray) {
