@@ -1,66 +1,68 @@
 package cac7er.serializer
 
 import java.io.*
+import cac7er.*
 
-fun Boolean.serialize(output: OutputStream) {
-   output.write(if (this) 1 else 0)
+fun CacheOutput.writeBoolean(value: Boolean) {
+   val b = if (value) 1 else 0
+   stream.write(b.toInt())
 }
 
-fun deserializeBoolean(input: InputStream): Boolean {
-   return when (input.read()) {
+fun CacheInput.readBoolean(): Boolean {
+   return when (stream.read()) {
       0 -> false
       1 -> true
       else -> throw IOException()
    }
 }
 
-fun Byte.serialize(output: OutputStream) {
-   output.write(this.toInt())
+fun CacheOutput.writeByte(value: Byte) {
+   stream.write(value.toInt())
 }
 
-fun deserializeByte(input: InputStream): Byte {
-   return input.read().toByte()
+fun CacheInput.readByte(): Byte {
+   return stream.read().toByte()
 }
 
-fun Char.serialize(output: OutputStream) {
-   val b = byteArrayOf((this.toInt() ushr 8).toByte(), this.toByte())
-   output.write(b)
+fun CacheOutput.writeChar(value: Char) {
+   val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
+   stream.write(b)
 }
 
-fun deserializeChar(input: InputStream): Char {
+fun CacheInput.readChar(): Char {
    val b = ByteArray(2)
-   input.read(b)
+   stream.read(b)
 
    val i = (b[0].toInt() shl 8) or (b[1].toInt())
    return i.toChar()
 }
 
-fun Short.serialize(output: OutputStream) {
-   val b = byteArrayOf((this.toInt() ushr 8).toByte(), this.toByte())
-   output.write(b)
+fun CacheOutput.writeShort(value: Short) {
+   val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
+   stream.write(b)
 }
 
-fun deserializeShort(input: InputStream): Short {
+fun CacheInput.readShort(): Short {
    val b = ByteArray(2)
-   input.read(b)
+   stream.read(b)
 
    val i = (b[0].toInt() shl 8) or (b[1].toInt())
    return i.toShort()
 }
 
-fun Int.serialize(output: OutputStream) {
+fun CacheOutput.writeInt(value: Int) {
    val b = byteArrayOf(
-         (this ushr 24).toByte(),
-         (this ushr 16).toByte(),
-         (this ushr  8).toByte(),
-          this         .toByte())
+         (value ushr 24).toByte(),
+         (value ushr 16).toByte(),
+         (value ushr  8).toByte(),
+          value         .toByte())
 
-   output.write(b)
+   stream.write(b)
 }
 
-fun deserializeInt(input: InputStream): Int {
+fun CacheInput.readInt(): Int {
    val b = ByteArray(4)
-   input.read(b)
+   stream.read(b)
 
    return (b[0].toInt() shl 24) or
           (b[1].toInt() shl 16) or
@@ -68,23 +70,23 @@ fun deserializeInt(input: InputStream): Int {
            b[3].toInt()
 }
 
-fun Long.serialize(output: OutputStream) {
+fun CacheOutput.writeLong(value: Long) {
    val b = byteArrayOf(
-         (this ushr 56).toByte(),
-         (this ushr 48).toByte(),
-         (this ushr 40).toByte(),
-         (this ushr 32).toByte(),
-         (this ushr 24).toByte(),
-         (this ushr 16).toByte(),
-         (this ushr  8).toByte(),
-          this         .toByte())
+         (value ushr 56).toByte(),
+         (value ushr 48).toByte(),
+         (value ushr 40).toByte(),
+         (value ushr 32).toByte(),
+         (value ushr 24).toByte(),
+         (value ushr 16).toByte(),
+         (value ushr  8).toByte(),
+          value         .toByte())
 
-   output.write(b)
+   stream.write(b)
 }
 
-fun deserializeLong(input: InputStream): Long {
+fun CacheInput.readLong(): Long {
    val b = ByteArray(8)
-   input.read(b)
+   stream.read(b)
 
    return (b[0].toLong() shl 56) or
           (b[1].toLong() shl 48) or
@@ -96,22 +98,22 @@ fun deserializeLong(input: InputStream): Long {
            b[7].toLong()
 }
 
-fun Float.serialize(output: OutputStream) {
-   val i = toRawBits()
-   i.serialize(output)
+fun CacheOutput.writeFloat(value: Float) {
+   val i = value.toRawBits()
+   writeInt(i)
 }
 
-fun deserializeFloat(input: InputStream): Float {
-   val i = deserializeInt(input)
+fun CacheInput.readFloat(): Float {
+   val i = readInt()
    return Float.fromBits(i)
 }
 
-fun Double.serialize(output: OutputStream) {
-   val l = toRawBits()
-   l.serialize(output)
+fun CacheOutput.writeDouble(value: Double) {
+   val l = value.toRawBits()
+   writeLong(l)
 }
 
-fun deserializeDouble(input: InputStream): Double {
-   val l = deserializeLong(input)
+fun CacheInput.readDouble(): Double {
+   val l = readLong()
    return Double.fromBits(l)
 }
