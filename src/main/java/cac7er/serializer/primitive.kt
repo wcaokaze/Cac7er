@@ -3,6 +3,23 @@ package cac7er.serializer
 import java.io.*
 import cac7er.*
 
+inline fun <T> CacheOutput.writeNullable(value: T?, serializer: Serializer<T>) {
+   if (value == null) {
+      writeByte(0)
+   } else {
+      writeByte(1)
+      serializer(value)
+   }
+}
+
+inline fun <T> CacheInput.readNullable(deserializer: Deserializer<T>): T? {
+   return when (readByte().toInt()) {
+      0 -> null
+      1 -> deserializer()
+      else -> throw IOException()
+   }
+}
+
 fun CacheOutput.writeBoolean(value: Boolean) {
    val b = if (value) 1 else 0
    stream.write(b)
