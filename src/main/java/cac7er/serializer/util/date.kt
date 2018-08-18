@@ -1,6 +1,5 @@
 package cac7er.serializer.util
 
-import cac7er.*
 import cac7er.serializer.*
 import java.util.Date
 

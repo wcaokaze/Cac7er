@@ -1,7 +1,5 @@
 package cac7er.serializer
 
-import cac7er.*
-
 /**
  * using reflection internal. The specialized serializer for E may make it faster.
  */

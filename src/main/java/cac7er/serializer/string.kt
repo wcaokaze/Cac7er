@@ -1,7 +1,5 @@
 package cac7er.serializer
 
-import cac7er.*
-
 fun CacheOutput.writeString(value: String) {
    val charArray = value.toCharArray()
    writeCharArray(charArray)

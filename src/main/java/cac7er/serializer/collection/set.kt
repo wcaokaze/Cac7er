@@ -1,6 +1,5 @@
 package cac7er.serializer.collection
 
-import cac7er.*
 import cac7er.serializer.*
 
 inline fun <T> CacheOutput.writeSet

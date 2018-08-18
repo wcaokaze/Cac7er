@@ -1,7 +1,6 @@
 package cac7er.serializer
 
 import java.io.*
-import cac7er.*
 
 inline fun <T> CacheOutput.writeNullable(value: T?, serializer: Serializer<T>) {
    if (value == null) {

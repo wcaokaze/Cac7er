@@ -1,11 +1,10 @@
 package cac7er.serializer.collection
 
-import cac7er.*
 import cac7er.serializer.*
 
 inline fun <K, V> CacheOutput.writeMap(value: Map<K, V>,
-                                       keySerializer: Serializer<K>,
-                                       valueSerializer: Serializer<V>)
+                                                         keySerializer: Serializer<K>,
+                                                         valueSerializer: Serializer<V>)
 {
    writeInt(value.size)
 

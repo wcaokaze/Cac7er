@@ -1,6 +1,5 @@
 package cac7er.serializer.net
 
-import cac7er.*
 import cac7er.serializer.*
 import java.net.URL
 
