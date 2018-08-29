@@ -77,6 +77,18 @@ interface WeakCache<out T> {
                    accessCount: Float = .0f): T?
 
    /**
+    * returns the cached instance if it already exists on JVM memory, otherwise
+    * returns `null`.
+    * time and accessCount only affect when the cached instance is returned.
+    *
+    * @return the cached instance if it exists on JVM memory, otherwise `null`.
+    * @throws ClassCastException
+    * @since 1.0.0
+    */
+   fun getIfAlreadyLoaded(time: Long = System.currentTimeMillis(),
+                          accessCount: Float = .0f): T?
+
+   /**
     * adds a function to observe this cache. But WeakCache may deleted by GC.
     * Then observers are also deleted. Don't rely on it.
     *
