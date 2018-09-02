@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="288" height="274" viewBox="0 0 288 274">
+  <g transform="translate(16 16)">
+    <rect width="256" fill="#fff" height="242"/>
+
+    <g>
+      <text x="16" y="28" font-size="20px" fill="#1de986">Alex</text>
+      <text x="32" y="52" font-size="16px" opacity=".87">
+        Sushi is my favorite food
+      </text>
+      <text x="240" y="72" font-size="12px" opacity=".54" text-anchor="end">
+        2017/9/3 9:20
+      </text>
+    </g>
+
+    <path d="M8 80H248" opacity=".12" stroke="#000" stroke-width="1px"/>
+
+    <g transform="translate(0 81)">
+      <text x= "16" y="28" font-size="20px" fill="#1de986">Alex</text>
+      <text x= "32" y="52" font-size="16px" opacity=".87">🍣</text>
+      <text x="240" y="72" font-size="12px" opacity=".54" text-anchor="end">
+        2017/9/3 9:22
+      </text>
+    </g>
+
+    <path d="M8 161H248" opacity=".12" stroke="#000" stroke-width="1px"/>
+
+    <g transform="translate(0 162)">
+      <text x="16" y="28" font-size="20px" fill="#1de986">Bob</text>
+      <text x="32" y="52" font-size="16px" opacity=".87">
+        I like Sushi too...
+      </text>
+      <text x="240" y="72" font-size="12px" opacity=".54" text-anchor="end">
+        2017/9/3 9:32
+      </text>
+    </g>
+  </g>
+</svg>
+
