@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="672" height="480" viewBox="0 0 672 480">
+  <defs>
+    <marker id="arrow" orient="auto" overflow="visible">
+      <path stroke-linejoin="round" stroke="#000" stroke-width="1px"
+            d="M -13,4 L 0,0 -13,-4 C -10,-2 -10,2 -13,4 z"/>
+    </marker>
+  </defs>
+
+  <rect width="672" height="480" fill="#fff"/>
+
+  <g transform="translate(16 16)">
+    <g fill="none" stroke="#000" stroke-width="1px">
+      <rect x="0" y= "0" width="384" height="36"/>
+      <rect x="0" y="36" width="384" height="92"/>
+    </g>
+    <g font-size="20px">
+      <text x="8" y="28">: Status</text>
+      <text x="8" y="64">id = 13554</text>
+      <text x="8" y="92">
+        text = "Sushi is my favorite food"
+      </text>
+      <text x="8" y="120">date = 2017/9/3 9:20</text>
+    </g>
+  </g>
+
+  <g transform="translate(16 176)">
+    <g fill="none" stroke="#000" stroke-width="1px">
+      <rect x="0" y= "0" width="384" height="36"/>
+      <rect x="0" y="36" width="384" height="92"/>
+    </g>
+    <g font-size="20px">
+      <text x="8" y="28">: Status</text>
+      <text x="8" y="64">id = 13555</text>
+      <text x="8" y="92">
+        text = "🍣"
+      </text>
+      <text x="8" y="120">date = 2017/9/3 9:22</text>
+    </g>
+  </g>
+
+  <g transform="translate(16 336)">
+    <g fill="none" stroke="#000" stroke-width="1px">
+      <rect x="0" y= "0" width="384" height="36"/>
+      <rect x="0" y="36" width="384" height="92"/>
+    </g>
+    <g font-size="20px">
+      <text x="8" y="28">: Status</text>
+      <text x="8" y="64">id = 13556</text>
+      <text x="8" y="92">
+        text = "I like Sushi too..."
+      </text>
+      <text x="8" y="120">date = 2017/9/3 9:32</text>
+    </g>
+  </g>
+
+  <path marker-end="url(#arrow)" stroke="#000" stroke-width="1px"
+        d="M 400,84 464,84"/>
+
+  <path marker-end="url(#arrow)" stroke="#000" stroke-width="1px"
+        d="M 400,244 464,244"/>
+
+  <path marker-end="url(#arrow)" stroke="#000" stroke-width="1px"
+        d="M 400,404 464,404"/>
+
+  <g transform="translate(464 16)">
+    <g fill="none" stroke="#000" stroke-width="1px">
+      <rect x="0" y= "0" width="192" height="36"/>
+      <rect x="0" y="36" width="192" height="64"/>
+    </g>
+    <g font-size="20px">
+      <text x="8" y="28">: User</text>
+      <text x="8" y="64">id = 1</text>
+      <text x="8" y="92">name = "Alex"</text>
+    </g>
+  </g>
+
+  <g transform="translate(464 176)">
+    <g fill="none" stroke="#000" stroke-width="1px">
+      <rect x="0" y= "0" width="192" height="36"/>
+      <rect x="0" y="36" width="192" height="64"/>
+    </g>
+    <g font-size="20px">
+      <text x="8" y="28">: User</text>
+      <text x="8" y="64">id = 1</text>
+      <text x="8" y="92">name = "Alex"</text>
+    </g>
+  </g>
+
+  <g transform="translate(464 336)">
+    <g fill="none" stroke="#000" stroke-width="1px">
+      <rect x="0" y= "0" width="192" height="36"/>
+      <rect x="0" y="36" width="192" height="64"/>
+    </g>
+    <g font-size="20px">
+      <text x="8" y="28">: User</text>
+      <text x="8" y="64">id = 2</text>
+      <text x="8" y="92">name = "Bob"</text>
+    </g>
+  </g>
+</svg>
