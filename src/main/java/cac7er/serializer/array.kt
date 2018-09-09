@@ -1,7 +1,7 @@
 package cac7er.serializer
 
 inline fun <T> CacheOutput.writeArray(value: Array<out T>,
-                                                        elementSerializer: Serializer<T>)
+                                      elementSerializer: Serializer<T>)
 {
    writeInt(value.size)
 

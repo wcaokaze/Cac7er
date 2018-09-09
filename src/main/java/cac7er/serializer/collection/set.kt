@@ -13,10 +13,10 @@ inline fun <T> CacheOutput.writeSet
 }
 
 inline fun <T> CacheInput.readSet(elementDeserializer: Deserializer<T>): Set<T> {
-   return readMutableSet(elementDeserializer)
+   return readHashSet(elementDeserializer)
 }
 
-inline fun <T> CacheInput.readMutableSet
+inline fun <T> CacheInput.readHashSet
       (elementDeserializer: Deserializer<T>): MutableSet<T>
 {
    val size = readInt()

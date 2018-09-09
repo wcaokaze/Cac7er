@@ -3,8 +3,8 @@ package cac7er.serializer.collection
 import cac7er.serializer.*
 
 inline fun <K, V> CacheOutput.writeMap(value: Map<K, V>,
-                                                         keySerializer: Serializer<K>,
-                                                         valueSerializer: Serializer<V>)
+                                       keySerializer: Serializer<K>,
+                                       valueSerializer: Serializer<V>)
 {
    writeInt(value.size)
 
@@ -18,10 +18,10 @@ inline fun <K, V> CacheInput.readMap(
       keyDeserializer: Deserializer<K>,
       valueDeserializer: Deserializer<V>): Map<K, V>
 {
-   return readMutableMap(keyDeserializer, valueDeserializer)
+   return readHashMap(keyDeserializer, valueDeserializer)
 }
 
-inline fun <K, V> CacheInput.readMutableMap(
+inline fun <K, V> CacheInput.readHashMap(
       keyDeserializer: Deserializer<K>,
       valueDeserializer: Deserializer<V>): MutableMap<K, V>
 {

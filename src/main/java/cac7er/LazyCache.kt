@@ -6,37 +6,12 @@ import java.lang.ref.*
 /**
  * Cache which doesn't load the content until calling [get].
  *
- * These basic behaviors seem like [Cache]. The Caches associated with the same
- * file have the same instance. [gc][Cac7er.gc] doesn't delete caches that are
- * depended by any other LazyCache which is not deleted. (see [gc][Cac7er.gc])
- * But in Kotlin codes, this is similar to [WeakCache] rather than [Cache].
  * The content is stored as [SoftReference], whenever consumers get the content,
- * they have to call a suspend function. In short, this is like [Cache] on
- * behaviors regarding [gc][Cac7er.gc], but is like [WeakCache] on behaviors
- * regarding de-serialization.
+ * they have to call a suspend function.
  *
  * @since 1.0.0
  */
 interface LazyCache<out T> {
-   companion object {
-      /**
-       * creates a new instance of LazyCache.
-       *
-       * This may affect other instances that are associated with the same file,
-       * in the same way as [WritableLazyCache.save]. So *this function has a
-       * side effect.*
-       *
-       * @since 1.0.0
-       */
-      operator fun <T> invoke(file: File, content: T): LazyCache<T> = TODO()
-   }
-
-   /**
-    * The file which the instance is written in.
-    * @since 1.0.0
-    */
-   val file: File
-
    /**
     * @param time
     *   the time when the Cache is accessed. [Cac7er.gc] makes this a criteria
@@ -52,18 +27,21 @@ interface LazyCache<out T> {
     * @throws IOException
     *
     * @throws ClassCastException
-    *   when the [file] doesn't save an instance of [T]. In the strict sense,
+    *   when the cached instance is not an instance of [T]. In the strict sense,
     *   [ClassCastException] is thrown by a cast operation complemented by
     *   the compiler.
     *
     * @since 1.0.0
     */
-   suspend fun get(time: Long = System.currentTimeMillis(),
-                   accessCount: Float = .0f): T
+   suspend fun get(time: Long, accessCount: Float = .0f): T
+
+   suspend fun get(accessCount: Float = .0f): T
+         = get(System.currentTimeMillis(), accessCount)
 
    /**
     * returns the cached instance if it already exists on JVM memory, otherwise
     * returns `null`.
+    *
     * time and accessCount only affect when the cached instance is returned.
     *
     * @return the cached instance if it exists on JVM memory, otherwise `null`.
@@ -76,8 +54,8 @@ interface LazyCache<out T> {
    /**
     * adds a function to observe this cache. Note that observers are referenced
     * as [WeakReference]. Simplex lambda will be collected by GC. To avoid GC,
-    * observer functions should be owned by any other instance. The easiest way
-    * is using [addObserver(Any, (T) -> Unit)][addObserver].
+    * the observer instance should be owned by any other instance. The easiest
+    * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
     * @since 1.0.0
     */
@@ -108,7 +86,7 @@ interface LazyCache<out T> {
     * converts this LazyCache to [WeakCache].
     * @since 1.0.0
     */
-   fun toWeakCache(): WeakCache<T>
+   suspend fun toWeakCache(): WeakCache<T>
 }
 
 /**
@@ -116,19 +94,6 @@ interface LazyCache<out T> {
  * @since 1.0.0
  */
 interface WritableLazyCache<T> : LazyCache<T> {
-   companion object {
-      /**
-       * creates a new instance of WritableLazyCache.
-       *
-       * This may affect other instances that are associated with the same file,
-       * in the same way as [WritableLazyCache.save]. So *this function has a
-       * side effect.*
-       *
-       * @since 1.0.0
-       */
-      operator fun <T> invoke(file: File, content: T): WritableLazyCache<T> = TODO()
-   }
-
    /**
     * caches the new instance.
     *
@@ -149,5 +114,5 @@ interface WritableLazyCache<T> : LazyCache<T> {
     * converts this WritableLazyCache to [WritableWeakCache].
     * @since 1.0.0
     */
-   override fun toWeakCache(): WeakCache<T>
+   override suspend fun toWeakCache(): WeakCache<T>
 }

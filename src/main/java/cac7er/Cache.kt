@@ -1,20 +1,11 @@
 package cac7er
 
-import java.io.*
 import java.lang.ref.*
 
 /**
  * The interface between a Kotlin instance and a file.
  *
- * The Caches associated with the same file have the same instance.
- *
- * ```kotlin
- * println(cacheA       === cacheB)       // false
- * println(cacheA.file  ==  cacheB.file)  // true
- * println(cacheA.get() === cacheB.get()) // true
- * ```
- *
- * NOTE: It looks like immutable but actually not. [New Cache creation][invoke]
+ * NOTE: It looks like immutable but actually not. [save][WritableRepository.save]
  * or other functions may replace the instance.
  *
  * @param T The type of the cached instance.
@@ -22,25 +13,6 @@ import java.lang.ref.*
  * @since 1.0.0
  */
 interface Cache<out T> {
-   companion object {
-      /**
-       * creates a new instance of Cache.
-       *
-       * This may affect other instances that are associated with the same file,
-       * in the same way as [WritableCache.save]. So *this function has a side
-       * effect.*
-       *
-       * @since 1.0.0
-       */
-      operator fun <T> invoke(file: File, content: T): Cache<T> = TODO()
-   }
-
-   /**
-    * The file which the instance is written in.
-    * @since 1.0.0
-    */
-   val file: File
-
    /**
     * @param time
     *   the time when the Cache is accessed. [Cac7er.gc] makes this a criteria
@@ -54,19 +26,22 @@ interface Cache<out T> {
     * @return the cached instance
     *
     * @throws ClassCastException
-    *   when the [file] doesn't save an instance of [T]. In the strict sense,
+    *   when the cached instance is not an instance of [T]. In the strict sense,
     *   [ClassCastException] is thrown by a cast operation complemented by
     *   the compiler.
     *
     * @since 1.0.0
     */
-   fun get(time: Long = System.currentTimeMillis(), accessCount: Float = .0f): T
+   fun get(time: Long, accessCount: Float = .0f): T
+
+   fun get(accessCount: Float = .0f): T
+         = get(System.currentTimeMillis(), accessCount)
 
    /**
     * adds a function to observe this cache. Note that observers are referenced
     * as [WeakReference]. Simplex lambda will be collected by GC. To avoid GC,
-    * observer functions should be owned by any other instance. The easiest way
-    * is using [addObserver(Any, (T) -> Unit)][addObserver].
+    * the observer instance should be owned by any other instance. The easiest
+    * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
     * @since 1.0.0
     */
@@ -80,7 +55,6 @@ interface Cache<out T> {
     * @since 1.0.0
     */
    fun addObserver(owner: Any, observer: (T) -> Unit)
-
 
    /**
     * removes the observer. The name says it all.
@@ -106,19 +80,6 @@ interface Cache<out T> {
  * @since 1.0.0
  */
 interface WritableCache<T> : Cache<T> {
-   companion object {
-      /**
-       * creates a new instance of WritableCache.
-       *
-       * This may affect other instances that are associated with the same file,
-       * in the same way as [WritableCache.save]. So *this function has a side
-       * effect.*
-       *
-       * @since 1.0.0
-       */
-      operator fun <T> invoke(file: File, content: T): WritableCache<T> = TODO()
-   }
-
    /**
     * caches the new instance.
     *

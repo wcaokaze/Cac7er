@@ -3,7 +3,7 @@ package cac7er.serializer.collection
 import cac7er.serializer.*
 
 inline fun <T> CacheOutput.writeList(value: List<T>,
-                                                       elementSerializer: Serializer<T>)
+                                     elementSerializer: Serializer<T>)
 {
    writeInt(value.size)
 
@@ -15,15 +15,18 @@ inline fun <T> CacheOutput.writeList(value: List<T>,
 inline fun <T> CacheInput.readList
       (elementDeserializer: Deserializer<T>): List<T>
 {
-   val size = readInt()
-
-   return List(size) { elementDeserializer() }
+   return readArrayList(elementDeserializer)
 }
 
-inline fun <T> CacheInput.readMutableList
+inline fun <T> CacheInput.readArrayList
       (elementDeserializer: Deserializer<T>): MutableList<T>
 {
    val size = readInt()
+   val list = ArrayList<T>(size)
 
-   return MutableList(size) { elementDeserializer() }
+   for (i in 0 until size) {
+      list += elementDeserializer()
+   }
+
+   return list
 }
