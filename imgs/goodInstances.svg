@@ -58,30 +58,28 @@
         d="M 400,70 464,70"/>
 
   <path marker-end="url(#arrow)" stroke="#000" stroke-width="1px"
-        d="M 400,258 528,88"/>
+        d="M 400,258 528,97"/>
 
   <path marker-end="url(#arrow)" stroke="#000" stroke-width="1px"
         d="M 400,390 464,390"/>
 
-  <g transform="translate(464 16)">
+  <g transform="translate(464 43)">
     <g fill="none" stroke="#000" stroke-width="1px">
       <rect x="0" y= "0" width="256" height="36"/>
-      <rect x="0" y="36" width="256" height="36"/>
+      <rect x="0" y="36" width="256" height="18"/>
     </g>
     <g font-size="20px">
       <text x="8" y="28">: Cache</text>
-      <text x="8" y="64">file = File("~/.foo/user1")</text>
     </g>
   </g>
 
-  <g transform="translate(464 336)">
+  <g transform="translate(464 363)">
     <g fill="none" stroke="#000" stroke-width="1px">
       <rect x="0" y= "0" width="256" height="36"/>
-      <rect x="0" y="36" width="256" height="36"/>
+      <rect x="0" y="36" width="256" height="18"/>
     </g>
     <g font-size="20px">
       <text x="8" y="28">: Cache</text>
-      <text x="8" y="64">file = File("~/.foo/user2")</text>
     </g>
   </g>
 

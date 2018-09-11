@@ -33,14 +33,15 @@ Tutorial
 lateinit var userRepository: Repository<Long, User>
    private set
 
-val cac7er = Cac7er(File("dir/for/caches")) {
+val cac7er = Cac7er("TwitterCaches", File("dir/for/caches")) {
    userRepository = createRepository<Long, User>(
          name = "users",
+         fileNameSupplier = { it.toString(16) },
          serializer   = CacheOutput::writeUser,
          deserializer = CacheInput ::readUser)
 }
 
-fun someFunction() {
+fun someFunction(user: User) {
    val userCache: Cache<User> = userRepository.save(user.id, user)
 }
 ```
@@ -52,22 +53,22 @@ Probably it becomes the follow:
 ```kotlin
 val userRepository: Repository<Long, User>
 
-val cac7er = Cac7er(File("dir/for/caches")) {
-   userRepository = createRepository("users",
+val cac7er = Cac7er("TwitterCaches", File("dir/for/caches")) {
+   userRepository = createRepository("users", { it.toString(16) }
          CacheOutput::writeUser, CacheInput::readUser)
 }
 
-fun someFunction() {
+fun someFunction(user: User) {
    val userCache = userRepository.save(user.id, user)
 }
 ```
 
 
-Cac7er will write files like the follow directory structure. (Cac7er-meta is a
+Cac7er will write files like the follow directory structure. (TwitterCaches is a
 file which Cac7er writes metadata in.)
 ```
     dir/for/caches
-     ├ Cac7er-meta
+     ├ TwitterCaches
      ├ users
      │  ├ 69852
      │  ├ 69853
@@ -115,7 +116,9 @@ for performance. But it's not so troublesome, is it?
 
 In fact, we have more complex construction.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/timeline.svg)
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/timeline.svg)
+
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/badInstances.svg)
 
 ```kotlin
 data class Status(
@@ -133,43 +136,50 @@ data class User(
 )
 ```
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/badInstances.svg)
-
 There is a unique instance for `User` "Alex". However, as serialized,
 
-* status/13554
-
-    ```javascript
-    {
+<table>
+<tr>
+   <td>status/13554</td>
+   <td>status/13555</td>
+</tr>
+<tr>
+   <td>
+   <pre>
+   {
       id: 13554,
       user: {
-        id: 1,
-        name: "Alex"
+         id: 1,
+         name: "Alex"
       },
       text: "Sushi is my favorite food",
       date: 1504398013
-    }
-    ```
-
-* status/13555
-
-    ```javascript
-    {
+   }
+   </pre>
+   </td>
+   <td>
+   <pre>
+   {
       id: 13555,
       user: {
-        id: 1,
-        name: "Alex"
+         id: 1,
+         name: "Alex"
       },
       text: "🍣",
       date: 1504398165
-    }
-    ```
+   }
+   </pre>
+   </td>
+</tr>
+</table>
 
 "Alex" is written twice! Moreover, de-serialized instances are twice too.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/badInstances2.svg)
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/badInstances2.svg)
 
 To avoid this, let `Status` have [Cache][].
+
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/goodInstances.svg)
 
 ```kotlin
 class Status(
@@ -181,50 +191,59 @@ class Status(
 )
 ```
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/goodInstances.svg)
-
 `CacheOutput.writeCache` writes only the repository name and the file name.
 
-* status/13554
-
-    ```javascript
-    {
+<table>
+<tr>
+   <td>status/13554</td>
+   <td>status/13555</td>
+</tr>
+<tr>
+   <td>
+   <pre>
+   {
       id: 13554,
       userCache: {
+         cac7er: "TwitterCaches",
          repository: "user",
          fileName: "1"
       },
       text: "Sushi is my favorite food",
       date: 1504398013
-    }
-    ```
-
-* status/13555
-
-    ```javascript
-    {
+   }
+   </pre>
+   </td>
+   <td>
+   <pre>
+   {
       id: 13555,
       userCache: {
+         cac7er: "TwitterCaches",
          repository: "user",
          fileName: "1"
       },
       text: "🍣",
       date: 1504398165
-    }
-    ```
-
-* user/1
-
-    ```javascript
-    {
+   }
+   </pre>
+   </td>
+</tr>
+</table>
+<table>
+<tr>
+   <td>user/1</td>
+</tr>
+<tr>
+   <td>
+   <pre>
+   {
       id: 1,
       name: "Alex"
-    }
-    ```
-
-`User` "Alex" is unique while de-serialized [Cache][]s are twice.
-
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/goodInstances2.svg)
+   }
+   </pre>
+   </td>
+</tr>
+</table>
 
 
 ### GC
