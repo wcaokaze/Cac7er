@@ -145,31 +145,31 @@ There is a unique instance for `User` "Alex". However, as serialized,
 </tr>
 <tr>
    <td>
-    ```javascript
-    {
+   <pre>
+   {
       id: 13554,
       user: {
-        id: 1,
-        name: "Alex"
+         id: 1,
+         name: "Alex"
       },
       text: "Sushi is my favorite food",
       date: 1504398013
-    }
-    ```
-    </td>
-    <td>
-    ```javascript
-    {
+   }
+   </pre>
+   </td>
+   <td>
+   <pre>
+   {
       id: 13555,
       user: {
-        id: 1,
-        name: "Alex"
+         id: 1,
+         name: "Alex"
       },
       text: "🍣",
       date: 1504398165
-    }
-    ```
-    </td>
+   }
+   </pre>
+   </td>
 </tr>
 </table>
 
@@ -200,8 +200,8 @@ class Status(
 </tr>
 <tr>
    <td>
-    ```javascript
-    {
+   <pre>
+   {
       id: 13554,
       userCache: {
          cac7er: "TwitterCaches",
@@ -210,12 +210,12 @@ class Status(
       },
       text: "Sushi is my favorite food",
       date: 1504398013
-    }
-    ```
+   }
+   </pre>
    </td>
    <td>
-    ```javascript
-    {
+   <pre>
+   {
       id: 13555,
       userCache: {
          cac7er: "TwitterCaches",
@@ -224,21 +224,23 @@ class Status(
       },
       text: "🍣",
       date: 1504398165
-    }
-    ```
+   }
+   </pre>
    </td>
 </tr>
+</table>
+<table>
 <tr>
    <td>user/1</td>
 </tr>
 <tr>
    <td>
-    ```javascript
-    {
+   <pre>
+   {
       id: 1,
       name: "Alex"
-    }
-    ```
+   }
+   </pre>
    </td>
 </tr>
 </table>
