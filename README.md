@@ -116,9 +116,9 @@ for performance. But it's not so troublesome, is it?
 
 In fact, we have more complex construction.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/timeline.svg)
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/timeline.svg)
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/badInstances.svg)
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/badInstances.svg)
 
 ```kotlin
 data class Status(
@@ -175,11 +175,11 @@ There is a unique instance for `User` "Alex". However, as serialized,
 
 "Alex" is written twice! Moreover, de-serialized instances are twice too.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/badInstances2.svg)
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/badInstances2.svg)
 
 To avoid this, let `Status` have [Cache][].
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/img/goodInstances.svg)
+![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/goodInstances.svg)
 
 ```kotlin
 class Status(
