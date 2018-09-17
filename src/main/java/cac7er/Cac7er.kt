@@ -5,11 +5,11 @@ import cac7er.serializer.*
 
 class Cac7er {
    companion object {
-      val MAJOR_VERSION = 1
-      val MINOR_VERSION = 0
-      val REVISION      = 0
+      const val MAJOR_VERSION = 1
+      const val MINOR_VERSION = 0
+      const val REVISION      = 0
 
-      val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
+      const val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
 
       /**
        * builds a new instance.
@@ -40,6 +40,9 @@ class Cac7er {
          TODO()
       }
    }
+
+   val name: String = TODO()
+   val dir: File = TODO()
 
    class Builder {
       /**
