@@ -22,11 +22,14 @@ interface Repository<in K, out V> {
    /**
     * loads a [WeakCache].
     *
-    * @return a WeakCache or null if it was already deleted by [GC][Cac7er.gc]
+    * NOTE:
+    * Even if the file doesn't exist, a [WeakCache] can be returned as
+    * a representation that the cache was deleted by [GC][Cac7er.gc].
+    *
     * @throws IOException
     * @since 1.0.0
     */
-   suspend fun loadWeakCache(key: K): WeakCache<V>?
+   suspend fun loadWeakCache(key: K): WeakCache<V>
 
    /**
     * returns a [LazyCache]. This is not a suspend function since loading is
@@ -68,7 +71,7 @@ interface Repository<in K, out V> {
  */
 interface WritableRepository<in K, V> : Repository<K, V> {
    override suspend fun load(key: K): WritableCache<V>
-   override suspend fun loadWeakCache(key: K): WritableWeakCache<V>?
+   override suspend fun loadWeakCache(key: K): WritableWeakCache<V>
    override fun loadLazyCache(key: K): WritableLazyCache<V>
 
    /**

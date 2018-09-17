@@ -108,11 +108,11 @@ interface WritableLazyCache<T> : LazyCache<T> {
     * converts this WritableLazyCache to [WritableCache].
     * @since 1.0.0
     */
-   override suspend fun toCache(): Cache<T>
+   override suspend fun toCache(): WritableCache<T>
 
    /**
     * converts this WritableLazyCache to [WritableWeakCache].
     * @since 1.0.0
     */
-   override suspend fun toWeakCache(): WeakCache<T>
+   override suspend fun toWeakCache(): WritableWeakCache<T>
 }

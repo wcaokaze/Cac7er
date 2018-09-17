@@ -42,7 +42,7 @@ internal class RepositoryImpl<in K, V>
       TODO()
    }
 
-   override suspend fun loadWeakCache(key: K): WritableWeakCache<V>? {
+   override suspend fun loadWeakCache(key: K): WritableWeakCache<V> {
       TODO()
    }
 
