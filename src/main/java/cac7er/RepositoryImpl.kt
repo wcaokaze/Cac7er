@@ -3,8 +3,9 @@ package cac7er
 import java.io.*
 import cac7er.serializer.*
 
-import cac7er.util.Pool
 import kotlinx.coroutines.experimental.*
+
+import cac7er.util.Pool
 
 internal class RepositoryImpl<in K, V>
       constructor(
@@ -14,11 +15,14 @@ internal class RepositoryImpl<in K, V>
             val serializer: Serializer<V>,
             val deserializer: Deserializer<V>
       )
-      : WritableRepository<K, V>
+      : WritableRepository<K, V>, CoroutineScope
 {
    private val uniformizerPool = Pool<K, Uniformizer<V>> { key ->
       Uniformizer(this, fileNameSupplier(key))
    }
+
+   private val job = Job()
+   override val coroutineContext get() = job + Dispatchers.IO
 
    val dir = File(cac7er.dir, name).apply {
       if (!exists()) {
@@ -50,9 +54,7 @@ internal class RepositoryImpl<in K, V>
       val uniformizer = uniformizerPool[key]
       uniformizer.onStartToLoadContent()
 
-      withContext(CommonPool) {
-         load(uniformizer)
-      }
+      async { load(uniformizer) } .await()
 
       return uniformizer
    }
