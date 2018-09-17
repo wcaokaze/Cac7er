@@ -2,7 +2,7 @@
 version '1.0.0'
 
 buildscript {
-    ext.kotlin_version = '1.2.60'
+    ext.kotlin_version = '1.2.70'
     ext.dokka_version = '0.9.17'
 
     repositories {
@@ -29,11 +29,11 @@ repositories {
 
 dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.24.0'
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.26.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.24.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.26.0'
 }
 
 kotlin {
