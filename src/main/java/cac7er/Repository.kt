@@ -9,6 +9,8 @@ import java.lang.ref.*
  * @since 1.0.0
  */
 interface Repository<in K, out V> {
+   val name: String
+
    /**
     * loads a [Cache].
     *

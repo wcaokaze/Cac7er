@@ -17,7 +17,7 @@ class Pool<in K, out V>(private val valueSupplier: (K) -> V) {
 
    /** @since 1.0.0 */
    @Synchronized
-   operator fun get(key: K): V? {
+   operator fun get(key: K): V {
       var value = delegate[key]?.get()
 
       if (value != null) return value
