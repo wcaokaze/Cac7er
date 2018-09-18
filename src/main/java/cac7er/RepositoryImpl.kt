@@ -15,14 +15,11 @@ internal class RepositoryImpl<in K, V>
             val serializer: Serializer<V>,
             val deserializer: Deserializer<V>
       )
-      : WritableRepository<K, V>, CoroutineScope
+      : WritableRepository<K, V>, CoroutineScope by cac7er
 {
    private val uniformizerPool = Pool<K, Uniformizer<V>> { key ->
       Uniformizer(this, fileNameSupplier(key))
    }
-
-   private val job = Job()
-   override val coroutineContext get() = job + Dispatchers.IO
 
    val dir = File(cac7er.dir, name).apply {
       if (!exists()) {
@@ -52,10 +49,7 @@ internal class RepositoryImpl<in K, V>
 
    private suspend fun loadUniformizer(key: K): Uniformizer<V> {
       val uniformizer = uniformizerPool[key]
-      uniformizer.onStartToLoadContent()
-
-      async { load(uniformizer) } .await()
-
+      uniformizer.loadIfNecessary()
       return uniformizer
    }
 
@@ -70,4 +64,11 @@ internal class RepositoryImpl<in K, V>
    override fun removeObserver(key: K, observer: (V) -> Unit) {
       TODO()
    }
+}
+
+internal suspend fun Uniformizer<*>.loadIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+   repository.async { load(this@loadIfNecessary) } .await()
 }
