@@ -3,7 +3,9 @@ package cac7er
 import java.io.*
 import cac7er.serializer.*
 
-class Cac7er {
+import kotlinx.coroutines.experimental.*
+
+class Cac7er : CoroutineScope {
    companion object {
       const val MAJOR_VERSION = 1
       const val MINOR_VERSION = 0
@@ -40,6 +42,9 @@ class Cac7er {
          TODO()
       }
    }
+
+   private val job = Job()
+   override val coroutineContext get() = job + Dispatchers.IO
 
    val name: String = TODO()
    val dir: File = TODO()

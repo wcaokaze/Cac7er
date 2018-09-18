@@ -7,6 +7,12 @@ final class Uniformizer<T> {
    private T content;
    private CirculationRecord circulationRecord;
 
+   /**
+    * <pre>
+    *    EMPTY ─┬(start to load cache )→ INITIALIZING ─(finished loading)→ INITIALIZED
+    *           └(cache file not found)→ DELETED
+    * </pre>
+    */
    private State state = State.EMPTY;
 
    Uniformizer(final RepositoryImpl<?, T> repository,
@@ -17,17 +23,45 @@ final class Uniformizer<T> {
    }
 
    /**
-    * @return content, or null if state == EMPTY
+    * @return content
+    * @throws IllegalStateException when state == EMPTY or DELETED
     */
    final T getContent() {
-      if (state != State.INITIALIZING) return content;
+      final State state = this.state;
 
-      // shorthand of
-      // if (state == State.INITIALIZED) return content;
-      // if (state == State.EMPTY)       return null;
+      if (state == State.INITIALIZED) return content;
+
+      if (state == State.EMPTY || state == State.DELETED) {
+         throw new IllegalStateException();
+      }
 
       synchronized (this) {
-         while (state == State.INITIALIZING) {
+         while (this.state == State.INITIALIZING) {
+            try {
+               wait();
+            } catch (InterruptedException e) {
+               // ignore
+            }
+         }
+      }
+
+      return content;
+   }
+
+   /**
+    * @return content or null if state == DELETED
+    * @throws IllegalStateException when state == EMPTY
+    */
+   final T getWeakContent() {
+      final State state = this.state;
+
+      if (state == State.INITIALIZED) return content;
+      if (state == State.DELETED)     return null;
+
+      if (state == State.EMPTY) throw new IllegalStateException();
+
+      synchronized (this) {
+         while (this.state == State.INITIALIZING) {
             try {
                wait();
             } catch (InterruptedException e) {
@@ -51,20 +85,32 @@ final class Uniformizer<T> {
          } else {
             this.content = content;
             this.circulationRecord = new CirculationRecord();
+
             state = State.INITIALIZED;
+            notifyAll();
          }
       }
    }
 
-   final CirculationRecord getCirculationRecord() {
-      if (state != State.INITIALIZING) return circulationRecord;
+   final State getState() {
+      return state;
+   }
 
-      // shorthand of
-      // if (state == State.INITIALIZED) return circulationRecord;
-      // if (state == State.EMPTY)       return null;
+   /**
+    * @return CirculationRecord
+    * @throws IllegalStateException when state == EMPTY or DELETED
+    */
+   final CirculationRecord getCirculationRecord() {
+      final State state = this.state;
+
+      if (state == State.INITIALIZED) return circulationRecord;
+
+      if (state == State.EMPTY || state == State.DELETED) {
+         throw new IllegalStateException();
+      }
 
       synchronized (this) {
-         while (state == State.INITIALIZING) {
+         while (this.state == State.INITIALIZING) {
             try {
                wait();
             } catch (InterruptedException e) {
@@ -80,6 +126,10 @@ final class Uniformizer<T> {
       state = State.INITIALIZING;
    }
 
+   final void setDeleted() {
+      state = State.DELETED;
+   }
+
    final synchronized void setLoadedContent(
          final T content,
          final CirculationRecord circulationRecord)
@@ -88,9 +138,10 @@ final class Uniformizer<T> {
       this.circulationRecord = circulationRecord;
 
       state = State.INITIALIZED;
+      notifyAll();
    }
 
-   private static enum State {
+   static enum State {
       /** Empty. Only observers are available. */
       EMPTY,
 
@@ -99,5 +150,8 @@ final class Uniformizer<T> {
 
       /** has a content and a circulationRecord. */
       INITIALIZED,
+
+      /** The content has been deleted by {@link Cac7er#gc(long) GC}. */
+      DELETED,
    }
 }

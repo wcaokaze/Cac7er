@@ -34,7 +34,7 @@ interface WeakCache<out T> {
     *   negative values also work well if you can utilize it. But `NaN` is
     *   invalid (will be ignored).
     *
-    * @return the cached instance.
+    * @return the cached instance, or null if the cache was deleted by GC.
     *
     * @throws IOException
     *
@@ -45,7 +45,7 @@ interface WeakCache<out T> {
     *
     * @since 1.0.0
     */
-   fun get(time: Long, accessCount: Float = .0f): T
+   fun get(time: Long, accessCount: Float = .0f): T?
 
    fun get(accessCount: Float = .0f): T?
          = get(System.currentTimeMillis(), accessCount)
@@ -77,15 +77,19 @@ interface WeakCache<out T> {
 
    /**
     * converts this WeakCache to [Cache].
+    *
+    * @return Cache or null if the cache was deleted by GC.
     * @since 1.0.0
     */
-   fun toCache(): Cache<T>
+   fun toCache(): Cache<T>?
 
    /**
     * converts this WeakCache to [LazyCache].
+    *
+    * @return LazyCache or null if the cache was deleted by GC.
     * @since 1.0.0
     */
-   fun toLazyCache(): LazyCache<T>
+   fun toLazyCache(): LazyCache<T>?
 }
 
 /**
@@ -105,13 +109,17 @@ interface WritableWeakCache<T> : WeakCache<T> {
 
    /**
     * converts this WritableWeakCache to [WritableCache].
+    *
+    * @return WritableCache or null if the cache was deleted by GC.
     * @since 1.0.0
     */
-   override fun toCache(): Cache<T>
+   override fun toCache(): WritableCache<T>?
 
    /**
     * converts this WritableWeakCache to [WritableLazyCache].
+    *
+    * @return WritableLazyCache or null if the cache was deleted by GC.
     * @since 1.0.0
     */
-   override fun toLazyCache(): LazyCache<T>
+   override fun toLazyCache(): WritableLazyCache<T>?
 }

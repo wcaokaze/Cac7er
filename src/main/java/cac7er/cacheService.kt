@@ -23,8 +23,6 @@ private const val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
  * other [Cache]s, this function does NOT save it.
  *
  * @throws IOException
- *
- * @since 1.0.0
  */
 internal fun <T> save(uniformizer: Uniformizer<T>) {
    if (uniformizer.fileName.endsWith(".tmp")) {
@@ -73,8 +71,6 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
  * if it has not written yet.
  *
  * @throws IOException
- *
- * @since 1.0.0
  */
 internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
@@ -98,6 +94,11 @@ internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
  */
 internal fun <T> load(uniformizer: Uniformizer<T>) {
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
+
+   if (!file.exists()) {
+      uniformizer.setDeleted()
+      return
+   }
 
    RandomAccessFile(file, "r").use {
       val magicNumber = it.readInt()

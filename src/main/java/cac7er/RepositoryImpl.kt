@@ -3,8 +3,9 @@ package cac7er
 import java.io.*
 import cac7er.serializer.*
 
-import cac7er.util.Pool
 import kotlinx.coroutines.experimental.*
+
+import cac7er.util.Pool
 
 internal class RepositoryImpl<in K, V>
       constructor(
@@ -14,7 +15,7 @@ internal class RepositoryImpl<in K, V>
             val serializer: Serializer<V>,
             val deserializer: Deserializer<V>
       )
-      : WritableRepository<K, V>
+      : WritableRepository<K, V>, CoroutineScope by cac7er
 {
    private val uniformizerPool = Pool<K, Uniformizer<V>> { key ->
       Uniformizer(this, fileNameSupplier(key))
@@ -28,32 +29,41 @@ internal class RepositoryImpl<in K, V>
 
    override fun save(key: K, value: V): WritableCache<V> {
       val uniformizer = uniformizerPool[key]
-      uniformizer.content = value
-      save(uniformizer)
 
-      TODO()
+      uniformizer.content = value
+
+      launch {
+         save(uniformizer)
+      }
+
+      return CacheImpl(uniformizer)
    }
 
    override suspend fun load(key: K): WritableCache<V> {
-      TODO()
+      val uniformizer = uniformizerPool[key]
+
+      uniformizer.loadIfNecessary()
+      if (uniformizer.state == Uniformizer.State.DELETED) throw IOException()
+
+      return CacheImpl(uniformizer)
    }
 
-   override suspend fun loadWeakCache(key: K): WritableWeakCache<V>? {
-      TODO()
+   override suspend fun loadWeakCache(key: K): WritableWeakCache<V> {
+      val uniformizer = uniformizerPool[key]
+
+      uniformizer.loadIfNecessary()
+
+      return WeakCacheImpl(uniformizer)
    }
 
    override fun loadLazyCache(key: K): WritableLazyCache<V> {
-      TODO()
+      val uniformizer = uniformizerPool[key]
+      return LazyCacheImpl(uniformizer)
    }
 
    private suspend fun loadUniformizer(key: K): Uniformizer<V> {
       val uniformizer = uniformizerPool[key]
-      uniformizer.onStartToLoadContent()
-
-      withContext(CommonPool) {
-         load(uniformizer)
-      }
-
+      uniformizer.loadIfNecessary()
       return uniformizer
    }
 
@@ -68,4 +78,11 @@ internal class RepositoryImpl<in K, V>
    override fun removeObserver(key: K, observer: (V) -> Unit) {
       TODO()
    }
+}
+
+internal suspend fun Uniformizer<*>.loadIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+   repository.async { load(this@loadIfNecessary) } .await()
 }
