@@ -29,22 +29,36 @@ internal class RepositoryImpl<in K, V>
 
    override fun save(key: K, value: V): WritableCache<V> {
       val uniformizer = uniformizerPool[key]
-      uniformizer.content = value
-      save(uniformizer)
 
-      TODO()
+      uniformizer.content = value
+
+      launch {
+         save(uniformizer)
+      }
+
+      return CacheImpl(uniformizer)
    }
 
    override suspend fun load(key: K): WritableCache<V> {
-      TODO()
+      val uniformizer = uniformizerPool[key]
+
+      uniformizer.loadIfNecessary()
+      if (uniformizer.state == Uniformizer.State.DELETED) throw IOException()
+
+      return CacheImpl(uniformizer)
    }
 
    override suspend fun loadWeakCache(key: K): WritableWeakCache<V> {
-      TODO()
+      val uniformizer = uniformizerPool[key]
+
+      uniformizer.loadIfNecessary()
+
+      return WeakCacheImpl(uniformizer)
    }
 
    override fun loadLazyCache(key: K): WritableLazyCache<V> {
-      TODO()
+      val uniformizer = uniformizerPool[key]
+      return LazyCacheImpl(uniformizer)
    }
 
    private suspend fun loadUniformizer(key: K): Uniformizer<V> {

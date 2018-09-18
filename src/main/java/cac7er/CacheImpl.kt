@@ -6,7 +6,7 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableCache<T>
 {
    override fun get(time: Long, accessCount: Float): T {
-      uniformizer.repository.launch(Dispatchers.IO) {
+      uniformizer.repository.launch {
          uniformizer.circulationRecord.add(time, accessCount)
          saveCirculationRecord(uniformizer)
       }
@@ -17,7 +17,7 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun save(content: T) {
       uniformizer.content = content
 
-      uniformizer.repository.launch(Dispatchers.IO) {
+      uniformizer.repository.launch {
          save(uniformizer)
       }
    }
