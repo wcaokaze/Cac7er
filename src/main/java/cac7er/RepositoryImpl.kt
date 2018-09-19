@@ -68,15 +68,15 @@ internal class RepositoryImpl<in K, V>
    }
 
    override fun addObserver(key: K, observer: (V) -> Unit) {
-      TODO()
+      uniformizerPool[key].addObserver(observer)
    }
 
    override fun addObserver(owner: Any, key: K, observer: (V) -> Unit) {
-      TODO()
+      uniformizerPool[key].addObserver(owner, observer)
    }
 
    override fun removeObserver(key: K, observer: (V) -> Unit) {
-      TODO()
+      uniformizerPool[key].removeObserver(observer)
    }
 }
 

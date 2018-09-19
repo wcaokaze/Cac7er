@@ -25,15 +25,15 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    }
 
    override fun addObserver(observer: (T) -> Unit) {
-      TODO()
+      uniformizer.addObserver(observer)
    }
 
    override fun addObserver(owner: Any, observer: (T) -> Unit) {
-      TODO()
+      uniformizer.addObserver(owner, observer)
    }
 
    override fun removeObserver(observer: (T) -> Unit) {
-      TODO()
+      uniformizer.removeObserver(observer)
    }
 
    override fun toCache(): WritableCache<T>? {
