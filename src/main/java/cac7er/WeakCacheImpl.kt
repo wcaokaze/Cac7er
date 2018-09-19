@@ -13,7 +13,7 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
          saveCirculationRecord(uniformizer)
       }
 
-      return uniformizer.content
+      return uniformizer.weakContent
    }
 
    override fun save(content: T) {
