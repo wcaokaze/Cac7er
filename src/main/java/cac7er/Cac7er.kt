@@ -49,6 +49,10 @@ class Cac7er : CoroutineScope {
    val name: String = TODO()
    val dir: File = TODO()
 
+   val repositories: Map<String, Repository<*, *>>
+
+   val delegatee: Map<String, Cac7er>
+
    class Builder {
       /**
        * equivalent to
