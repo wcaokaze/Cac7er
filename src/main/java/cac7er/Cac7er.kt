@@ -4,8 +4,18 @@ import java.io.*
 import cac7er.serializer.*
 
 import kotlinx.coroutines.experimental.*
+import java.util.*
+import kotlin.collections.HashMap
 
-class Cac7er : CoroutineScope {
+class Cac7er
+      private constructor(
+            val name: String,
+            val dir: File,
+            internal val repositories: Map<String, Repository<*, *>>,
+            internal val delegatee: Map<String, Cac7er>
+      )
+      : CoroutineScope
+{
    companion object {
       const val MAJOR_VERSION = 1
       const val MINOR_VERSION = 0
@@ -39,17 +49,16 @@ class Cac7er : CoroutineScope {
       operator fun invoke(name: String, dir: File,
                           builderAction: Builder.() -> Unit): Cac7er
       {
-         TODO()
+         return Builder().apply(builderAction).build(name, dir)
       }
    }
 
    private val job = Job()
    override val coroutineContext get() = job + Dispatchers.IO
 
-   val name: String = TODO()
-   val dir: File = TODO()
-
    class Builder {
+      private val repositories = LinkedList<RepositoryImpl<*, *>>()
+
       /**
        * equivalent to
        * ```
@@ -69,7 +78,9 @@ class Cac7er : CoroutineScope {
                                   serializer: Serializer<V>,
                                   deserializer: Deserializer<V>): Repository<K, V>
       {
-         TODO()
+         val repo = RepositoryImpl(name, fileNameSupplier, serializer, deserializer)
+         repositories += repo
+         return repo
       }
 
       /**
@@ -109,14 +120,40 @@ class Cac7er : CoroutineScope {
        * Yes, this is a solution.
        * ```kotlin
        * val statusCac7er = Cac7er("status", File("statuses")) {
-       *    delegatee += userCac7er
+       *    delegatees += userCac7er
        *
        *    statusRepository = createRepository("statuses",
        *          CacheOutput::writeStatus, CacheInput::readStatus)
        * }
        * ```
        */
-      val delegatee: MutableSet<Cac7er> = TODO()
+      val delegatees: MutableSet<Cac7er> = HashSet()
+
+      internal fun build(name: String, dir: File): Cac7er {
+         val repositoryMap = HashMap<String, Repository<*, *>>()
+
+         for (repo in repositories) {
+            repositoryMap[repo.name] = repo
+         }
+
+         // ----
+
+         val delegateeMap = HashMap<String, Cac7er>()
+
+         for (delegatee in delegatees) {
+            delegateeMap[delegatee.name] = delegatee
+         }
+
+         // ---
+
+         val cac7er = Cac7er(name, dir, repositoryMap, delegateeMap)
+
+         for (repo in repositories) {
+            repo.cac7er = cac7er
+         }
+
+         return cac7er
+      }
    }
 
    /**
