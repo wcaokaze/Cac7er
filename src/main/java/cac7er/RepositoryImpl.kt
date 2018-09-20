@@ -9,23 +9,28 @@ import cac7er.util.Pool
 
 internal class RepositoryImpl<in K, V>
       constructor(
-            val cac7er: Cac7er,
             override val name: String,
             private val fileNameSupplier: (K) -> String,
             val serializer: Serializer<V>,
             val deserializer: Deserializer<V>
       )
-      : WritableRepository<K, V>, CoroutineScope by cac7er
+      : WritableRepository<K, V>, CoroutineScope
 {
    private val uniformizerPool = Pool<K, Uniformizer<V>> { key ->
       Uniformizer(this, fileNameSupplier(key))
    }
 
-   val dir = File(cac7er.dir, name).apply {
-      if (!exists()) {
-         if (!mkdir()) throw IOException("cannot mkdir")
+   lateinit var cac7er: Cac7er
+
+   val dir: File by lazy {
+      File(cac7er.dir, name).apply {
+         if (!exists()) {
+            if (!mkdir()) throw IOException("cannot mkdir")
+         }
       }
    }
+
+   override val coroutineContext get() = cac7er.coroutineContext
 
    override fun save(key: K, value: V): WritableCache<V> {
       val uniformizer = uniformizerPool[key]
