@@ -11,8 +11,7 @@ class Cac7er
       private constructor(
             val name: String,
             val dir: File,
-            internal val repositories: Map<String, Repository<*, *>>,
-            internal val delegatee: Map<String, Cac7er>
+            internal val repositories: Array<Repository<*, *>>
       )
       : CoroutineScope
 {
@@ -45,6 +44,9 @@ class Cac7er
        *
        * see [README](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/README.md)
        * for more information.
+       *
+       * This can take time. If your Cac7er has many repositories, consider
+       * instantiation with [launch][CoroutineScope.launch].
        */
       operator fun invoke(name: String, dir: File,
                           builderAction: Builder.() -> Unit): Cac7er
@@ -146,7 +148,7 @@ class Cac7er
 
          // ---
 
-         val cac7er = Cac7er(name, dir, repositoryMap, delegateeMap)
+         val cac7er = Cac7er(name, dir, TODO())
 
          for (repo in repositories) {
             repo.cac7er = cac7er
