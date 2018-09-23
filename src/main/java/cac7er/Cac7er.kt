@@ -133,6 +133,10 @@ class Cac7er
       val delegatees: MutableSet<Cac7er> = HashSet()
 
       internal fun build(name: String, dir: File): Cac7er {
+         if (!dir.exists()) {
+            if (!dir.mkdir()) throw IOException("can not mkdir: $dir")
+         }
+
          val metadataFile = File(dir, name)
 
          val repoNames = Cac7erMetadataFileService.loadRepositoryNames(metadataFile)

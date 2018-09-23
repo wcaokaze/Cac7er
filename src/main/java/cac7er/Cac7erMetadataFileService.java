@@ -11,6 +11,8 @@ final class Cac7erMetadataFileService {
    {
       final List<String> repositoryNames = new LinkedList<String>();
 
+      if (!metadataFile.exists()) return repositoryNames;
+
       final DataInputStream inputStream = new DataInputStream(
             new BufferedInputStream(new FileInputStream(metadataFile)));
 
