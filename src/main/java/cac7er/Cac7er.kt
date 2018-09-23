@@ -4,15 +4,15 @@ import java.io.*
 import cac7er.serializer.*
 
 import kotlinx.coroutines.experimental.*
-import java.util.*
-import kotlin.collections.HashMap
+
+import java.util.LinkedList
+import kotlin.collections.*
 
 class Cac7er
       private constructor(
             val name: String,
             val dir: File,
-            internal val repositories: Map<String, Repository<*, *>>,
-            internal val delegatee: Map<String, Cac7er>
+            internal val repositories: Array<out Repository<*, *>?>
       )
       : CoroutineScope
 {
@@ -45,6 +45,9 @@ class Cac7er
        *
        * see [README](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/README.md)
        * for more information.
+       *
+       * This can take time. If your Cac7er has many repositories, consider
+       * instantiation with [launch][CoroutineScope.launch].
        */
       operator fun invoke(name: String, dir: File,
                           builderAction: Builder.() -> Unit): Cac7er
@@ -130,23 +133,57 @@ class Cac7er
       val delegatees: MutableSet<Cac7er> = HashSet()
 
       internal fun build(name: String, dir: File): Cac7er {
-         val repositoryMap = HashMap<String, Repository<*, *>>()
+         if (!dir.exists()) {
+            if (!dir.mkdir()) throw IOException("can not mkdir: $dir")
+         }
+
+         val metadataFile = File(dir, name)
+
+         val repoNames = Cac7erMetadataFileService.loadRepositoryNames(metadataFile)
+         val repos = ArrayList<Repository<*, *>?>()
+
+         repeat (repoNames.size) {
+            repos += null as Repository<*, *>?
+         }
+
+         var added = false
 
          for (repo in repositories) {
-            repositoryMap[repo.name] = repo
+            val repoName = name + '/' + repo.name
+            val index = repoNames.indexOf(repoName)
+
+            if (index >= 0) {
+               repos[index] = repo
+            } else {
+               repos += repo
+               repoNames += repoName
+               added = true
+            }
          }
-
-         // ----
-
-         val delegateeMap = HashMap<String, Cac7er>()
 
          for (delegatee in delegatees) {
-            delegateeMap[delegatee.name] = delegatee
+            for (delegateeRepo in delegatee.repositories) {
+               if (delegateeRepo == null) continue
+
+               val repoName = delegatee.name + '/' + delegateeRepo.name
+               val index = repoNames.indexOf(repoName)
+
+               if (index >= 0) {
+                  repos[index] = delegateeRepo
+               } else {
+                  repos += delegateeRepo
+                  repoNames += repoName
+                  added = true
+               }
+            }
          }
 
-         // ---
+         if (added) {
+            Cac7erMetadataFileService
+                  .writeRepositoryNames(metadataFile, repoNames)
+         }
 
-         val cac7er = Cac7er(name, dir, repositoryMap, delegateeMap)
+         val cac7er = Cac7er(name, dir, repos.toTypedArray())
 
          for (repo in repositories) {
             repo.cac7er = cac7er
