@@ -21,11 +21,11 @@ inline fun <T> CacheInput.readNullable(deserializer: Deserializer<T>): T? {
 
 fun CacheOutput.writeBoolean(value: Boolean) {
    val b = if (value) 1 else 0
-   stream.write(b)
+   file.write(b)
 }
 
 fun CacheInput.readBoolean(): Boolean {
-   return when (stream.read()) {
+   return when (file.read()) {
       0 -> false
       1 -> true
       else -> throw IOException()
@@ -33,21 +33,21 @@ fun CacheInput.readBoolean(): Boolean {
 }
 
 fun CacheOutput.writeByte(value: Byte) {
-   stream.write(value.toInt())
+   file.write(value.toInt())
 }
 
 fun CacheInput.readByte(): Byte {
-   return stream.read().toByte()
+   return file.read().toByte()
 }
 
 fun CacheOutput.writeChar(value: Char) {
    val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
-   stream.write(b)
+   file.write(b)
 }
 
 fun CacheInput.readChar(): Char {
    val b = ByteArray(2)
-   stream.read(b)
+   file.read(b)
 
    val i = (b[0].toInt() shl 8) or (b[1].toInt())
    return i.toChar()
@@ -55,12 +55,12 @@ fun CacheInput.readChar(): Char {
 
 fun CacheOutput.writeShort(value: Short) {
    val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
-   stream.write(b)
+   file.write(b)
 }
 
 fun CacheInput.readShort(): Short {
    val b = ByteArray(2)
-   stream.read(b)
+   file.read(b)
 
    val i = (b[0].toInt() shl 8) or (b[1].toInt())
    return i.toShort()
@@ -73,12 +73,12 @@ fun CacheOutput.writeInt(value: Int) {
          (value ushr  8).toByte(),
           value         .toByte())
 
-   stream.write(b)
+   file.write(b)
 }
 
 fun CacheInput.readInt(): Int {
    val b = ByteArray(4)
-   stream.read(b)
+   file.read(b)
 
    return (b[0].toInt() shl 24) or
           (b[1].toInt() shl 16) or
@@ -97,12 +97,12 @@ fun CacheOutput.writeLong(value: Long) {
          (value ushr  8).toByte(),
           value         .toByte())
 
-   stream.write(b)
+   file.write(b)
 }
 
 fun CacheInput.readLong(): Long {
    val b = ByteArray(8)
-   stream.read(b)
+   file.read(b)
 
    return (b[0].toLong() shl 56) or
           (b[1].toLong() shl 48) or
