@@ -5,6 +5,10 @@ import kotlinx.coroutines.experimental.*
 internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableCache<T>
 {
+   val repository: RepositoryImpl<*, T> get() = uniformizer.repository
+   val cac7er: Cac7er                   get() = uniformizer.repository.cac7er
+   val fileName: String                 get() = uniformizer.fileName
+
    override fun get(time: Long, accessCount: Float): T {
       uniformizer.repository.launch {
          uniformizer.circulationRecord.add(time, accessCount)

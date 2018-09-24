@@ -28,10 +28,13 @@ internal class RepositoryImpl<in K, V>
 
    override val coroutineContext get() = coroutineScope.coroutineContext
 
+   private lateinit var _cac7er: Cac7er
+
    var cac7er: Cac7er
-      @Deprecated("This getter always throws an Error", level = DeprecationLevel.ERROR)
-      get() = throw NotImplementedError()
+      get() = _cac7er
       set(value) {
+         _cac7er = value
+
          coroutineScope = value
 
          dir = File(value.dir, name).apply {

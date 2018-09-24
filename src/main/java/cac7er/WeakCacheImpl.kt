@@ -5,6 +5,10 @@ import kotlinx.coroutines.experimental.*
 internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableWeakCache<T>
 {
+   val repository: RepositoryImpl<*, T> get() = uniformizer.repository
+   val cac7er: Cac7er                   get() = uniformizer.repository.cac7er
+   val fileName: String                 get() = uniformizer.fileName
+
    override fun get(time: Long, accessCount: Float): T? {
       if (uniformizer.state == Uniformizer.State.DELETED) return null
 

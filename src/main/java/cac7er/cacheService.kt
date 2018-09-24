@@ -42,7 +42,7 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
       it.writeInt(MAGIC_NUMBER)
       it.seek(8L)
 
-      val output = CacheOutput(it, uniformizer.repository)
+      val output = CacheOutput(it, cacheFile, uniformizer.repository.cac7er)
 
       uniformizer.repository.serializer(output, uniformizer.content)
 

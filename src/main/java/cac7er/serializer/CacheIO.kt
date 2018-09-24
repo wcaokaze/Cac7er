@@ -7,8 +7,9 @@ import java.util.*
 
 class CacheOutput
       internal constructor(
-            internal val file: RandomAccessFile,
-            internal val repository: RepositoryImpl<*, *>
+            internal val output: RandomAccessFile,
+            internal val file: File,
+            internal val cac7er: Cac7er
       )
 {
    /** absolute file paths that are depended by this Cache. */

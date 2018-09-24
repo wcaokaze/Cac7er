@@ -21,7 +21,7 @@ inline fun <T> CacheInput.readNullable(deserializer: Deserializer<T>): T? {
 
 fun CacheOutput.writeBoolean(value: Boolean) {
    val b = if (value) 1 else 0
-   file.write(b)
+   output.write(b)
 }
 
 fun CacheInput.readBoolean(): Boolean {
@@ -33,7 +33,7 @@ fun CacheInput.readBoolean(): Boolean {
 }
 
 fun CacheOutput.writeByte(value: Byte) {
-   file.write(value.toInt())
+   output.write(value.toInt())
 }
 
 fun CacheInput.readByte(): Byte {
@@ -42,7 +42,7 @@ fun CacheInput.readByte(): Byte {
 
 fun CacheOutput.writeChar(value: Char) {
    val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
-   file.write(b)
+   output.write(b)
 }
 
 fun CacheInput.readChar(): Char {
@@ -55,7 +55,7 @@ fun CacheInput.readChar(): Char {
 
 fun CacheOutput.writeShort(value: Short) {
    val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
-   file.write(b)
+   output.write(b)
 }
 
 fun CacheInput.readShort(): Short {
@@ -73,7 +73,7 @@ fun CacheOutput.writeInt(value: Int) {
          (value ushr  8).toByte(),
           value         .toByte())
 
-   file.write(b)
+   output.write(b)
 }
 
 fun CacheInput.readInt(): Int {
@@ -97,7 +97,7 @@ fun CacheOutput.writeLong(value: Long) {
          (value ushr  8).toByte(),
           value         .toByte())
 
-   file.write(b)
+   output.write(b)
 }
 
 fun CacheInput.readLong(): Long {
