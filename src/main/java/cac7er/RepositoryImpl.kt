@@ -20,17 +20,26 @@ internal class RepositoryImpl<in K, V>
       Uniformizer(this, fileNameSupplier(key))
    }
 
-   lateinit var cac7er: Cac7er
+   lateinit var coroutineScope: CoroutineScope
+      private set
 
-   val dir: File by lazy {
-      File(cac7er.dir, name).apply {
-         if (!exists()) {
-            if (!mkdir()) throw IOException("cannot mkdir")
+   lateinit var dir: File
+      private set
+
+   override val coroutineContext get() = coroutineScope.coroutineContext
+
+   var cac7er: Cac7er
+      @Deprecated("This getter always throws an Error", level = DeprecationLevel.ERROR)
+      get() = throw NotImplementedError()
+      set(value) {
+         coroutineScope = value
+
+         dir = File(value.dir, name).apply {
+            if (!exists()) {
+               if (!mkdir()) throw IOException("cannot mkdir")
+            }
          }
       }
-   }
-
-   override val coroutineContext get() = cac7er.coroutineContext
 
    override fun save(key: K, value: V): WritableCache<V> {
       val uniformizer = uniformizerPool[key]
