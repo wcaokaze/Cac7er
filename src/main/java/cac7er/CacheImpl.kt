@@ -10,9 +10,11 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
    val fileName: String                 get() = uniformizer.fileName
 
    override fun get(time: Long, accessCount: Float): T {
-      uniformizer.repository.launch {
-         uniformizer.circulationRecord.add(time, accessCount)
-         saveCirculationRecord(uniformizer)
+      if (accessCount != .0f) {
+         uniformizer.repository.launch {
+            uniformizer.circulationRecord.add(time, accessCount)
+            saveCirculationRecord(uniformizer)
+         }
       }
 
       return uniformizer.content

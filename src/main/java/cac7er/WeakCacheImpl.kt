@@ -12,9 +12,11 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun get(time: Long, accessCount: Float): T? {
       if (uniformizer.state == Uniformizer.State.DELETED) return null
 
-      uniformizer.repository.launch {
-         uniformizer.circulationRecord.add(time, accessCount)
-         saveCirculationRecord(uniformizer)
+      if (accessCount != .0f) {
+         uniformizer.repository.launch {
+            uniformizer.circulationRecord.add(time, accessCount)
+            saveCirculationRecord(uniformizer)
+         }
       }
 
       return uniformizer.weakContent

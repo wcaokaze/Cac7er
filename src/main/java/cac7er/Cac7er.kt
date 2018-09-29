@@ -12,7 +12,7 @@ class Cac7er
       private constructor(
             val name: String,
             val dir: File,
-            internal val repositories: Array<out Repository<*, *>?>
+            internal val repositories: Array<out RepositoryImpl<*, *>?>
       )
       : CoroutineScope
 {
@@ -140,10 +140,10 @@ class Cac7er
          val metadataFile = File(dir, name)
 
          val repoNames = Cac7erMetadataFileService.loadRepositoryNames(metadataFile)
-         val repos = ArrayList<Repository<*, *>?>()
+         val repos = ArrayList<RepositoryImpl<*, *>?>()
 
          repeat (repoNames.size) {
-            repos += null as Repository<*, *>?
+            repos += null as RepositoryImpl<*, *>?
          }
 
          var added = false

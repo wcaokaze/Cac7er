@@ -12,9 +12,11 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override suspend fun get(time: Long, accessCount: Float): T {
       uniformizer.loadIfNecessary()
 
-      uniformizer.repository.launch {
-         uniformizer.circulationRecord.add(time, accessCount)
-         saveCirculationRecord(uniformizer)
+      if (accessCount != .0f) {
+         uniformizer.repository.launch {
+            uniformizer.circulationRecord.add(time, accessCount)
+            saveCirculationRecord(uniformizer)
+         }
       }
 
       return uniformizer.content
@@ -23,9 +25,11 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun getIfAlreadyLoaded(time: Long, accessCount: Float): T? {
       if (uniformizer.state != Uniformizer.State.INITIALIZED) return null
 
-      uniformizer.repository.launch {
-         uniformizer.circulationRecord.add(time, accessCount)
-         saveCirculationRecord(uniformizer)
+      if (accessCount != .0f) {
+         uniformizer.repository.launch {
+            uniformizer.circulationRecord.add(time, accessCount)
+            saveCirculationRecord(uniformizer)
+         }
       }
 
       return uniformizer.content

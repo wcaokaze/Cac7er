@@ -16,4 +16,8 @@ class CacheOutput
    internal val dependence = LinkedList<String>()
 }
 
-class CacheInput internal constructor(internal val file: RandomAccessFile)
+class CacheInput
+      internal constructor(
+            internal val input: RandomAccessFile,
+            internal val cac7er: Cac7er
+      )

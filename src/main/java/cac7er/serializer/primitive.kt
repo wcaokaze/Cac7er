@@ -25,7 +25,7 @@ fun CacheOutput.writeBoolean(value: Boolean) {
 }
 
 fun CacheInput.readBoolean(): Boolean {
-   return when (file.read()) {
+   return when (input.read()) {
       0 -> false
       1 -> true
       else -> throw IOException()
@@ -37,7 +37,7 @@ fun CacheOutput.writeByte(value: Byte) {
 }
 
 fun CacheInput.readByte(): Byte {
-   return file.read().toByte()
+   return input.read().toByte()
 }
 
 fun CacheOutput.writeChar(value: Char) {
@@ -47,7 +47,7 @@ fun CacheOutput.writeChar(value: Char) {
 
 fun CacheInput.readChar(): Char {
    val b = ByteArray(2)
-   file.read(b)
+   input.read(b)
 
    val i = (b[0].toInt() shl 8) or (b[1].toInt())
    return i.toChar()
@@ -60,7 +60,7 @@ fun CacheOutput.writeShort(value: Short) {
 
 fun CacheInput.readShort(): Short {
    val b = ByteArray(2)
-   file.read(b)
+   input.read(b)
 
    val i = (b[0].toInt() shl 8) or (b[1].toInt())
    return i.toShort()
@@ -78,7 +78,7 @@ fun CacheOutput.writeInt(value: Int) {
 
 fun CacheInput.readInt(): Int {
    val b = ByteArray(4)
-   file.read(b)
+   input.read(b)
 
    return (b[0].toInt() shl 24) or
           (b[1].toInt() shl 16) or
@@ -102,7 +102,7 @@ fun CacheOutput.writeLong(value: Long) {
 
 fun CacheInput.readLong(): Long {
    val b = ByteArray(8)
-   file.read(b)
+   input.read(b)
 
    return (b[0].toLong() shl 56) or
           (b[1].toLong() shl 48) or

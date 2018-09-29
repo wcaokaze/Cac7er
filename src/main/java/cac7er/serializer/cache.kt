@@ -39,7 +39,12 @@ fun <T> CacheOutput.writeCache(value: Cache<T>) {
 }
 
 fun <T> CacheInput.readCache(): Cache<T> {
-   val relativePath = readString()
-   RelativePathResolver.resolve(baseCacheFile.path, relativePath)
-   TODO()
+   val repositoryIndex = readInt()
+   val fileName = readString()
+
+   val repository = cac7er.repositories[repositoryIndex]
+         ?: throw IOException("Cac7er which wrote the file is not in delegatee.")
+
+   @Suppress("UNCHECKED_CAST")
+   return repository.loadBlocking(fileName) as Cache<T>
 }
