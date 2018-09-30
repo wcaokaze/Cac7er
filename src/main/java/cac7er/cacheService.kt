@@ -112,7 +112,7 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
       val dependencePosition        = it.readUnsignedShort().toLong()
       val circulationRecordPosition = it.readUnsignedShort().toLong()
 
-      val input = CacheInput(it)
+      val input = CacheInput(it, uniformizer.repository.cac7er)
 
       val content = uniformizer.repository.deserializer(input)
 
