@@ -5,6 +5,7 @@ import cac7er.*
 import org.junit.*
 import org.junit.runner.*
 import org.junit.runners.*
+import org.junit.Assert.*
 
 import java.io.*
 import cac7er.serializer.*
@@ -133,7 +134,7 @@ class PrimitiveSerializerTest {
 
       with (cac7er.getCacheInput("float")) {
          for (f in data) {
-            assert(readFloat() == f)
+            assertEquals(readFloat(), f, .0001f)
          }
       }
    }
@@ -155,7 +156,7 @@ class PrimitiveSerializerTest {
 
       with (cac7er.getCacheInput("double")) {
          for (d in data) {
-            assert(readDouble() == d)
+            assertEquals(readDouble(), d, .0001)
          }
       }
    }

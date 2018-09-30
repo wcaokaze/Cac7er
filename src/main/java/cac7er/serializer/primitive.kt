@@ -1,135 +1,66 @@
 package cac7er.serializer
 
-import java.io.*
-
 inline fun <T> CacheOutput.writeNullable(value: T?, serializer: Serializer<T>) {
    if (value == null) {
-      writeByte(0)
+      writeBoolean(true)
    } else {
-      writeByte(1)
+      writeBoolean(false)
       serializer(value)
    }
 }
 
 inline fun <T> CacheInput.readNullable(deserializer: Deserializer<T>): T? {
-   return when (readByte().toInt()) {
-      0 -> null
-      1 -> deserializer()
-      else -> throw IOException()
+   return if (readBoolean()) {
+      null
+   } else {
+      deserializer()
    }
 }
 
 fun CacheOutput.writeBoolean(value: Boolean) {
-   val b = if (value) 1 else 0
-   output.write(b)
+   output.writeBoolean(value)
 }
 
-fun CacheInput.readBoolean(): Boolean {
-   return when (input.read()) {
-      0 -> false
-      1 -> true
-      else -> throw IOException()
-   }
-}
+fun CacheInput.readBoolean(): Boolean = input.readBoolean()
 
 fun CacheOutput.writeByte(value: Byte) {
-   output.write(value.toInt())
+   output.writeByte(value.toInt())
 }
 
-fun CacheInput.readByte(): Byte {
-   return input.read().toByte()
-}
+fun CacheInput.readByte(): Byte = input.readByte()
 
 fun CacheOutput.writeChar(value: Char) {
-   val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
-   output.write(b)
+   output.writeChar(value.toInt())
 }
 
-fun CacheInput.readChar(): Char {
-   val b = ByteArray(2)
-   input.read(b)
-
-   val i = (b[0].toInt() shl 8) or (b[1].toInt())
-   return i.toChar()
-}
+fun CacheInput.readChar(): Char = input.readChar()
 
 fun CacheOutput.writeShort(value: Short) {
-   val b = byteArrayOf((value.toInt() ushr 8).toByte(), value.toByte())
-   output.write(b)
+   output.writeShort(value.toInt())
 }
 
-fun CacheInput.readShort(): Short {
-   val b = ByteArray(2)
-   input.read(b)
-
-   val i = (b[0].toInt() shl 8) or (b[1].toInt())
-   return i.toShort()
-}
+fun CacheInput.readShort(): Short = input.readShort()
 
 fun CacheOutput.writeInt(value: Int) {
-   val b = byteArrayOf(
-         (value ushr 24).toByte(),
-         (value ushr 16).toByte(),
-         (value ushr  8).toByte(),
-          value         .toByte())
-
-   output.write(b)
+   output.writeInt(value)
 }
 
-fun CacheInput.readInt(): Int {
-   val b = ByteArray(4)
-   input.read(b)
-
-   return (b[0].toInt() shl 24) or
-          (b[1].toInt() shl 16) or
-          (b[2].toInt() shl  8) or
-           b[3].toInt()
-}
+fun CacheInput.readInt(): Int = input.readInt()
 
 fun CacheOutput.writeLong(value: Long) {
-   val b = byteArrayOf(
-         (value ushr 56).toByte(),
-         (value ushr 48).toByte(),
-         (value ushr 40).toByte(),
-         (value ushr 32).toByte(),
-         (value ushr 24).toByte(),
-         (value ushr 16).toByte(),
-         (value ushr  8).toByte(),
-          value         .toByte())
-
-   output.write(b)
+   output.writeLong(value)
 }
 
-fun CacheInput.readLong(): Long {
-   val b = ByteArray(8)
-   input.read(b)
-
-   return (b[0].toLong() shl 56) or
-          (b[1].toLong() shl 48) or
-          (b[2].toLong() shl 40) or
-          (b[3].toLong() shl 32) or
-          (b[4].toLong() shl 24) or
-          (b[5].toLong() shl 16) or
-          (b[6].toLong() shl  8) or
-           b[7].toLong()
-}
+fun CacheInput.readLong(): Long = input.readLong()
 
 fun CacheOutput.writeFloat(value: Float) {
-   val i = value.toRawBits()
-   writeInt(i)
+   output.writeFloat(value)
 }
 
-fun CacheInput.readFloat(): Float {
-   val i = readInt()
-   return Float.fromBits(i)
-}
+fun CacheInput.readFloat(): Float = input.readFloat()
 
 fun CacheOutput.writeDouble(value: Double) {
-   val l = value.toRawBits()
-   writeLong(l)
+   output.writeDouble(value)
 }
 
-fun CacheInput.readDouble(): Double {
-   val l = readLong()
-   return Double.fromBits(l)
-}
+fun CacheInput.readDouble(): Double = input.readDouble()
