@@ -89,6 +89,14 @@ internal class RepositoryImpl<in K, V>
       return WeakCacheImpl(uniformizer)
    }
 
+   fun loadWeakCacheBlocking(fileName: String): WeakCacheImpl<V> {
+      val uniformizer = uniformizerPool[fileName]
+
+      uniformizer.loadBlockingIfNecessary()
+
+      return WeakCacheImpl(uniformizer)
+   }
+
    override fun loadLazyCache(key: K): WritableLazyCache<V> {
       val fileName = fileNameSupplier(key)
       val uniformizer = uniformizerPool[fileName]
@@ -96,13 +104,10 @@ internal class RepositoryImpl<in K, V>
       return LazyCacheImpl(uniformizer)
    }
 
-   private suspend fun loadUniformizer(key: K): Uniformizer<V> {
-      val fileName = fileNameSupplier(key)
+   fun loadLazyCacheBlocking(fileName: String): LazyCacheImpl<V> {
       val uniformizer = uniformizerPool[fileName]
 
-      uniformizer.loadIfNecessary()
-
-      return uniformizer
+      return LazyCacheImpl(uniformizer)
    }
 
    override fun addObserver(key: K, observer: (V) -> Unit) {
