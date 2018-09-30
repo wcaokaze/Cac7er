@@ -161,6 +161,24 @@ class PrimitiveSerializerTest {
       }
    }
 
+   @Test fun nullable() {
+      val cac7er = Cac7er("nullable", testDir) {}
+
+      with (cac7er.getCacheOutput("nullable")) {
+         writeNullable(null, CacheOutput::writeBoolean)
+         writeNullable(true, CacheOutput::writeBoolean)
+         writeNullable(null, CacheOutput::writeInt)
+         writeNullable(   1, CacheOutput::writeInt)
+      }
+
+      with (cac7er.getCacheInput("nullable")) {
+         assertEquals(null, readNullable(CacheInput::readBoolean))
+         assertEquals(true, readNullable(CacheInput::readBoolean))
+         assertEquals(null, readNullable(CacheInput::readInt))
+         assertEquals(   1, readNullable(CacheInput::readInt))
+      }
+   }
+
    private fun Cac7er.getCacheOutput(name: String): CacheOutput {
       val file = File(testDir, name)
 
