@@ -1,4 +1,4 @@
-package cac7er.serializer.util
+package cac7er.serializer.date
 
 import cac7er.serializer.*
 import java.util.*
