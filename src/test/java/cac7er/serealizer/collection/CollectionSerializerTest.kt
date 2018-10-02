@@ -11,7 +11,7 @@ import cac7er.serializer.*
 import cac7er.serializer.collection.*
 
 @RunWith(JUnit4::class)
-class CollectionTest {
+class CollectionSerializerTest {
    private val testDir = File("testOutput")
 
    @After fun deleteDir() {

@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @RunWith(JUnit4::class)
-class DateTest {
+class DateSerializerTest {
    private val testDir = File("testOutput")
 
    @After fun deleteDir() {
