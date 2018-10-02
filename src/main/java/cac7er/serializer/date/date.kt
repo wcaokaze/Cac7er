@@ -22,7 +22,6 @@ fun CacheOutput.writeDateWithTimeZone(
 }
 
 fun CacheInput.readDateWithTimeZone(
-      value: Date,
       timeZone: TimeZone = TimeZone.getDefault()): Date
 {
    val time = readLong()
