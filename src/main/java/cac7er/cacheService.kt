@@ -42,7 +42,7 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
       it.writeInt(MAGIC_NUMBER)
       it.seek(8L)
 
-      val output = CacheOutput(it)
+      val output = CacheOutput(it, cacheFile, uniformizer.repository.cac7er)
 
       uniformizer.repository.serializer(output, uniformizer.content)
 
@@ -112,7 +112,7 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
       val dependencePosition        = it.readUnsignedShort().toLong()
       val circulationRecordPosition = it.readUnsignedShort().toLong()
 
-      val input = CacheInput(it)
+      val input = CacheInput(it, uniformizer.repository.cac7er)
 
       val content = uniformizer.repository.deserializer(input)
 

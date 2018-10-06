@@ -16,24 +16,37 @@ internal class RepositoryImpl<in K, V>
       )
       : WritableRepository<K, V>, CoroutineScope
 {
-   private val uniformizerPool = Pool<K, Uniformizer<V>> { key ->
-      Uniformizer(this, fileNameSupplier(key))
+   private val uniformizerPool = Pool<String, Uniformizer<V>> { fileName ->
+      Uniformizer(this, fileName)
    }
 
-   lateinit var cac7er: Cac7er
+   lateinit var coroutineScope: CoroutineScope
+      private set
 
-   val dir: File by lazy {
-      File(cac7er.dir, name).apply {
-         if (!exists()) {
-            if (!mkdir()) throw IOException("cannot mkdir")
+   lateinit var dir: File
+      private set
+
+   override val coroutineContext get() = coroutineScope.coroutineContext
+
+   private lateinit var _cac7er: Cac7er
+
+   var cac7er: Cac7er
+      get() = _cac7er
+      set(value) {
+         _cac7er = value
+
+         coroutineScope = value
+
+         dir = File(value.dir, name).apply {
+            if (!exists()) {
+               if (!mkdir()) throw IOException("cannot mkdir")
+            }
          }
       }
-   }
-
-   override val coroutineContext get() = cac7er.coroutineContext
 
    override fun save(key: K, value: V): WritableCache<V> {
-      val uniformizer = uniformizerPool[key]
+      val fileName = fileNameSupplier(key)
+      val uniformizer = uniformizerPool[fileName]
 
       uniformizer.content = value
 
@@ -45,7 +58,12 @@ internal class RepositoryImpl<in K, V>
    }
 
    override suspend fun load(key: K): WritableCache<V> {
-      val uniformizer = uniformizerPool[key]
+      val fileName = fileNameSupplier(key)
+      return load(fileName)
+   }
+
+   suspend fun load(fileName: String): CacheImpl<V> {
+      val uniformizer = uniformizerPool[fileName]
 
       uniformizer.loadIfNecessary()
       if (uniformizer.state == Uniformizer.State.DELETED) throw IOException()
@@ -53,35 +71,58 @@ internal class RepositoryImpl<in K, V>
       return CacheImpl(uniformizer)
    }
 
+   fun loadBlocking(fileName: String): CacheImpl<V> {
+      val uniformizer = uniformizerPool[fileName]
+
+      uniformizer.loadBlockingIfNecessary()
+      if (uniformizer.state == Uniformizer.State.DELETED) throw IOException()
+
+      return CacheImpl(uniformizer)
+   }
+
    override suspend fun loadWeakCache(key: K): WritableWeakCache<V> {
-      val uniformizer = uniformizerPool[key]
+      val fileName = fileNameSupplier(key)
+      val uniformizer = uniformizerPool[fileName]
 
       uniformizer.loadIfNecessary()
 
       return WeakCacheImpl(uniformizer)
    }
 
+   fun loadWeakCacheBlocking(fileName: String): WeakCacheImpl<V> {
+      val uniformizer = uniformizerPool[fileName]
+
+      uniformizer.loadBlockingIfNecessary()
+
+      return WeakCacheImpl(uniformizer)
+   }
+
    override fun loadLazyCache(key: K): WritableLazyCache<V> {
-      val uniformizer = uniformizerPool[key]
+      val fileName = fileNameSupplier(key)
+      val uniformizer = uniformizerPool[fileName]
+
       return LazyCacheImpl(uniformizer)
    }
 
-   private suspend fun loadUniformizer(key: K): Uniformizer<V> {
-      val uniformizer = uniformizerPool[key]
-      uniformizer.loadIfNecessary()
-      return uniformizer
+   fun loadLazyCacheBlocking(fileName: String): LazyCacheImpl<V> {
+      val uniformizer = uniformizerPool[fileName]
+
+      return LazyCacheImpl(uniformizer)
    }
 
    override fun addObserver(key: K, observer: (V) -> Unit) {
-      uniformizerPool[key].addObserver(observer)
+      val fileName = fileNameSupplier(key)
+      uniformizerPool[fileName].addObserver(observer)
    }
 
    override fun addObserver(owner: Any, key: K, observer: (V) -> Unit) {
-      uniformizerPool[key].addObserver(owner, observer)
+      val fileName = fileNameSupplier(key)
+      uniformizerPool[fileName].addObserver(owner, observer)
    }
 
    override fun removeObserver(key: K, observer: (V) -> Unit) {
-      uniformizerPool[key].removeObserver(observer)
+      val fileName = fileNameSupplier(key)
+      uniformizerPool[fileName].removeObserver(observer)
    }
 }
 
@@ -90,4 +131,11 @@ internal suspend fun Uniformizer<*>.loadIfNecessary() {
 
    onStartToLoadContent()
    repository.async { load(this@loadIfNecessary) } .await()
+}
+
+internal fun Uniformizer<*>.loadBlockingIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+   load(this)
 }

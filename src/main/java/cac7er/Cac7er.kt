@@ -12,7 +12,7 @@ class Cac7er
       private constructor(
             val name: String,
             val dir: File,
-            internal val repositories: Array<out Repository<*, *>?>
+            internal val repositories: Array<out RepositoryImpl<*, *>?>
       )
       : CoroutineScope
 {
@@ -71,7 +71,8 @@ class Cac7er
        */
       fun <K, V> createRepository(name: String,
                                   serializer: Serializer<V>,
-                                  deserializer: Deserializer<V>): Repository<K, V>
+                                  deserializer: Deserializer<V>)
+            : WritableRepository<K, V>
       {
          return createRepository(name, Any?::toString, serializer, deserializer)
       }
@@ -79,7 +80,8 @@ class Cac7er
       fun <K, V> createRepository(name: String,
                                   fileNameSupplier: (K) -> String,
                                   serializer: Serializer<V>,
-                                  deserializer: Deserializer<V>): Repository<K, V>
+                                  deserializer: Deserializer<V>)
+            : WritableRepository<K, V>
       {
          val repo = RepositoryImpl(name, fileNameSupplier, serializer, deserializer)
          repositories += repo
@@ -140,10 +142,10 @@ class Cac7er
          val metadataFile = File(dir, name)
 
          val repoNames = Cac7erMetadataFileService.loadRepositoryNames(metadataFile)
-         val repos = ArrayList<Repository<*, *>?>()
+         val repos = ArrayList<RepositoryImpl<*, *>?>()
 
          repeat (repoNames.size) {
-            repos += null as Repository<*, *>?
+            repos += null as RepositoryImpl<*, *>?
          }
 
          var added = false

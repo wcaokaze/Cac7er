@@ -5,12 +5,18 @@ import kotlinx.coroutines.experimental.*
 internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableLazyCache<T>
 {
+   val repository: RepositoryImpl<*, T> get() = uniformizer.repository
+   val cac7er: Cac7er                   get() = uniformizer.repository.cac7er
+   val fileName: String                 get() = uniformizer.fileName
+
    override suspend fun get(time: Long, accessCount: Float): T {
       uniformizer.loadIfNecessary()
 
-      uniformizer.repository.launch {
-         uniformizer.circulationRecord.add(time, accessCount)
-         saveCirculationRecord(uniformizer)
+      if (accessCount != .0f) {
+         uniformizer.repository.launch {
+            uniformizer.circulationRecord.add(time, accessCount)
+            saveCirculationRecord(uniformizer)
+         }
       }
 
       return uniformizer.content
@@ -19,9 +25,11 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun getIfAlreadyLoaded(time: Long, accessCount: Float): T? {
       if (uniformizer.state != Uniformizer.State.INITIALIZED) return null
 
-      uniformizer.repository.launch {
-         uniformizer.circulationRecord.add(time, accessCount)
-         saveCirculationRecord(uniformizer)
+      if (accessCount != .0f) {
+         uniformizer.repository.launch {
+            uniformizer.circulationRecord.add(time, accessCount)
+            saveCirculationRecord(uniformizer)
+         }
       }
 
       return uniformizer.content
