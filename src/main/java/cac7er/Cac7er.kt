@@ -71,7 +71,8 @@ class Cac7er
        */
       fun <K, V> createRepository(name: String,
                                   serializer: Serializer<V>,
-                                  deserializer: Deserializer<V>): Repository<K, V>
+                                  deserializer: Deserializer<V>)
+            : WritableRepository<K, V>
       {
          return createRepository(name, Any?::toString, serializer, deserializer)
       }
@@ -79,7 +80,8 @@ class Cac7er
       fun <K, V> createRepository(name: String,
                                   fileNameSupplier: (K) -> String,
                                   serializer: Serializer<V>,
-                                  deserializer: Deserializer<V>): Repository<K, V>
+                                  deserializer: Deserializer<V>)
+            : WritableRepository<K, V>
       {
          val repo = RepositoryImpl(name, fileNameSupplier, serializer, deserializer)
          repositories += repo
