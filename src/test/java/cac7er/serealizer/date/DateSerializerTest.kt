@@ -13,6 +13,8 @@ import cac7er.serializer.date.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+import kotlin.contracts.*
+
 @RunWith(JUnit4::class)
 class DateSerializerTest {
    private val testDir = File("testOutput")
@@ -21,13 +23,14 @@ class DateSerializerTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun date() {
       val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
 
       val date1 = dateFormat.parse("2017/09/3 01:00")
       val date2 = dateFormat.parse("2018/11/3 01:00")
 
-      val cac7er = Cac7er("date", testDir) {}
+      val cac7er = buildCac7er("date", testDir) {}
 
       with (cac7er.getCacheOutput("date")) {
          writeDate(date1)
@@ -40,13 +43,14 @@ class DateSerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun dateWithTimeZone() {
       val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
 
       val date1 = dateFormat.parse("2017/09/3 01:00")
       val date2 = dateFormat.parse("2018/11/3 01:00")
 
-      val cac7er = Cac7er("dateWithTimeZone", testDir) {}
+      val cac7er = buildCac7er("dateWithTimeZone", testDir) {}
 
       with (cac7er.getCacheOutput("dateWithTimeZone")) {
          writeDateWithTimeZone(date1, TimeZone.getTimeZone("UTC"))

@@ -11,6 +11,8 @@ import java.io.*
 import cac7er.serializer.*
 import cac7er.serializer.util.*
 
+import kotlin.contracts.*
+
 @RunWith(JUnit4::class)
 class CacheVersionUIDTest {
    private val testDir = File("testOutput")
@@ -19,8 +21,9 @@ class CacheVersionUIDTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun match() {
-      val cac7er = Cac7er("match", testDir) {}
+      val cac7er = buildCac7er("match", testDir) {}
 
       with (cac7er.getCacheOutput("match")) {
          writeCacheVersionUID(1)
@@ -33,8 +36,9 @@ class CacheVersionUIDTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun mismatch() {
-      val cac7er = Cac7er("mismatch", testDir) {}
+      val cac7er = buildCac7er("mismatch", testDir) {}
 
       with (cac7er.getCacheOutput("mismatch")) {
          writeCacheVersionUID(1)

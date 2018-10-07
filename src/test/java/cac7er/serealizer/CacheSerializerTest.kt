@@ -8,7 +8,9 @@ import org.junit.runners.*
 
 import java.io.*
 import cac7er.serializer.*
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.*
+
+import kotlin.contracts.*
 
 @RunWith(JUnit4::class)
 class CacheSerializerTest {
@@ -21,10 +23,11 @@ class CacheSerializerTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun cache() {
-      lateinit var repo: WritableRepository<Int, String>
+      val repo: WritableRepository<Int, String>
 
-      val cac7er = Cac7er("cache", testDir) {
+      val cac7er = buildCac7er("cache", testDir) {
          repo = createRepository("repo",
                CacheOutput::writeString, CacheInput::readString)
       }
@@ -46,10 +49,11 @@ class CacheSerializerTest {
       assert(readCache.get() == cache.get())
    }
 
+   @ExperimentalContracts
    @Test fun lazyCache() = runBlocking {
-      lateinit var repo: WritableRepository<Int, String>
+      val repo: WritableRepository<Int, String>
 
-      val cac7er = Cac7er("lazyCache", testDir) {
+      val cac7er = buildCac7er("lazyCache", testDir) {
          repo = createRepository("repo",
                CacheOutput::writeString, CacheInput::readString)
       }
@@ -71,10 +75,11 @@ class CacheSerializerTest {
       assert(readCache.get() == cache.get())
    }
 
+   @ExperimentalContracts
    @Test fun weakCache() {
-      lateinit var repo: WritableRepository<Int, String>
+      val repo: WritableRepository<Int, String>
 
-      val cac7er = Cac7er("weakCache", testDir) {
+      val cac7er = buildCac7er("weakCache", testDir) {
          repo = createRepository("repo",
                CacheOutput::writeString, CacheInput::readString)
       }
@@ -96,15 +101,16 @@ class CacheSerializerTest {
       assert(readCache.get() == cache.get())
    }
 
+   @ExperimentalContracts
    @Test fun delegatee() {
-      lateinit var repo: WritableRepository<Int, String>
+      val repo: WritableRepository<Int, String>
 
-      val cac7erA = Cac7er("delegateeA", File(testDir, "a")) {
+      val cac7erA = buildCac7er("delegateeA", File(testDir, "a")) {
          repo = createRepository("repo",
                CacheOutput::writeString, CacheInput::readString)
       }
 
-      val cac7erB = Cac7er("delegateeB", File(testDir, "b")) {
+      val cac7erB = buildCac7er("delegateeB", File(testDir, "b")) {
          delegatees += cac7erA
       }
 
@@ -125,6 +131,7 @@ class CacheSerializerTest {
       assert(readCache.get() == cache.get())
    }
 
+   @ExperimentalContracts
    @Test fun imitate2wiqua() {
       data class TwitterAccount(val id: String, val username: String)
       data class TwitterStatus(val id: String, val accountCache: Cache<TwitterAccount>)
@@ -198,7 +205,7 @@ class CacheSerializerTest {
       lateinit var twitterAccountRepo: WritableRepository<String, TwitterAccount>
       lateinit var twitterStatusRepo:  WritableRepository<String, TwitterStatus>
 
-      val twitterCac7er = Cac7er("twitter", File(testDir, "twitter")) {
+      val twitterCac7er = buildCac7er("twitter", File(testDir, "twitter")) {
          twitterAccountRepo = createRepository("account",
                CacheOutput::writeTwitterAccount, CacheInput::readTwitterAccount)
 
@@ -209,7 +216,7 @@ class CacheSerializerTest {
       lateinit var mastodonAccountRepo: WritableRepository<String, MastodonAccount>
       lateinit var mastodonStatusRepo:  WritableRepository<String, MastodonStatus>
 
-      val mastodonCac7er = Cac7er("mastodon", File(testDir, "mastodon")) {
+      val mastodonCac7er = buildCac7er("mastodon", File(testDir, "mastodon")) {
          mastodonAccountRepo = createRepository("account",
                CacheOutput::writeMastodonAccount, CacheInput::readMastodonAccount)
 
@@ -225,7 +232,7 @@ class CacheSerializerTest {
       val mastodonStatus = MastodonStatus("3", mastodonAccountRepo.save(mastodonAccount.id, mastodonAccount))
       val mastodonStatusPage = MastodonStatusPage(mastodonStatus.id, mastodonStatusRepo.save(mastodonStatus.id, mastodonStatus))
 
-      val pageCac7er = Cac7er("page", File(testDir, "page")) {
+      val pageCac7er = buildCac7er("page", File(testDir, "page")) {
          delegatees += twitterCac7er
          delegatees += mastodonCac7er
       }

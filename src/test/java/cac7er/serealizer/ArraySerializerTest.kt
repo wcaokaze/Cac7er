@@ -10,6 +10,8 @@ import org.junit.Assert.*
 import java.io.*
 import cac7er.serializer.*
 
+import kotlin.contracts.*
+
 @RunWith(JUnit4::class)
 class ArraySerializerTest {
    private val testDir = File("testOutput")
@@ -18,8 +20,9 @@ class ArraySerializerTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun booleanArray() {
-      val cac7er = Cac7er("booleanArray", testDir) {}
+      val cac7er = buildCac7er("booleanArray", testDir) {}
       val data = booleanArrayOf(true, true, false)
 
       with (cac7er.getCacheOutput("booleanArray")) {
@@ -31,8 +34,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun byteArray() {
-      val cac7er = Cac7er("byteArray", testDir) {}
+      val cac7er = buildCac7er("byteArray", testDir) {}
       val data = byteArrayOf(0, 1, 2, -1, Byte.MAX_VALUE, Byte.MIN_VALUE)
 
       with (cac7er.getCacheOutput("byteArray")) {
@@ -44,8 +48,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun charArray() {
-      val cac7er = Cac7er("charArray", testDir) {}
+      val cac7er = buildCac7er("charArray", testDir) {}
       val data = charArrayOf('a', 'A', 'あ', '\u0000', '\udc00')
 
       with (cac7er.getCacheOutput("charArray")) {
@@ -57,8 +62,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun shortArray() {
-      val cac7er = Cac7er("shortArray", testDir) {}
+      val cac7er = buildCac7er("shortArray", testDir) {}
       val data = shortArrayOf(0, 1, 2, -1, Short.MAX_VALUE, Short.MIN_VALUE)
 
       with (cac7er.getCacheOutput("shortArray")) {
@@ -70,8 +76,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun intArray() {
-      val cac7er = Cac7er("intArray", testDir) {}
+      val cac7er = buildCac7er("intArray", testDir) {}
       val data = intArrayOf(0, 1, 2, -1, Int.MAX_VALUE, Int.MIN_VALUE)
 
       with (cac7er.getCacheOutput("intArray")) {
@@ -83,8 +90,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun longArray() {
-      val cac7er = Cac7er("longArray", testDir) {}
+      val cac7er = buildCac7er("longArray", testDir) {}
       val data = longArrayOf(0L, 1L, 2L, -1L, Long.MAX_VALUE, Long.MIN_VALUE)
 
       with (cac7er.getCacheOutput("longArray")) {
@@ -96,8 +104,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun floatArray() {
-      val cac7er = Cac7er("floatArray", testDir) {}
+      val cac7er = buildCac7er("floatArray", testDir) {}
 
       val data = floatArrayOf(
             .0f, .1f, 1.0f, 2.0f, -1.0f, -.0f,
@@ -120,8 +129,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun doubleArray() {
-      val cac7er = Cac7er("doubleArray", testDir) {}
+      val cac7er = buildCac7er("doubleArray", testDir) {}
 
       val data = doubleArrayOf(
             .0, .1, 1.0, 2.0, -1.0, -.0,
@@ -144,8 +154,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun genericArray() {
-      val cac7er = Cac7er("genericArray", testDir) {}
+      val cac7er = buildCac7er("genericArray", testDir) {}
       val data = arrayOf("apple", "banana", "cherry")
 
       with (cac7er.getCacheOutput("genericArray")) {
@@ -157,8 +168,9 @@ class ArraySerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun nullableArray() {
-      val cac7er = Cac7er("nullableArray", testDir) {}
+      val cac7er = buildCac7er("nullableArray", testDir) {}
       val data = arrayOf("apple", "banana", null)
 
       with (cac7er.getCacheOutput("nullableArray")) {
