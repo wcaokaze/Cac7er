@@ -1,6 +1,6 @@
 package cac7er
 
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.*
 
 internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableWeakCache<T>
