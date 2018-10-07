@@ -136,7 +136,7 @@ class Cac7er
 
       internal fun build(name: String, dir: File): Cac7er {
          if (!dir.exists()) {
-            if (!dir.mkdir()) throw IOException("can not mkdir: $dir")
+            if (!dir.mkdirs()) throw IOException("can not mkdir: $dir")
          }
 
          val metadataFile = File(dir, name)

@@ -57,4 +57,11 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
          LazyCacheImpl(uniformizer)
       }
    }
+
+   override fun equals(other: Any?): Boolean {
+      if (other !is WeakCacheImpl<*>) return false
+      return uniformizer === other.uniformizer
+   }
+
+   override fun hashCode() = uniformizer.hashCode()
 }

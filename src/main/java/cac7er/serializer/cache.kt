@@ -22,9 +22,12 @@ fun <T> CacheOutput.writeCache(value: Cache<T>) {
    val index = cac7er.repositories.indexOf(repository)
 
    if (index == -1) {
+      val delegater = '"' + cac7er.name       + '"'
+      val delegatee = '"' + cache.cac7er.name + '"'
+
       throw IOException(
-            "Cac7er ${cac7er.name} cannot save a Cache of Cac7er ${cache.cac7er.name}. " +
-            "Consider adding ${cache.cac7er.name} into ${cac7er.name} as a delegatee.")
+            "Cac7er $delegater cannot save a Cache of Cac7er $delegatee. " +
+            "Consider adding $delegatee into $delegater as a delegatee.")
    }
 
    writeInt(index)
@@ -56,9 +59,12 @@ fun <T> CacheOutput.writeLazyCache(value: LazyCache<T>) {
    val index = cac7er.repositories.indexOf(repository)
 
    if (index == -1) {
+      val delegater = '"' + cac7er.name       + '"'
+      val delegatee = '"' + cache.cac7er.name + '"'
+
       throw IOException(
-            "Cac7er ${cac7er.name} cannot save a Cache of Cac7er ${cache.cac7er.name}. " +
-            "Consider adding ${cache.cac7er.name} into ${cac7er.name} as a delegatee.")
+            "Cac7er $delegater cannot save a Cache of Cac7er $delegatee. " +
+            "Consider adding $delegatee into $delegater as a delegatee.")
    }
 
    writeInt(index)
@@ -90,9 +96,12 @@ fun <T> CacheOutput.writeWeakCache(value: WeakCache<T>) {
    val index = cac7er.repositories.indexOf(repository)
 
    if (index == -1) {
+      val delegater = '"' + cac7er.name       + '"'
+      val delegatee = '"' + cache.cac7er.name + '"'
+
       throw IOException(
-            "Cac7er ${cac7er.name} cannot save a Cache of Cac7er ${cache.cac7er.name}. " +
-            "Consider adding ${cache.cac7er.name} into ${cac7er.name} as a delegatee.")
+            "Cac7er $delegater cannot save a Cache of Cac7er $delegatee. " +
+            "Consider adding $delegatee into $delegater as a delegatee.")
    }
 
    writeInt(index)

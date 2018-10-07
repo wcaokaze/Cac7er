@@ -64,4 +64,11 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       uniformizer.loadIfNecessary()
       return WeakCacheImpl(uniformizer)
    }
+
+   override fun equals(other: Any?): Boolean {
+      if (other !is LazyCacheImpl<*>) return false
+      return uniformizer === other.uniformizer
+   }
+
+   override fun hashCode() = uniformizer.hashCode()
 }
