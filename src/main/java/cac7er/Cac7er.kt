@@ -49,6 +49,7 @@ class Cac7er
       private constructor(
             val name: String,
             val dir: File,
+            internal val idealTotalFileSize: Long,
             internal val repositories: Array<out RepositoryImpl<*, *>?>
       )
       : CoroutineScope
@@ -139,6 +140,14 @@ class Cac7er
        */
       val delegatees: MutableSet<Cac7er> = HashSet()
 
+      /**
+       * The total size of cache files to run [gc].
+       *
+       * [WritableCache.save] and [WritableRepository.save] check the total
+       * size and call [gc] if necessary.
+       */
+      var idealTotalFileSize: Long = Long.MAX_VALUE
+
       internal fun build(name: String, dir: File): Cac7er {
          if (!dir.exists()) {
             if (!dir.mkdirs()) throw IOException("can not mkdir: $dir")
@@ -190,7 +199,7 @@ class Cac7er
                   .writeRepositoryNames(metadataFile, repoNames)
          }
 
-         val cac7er = Cac7er(name, dir, repos.toTypedArray())
+         val cac7er = Cac7er(name, dir, idealTotalFileSize, repos.toTypedArray())
 
          for (repo in repositories) {
             repo.cac7er = cac7er
@@ -232,5 +241,14 @@ class Cac7er
     */
    fun gc(idealTotalFileSize: Long) {
       TODO()
+   }
+
+   /**
+    * for [Builder.idealTotalFileSize]
+    */
+   internal fun autoGc() {
+      if (idealTotalFileSize != Long.MAX_VALUE) {
+         gc(idealTotalFileSize)
+      }
    }
 }
