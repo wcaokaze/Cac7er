@@ -10,6 +10,8 @@ import java.io.*
 import cac7er.serializer.*
 import cac7er.serializer.collection.*
 
+import kotlin.contracts.*
+
 @RunWith(JUnit4::class)
 class CollectionSerializerTest {
    private val testDir = File("testOutput")
@@ -18,8 +20,9 @@ class CollectionSerializerTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun list() {
-      val cac7er = Cac7er("list", testDir) {}
+      val cac7er = buildCac7er("list", testDir) {}
       val data = listOf("wcaokaze", "was", "slain", "by", "Zombie")
 
       with (cac7er.getCacheOutput("list")) {
@@ -32,8 +35,9 @@ class CollectionSerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun map() {
-      val cac7er = Cac7er("map", testDir) {}
+      val cac7er = buildCac7er("map", testDir) {}
       val data = mapOf('a' to "apple", 'b' to "banana", 'c' to "cherry")
 
       with (cac7er.getCacheOutput("map")) {
@@ -46,8 +50,9 @@ class CollectionSerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun set() {
-      val cac7er = Cac7er("set", testDir) {}
+      val cac7er = buildCac7er("set", testDir) {}
       val data = setOf("wcaokaze", "was", "slain", "by", "Zombie")
 
       with (cac7er.getCacheOutput("set")) {

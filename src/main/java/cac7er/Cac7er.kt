@@ -8,6 +8,43 @@ import kotlinx.coroutines.*
 import java.util.LinkedList
 import kotlin.collections.*
 
+import kotlin.contracts.*
+
+/**
+ * builds a new instance.
+ *
+ * Initialize repositories in the lambda.
+ * ```kotlin
+ * lateinit var userRepository: Repository<Long, User>
+ *    private set
+ *
+ * lateinit var statusRepository: Repository<Long, Status>
+ *    private set
+ *
+ * val cac7er = Cac7er("twitterCaches", File("path/to/directory")) {
+ *    userRepository = createRepository("users",
+ *          CacheOutput::writeUser, CacheInput::readUser)
+ *
+ *    statusRepository = createRepository("statuses",
+ *          CacheOutput::writeStatus, CacheInput::readStatus)
+ * }
+ * ```
+ *
+ * see [README](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/README.md)
+ * for more information.
+ *
+ * This can take time. If your Cac7er has many repositories, consider
+ * instantiation with [launch][CoroutineScope.launch].
+ */
+@ExperimentalContracts
+fun buildCac7er(name: String, dir: File,
+                builderAction: Cac7er.Builder.() -> Unit): Cac7er
+{
+   contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+
+   return Cac7er.Builder().apply(builderAction).build(name, dir)
+}
+
 class Cac7er
       private constructor(
             val name: String,
@@ -22,38 +59,6 @@ class Cac7er
       const val REVISION      = 0
 
       const val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
-
-      /**
-       * builds a new instance.
-       *
-       * Initialize repositories in the lambda.
-       * ```kotlin
-       * lateinit var userRepository: Repository<Long, User>
-       *    private set
-       *
-       * lateinit var statusRepository: Repository<Long, Status>
-       *    private set
-       *
-       * val cac7er = Cac7er("twitterCaches", File("path/to/directory")) {
-       *    userRepository = createRepository("users",
-       *          CacheOutput::writeUser, CacheInput::readUser)
-       *
-       *    statusRepository = createRepository("statuses",
-       *          CacheOutput::writeStatus, CacheInput::readStatus)
-       * }
-       * ```
-       *
-       * see [README](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/README.md)
-       * for more information.
-       *
-       * This can take time. If your Cac7er has many repositories, consider
-       * instantiation with [launch][CoroutineScope.launch].
-       */
-      operator fun invoke(name: String, dir: File,
-                          builderAction: Builder.() -> Unit): Cac7er
-      {
-         return Builder().apply(builderAction).build(name, dir)
-      }
    }
 
    private val job = Job()

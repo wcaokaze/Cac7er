@@ -12,6 +12,8 @@ import cac7er.serializer.net.*
 
 import java.net.URL
 
+import kotlin.contracts.*
+
 @RunWith(JUnit4::class)
 class UrlSerializerTest {
    private val testDir = File("testOutput")
@@ -20,13 +22,14 @@ class UrlSerializerTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun url() {
       val url1 = URL("http://2wiqua.wcaokaze.com/")
 
       val url2 = URL("https://play.google.com/store/apps/details?" +
             "id=com.wcaokaze.android.twiqua")
 
-      val cac7er = Cac7er("url", testDir) {}
+      val cac7er = buildCac7er("url", testDir) {}
 
       with (cac7er.getCacheOutput("url")) {
          writeUrl(url1)

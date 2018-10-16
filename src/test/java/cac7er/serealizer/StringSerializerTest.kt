@@ -9,6 +9,8 @@ import org.junit.runners.*
 import java.io.*
 import cac7er.serializer.*
 
+import kotlin.contracts.*
+
 @RunWith(JUnit4::class)
 class StringSerializerTest {
    private val testDir = File("testOutput")
@@ -17,8 +19,9 @@ class StringSerializerTest {
       testDir.deleteRecursively()
    }
 
+   @ExperimentalContracts
    @Test fun string() {
-      val cac7er = Cac7er("string", testDir) {}
+      val cac7er = buildCac7er("string", testDir) {}
 
       with (cac7er.getCacheOutput("string")) {
          writeString("wcaokaze")
@@ -31,8 +34,9 @@ class StringSerializerTest {
       }
    }
 
+   @ExperimentalContracts
    @Test fun utf8() {
-      val cac7er = Cac7er("string", testDir) {}
+      val cac7er = buildCac7er("string", testDir) {}
 
       with (cac7er.getCacheOutput("string")) {
          writeUtf8("wcaokaze")
