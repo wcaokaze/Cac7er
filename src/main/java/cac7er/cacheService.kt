@@ -128,6 +128,31 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
    }
 }
 
+internal data class Metadata(
+      val dependence: List<String>,
+      val circulationRecord: CirculationRecord
+)
+
+internal fun loadMetadata(file: File): Metadata {
+   RandomAccessFile(file, "r").use {
+      val magicNumber = it.readInt()
+
+      if (magicNumber != MAGIC_NUMBER) {
+         throw IOException("Cannot read the metadata. " +
+               "The file was not written by Cac7er")
+      }
+
+      val dependencePosition = it.readUnsignedShort().toLong()
+
+      it.seek(dependencePosition)
+
+      val dependence = loadDependence(it, file.absolutePath)
+      val circulationRecord = CirculationRecord.readFrom(it)
+
+      return cac7er.Metadata(dependence, circulationRecord)
+   }
+}
+
 private fun writeDependence(randomAccessFile: RandomAccessFile,
                             baseCacheFilePath: String,
                             dependence: List<String>)
@@ -138,6 +163,18 @@ private fun writeDependence(randomAccessFile: RandomAccessFile,
       val relativePath = RelativePathResolver
             .toRelativePath(baseCacheFilePath, filePath)
 
-      randomAccessFile.writeChars(relativePath)
+      randomAccessFile.writeUTF(relativePath)
+   }
+}
+
+private fun loadDependence(randomAccessFile: RandomAccessFile,
+                           baseCacheFilePath: String): List<String>
+{
+   val size = randomAccessFile.readInt()
+
+   return List(size) {
+      val relativePath = randomAccessFile.readUTF()
+
+      RelativePathResolver.resolve(baseCacheFilePath, relativePath)
    }
 }

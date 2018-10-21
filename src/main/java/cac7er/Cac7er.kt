@@ -65,6 +65,8 @@ class Cac7er
    private val job = Job()
    override val coroutineContext get() = job + Dispatchers.IO
 
+   private var isRunningGc = false
+
    class Builder {
       private val repositories = LinkedList<RepositoryImpl<*, *>>()
 
@@ -227,11 +229,15 @@ class Cac7er
     *
     * // ...
     *
-    * Cac7er.gc(100L)
+    * cac7er.gc(100L)
     * ```
     *
     * Then, if `b` is not deleted, `a` is never deleted. If `a` is deleted, `b`
     * is also deleted.
+    *
+    * Note that Cac7er can delete files consider about its delegaters. In other
+    * words, when your Cac7er delegates another Cac7er, the delegatee can delete
+    * files even if your Cac7er depends on them.
     *
     * @param idealTotalFileSize The ideal total size of files.
     * @throws IOException when any file could not be loaded
@@ -240,7 +246,106 @@ class Cac7er
     * @since 1.0.0
     */
    fun gc(idealTotalFileSize: Long) {
-      TODO()
+      synchronized (this) {
+         if (isRunningGc) return
+         isRunningGc = true
+      }
+
+      val metadataList = loadAllMetadata()
+
+      class Relationship {
+         var dependees: List<Relationship>? = null
+         var importance = .0f
+      }
+
+      val relationshipMap = HashMap<File, Relationship>()
+            .withDefault { Relationship() }
+
+      // ---- resolve dependency relationship
+      for ((file, metadata) in metadataList) {
+         relationshipMap[file]!!.dependees =
+               metadata.dependence.map { relationshipMap[File(it)]!! }
+      }
+
+      // ---- set raw importance
+      val currentPeriod = CirculationRecord.periodOf(System.currentTimeMillis())
+
+      for ((file, metadata) in metadataList) {
+         relationshipMap[file]!!.importance =
+               metadata.circulationRecord.calcImportance(currentPeriod)
+      }
+
+      // ---- update the importance of depended files
+      fun Relationship.updateImportanceIfNecessary(importance: Float) {
+         if (importance <= this.importance) return
+
+         this.importance = importance
+
+         for (dependee in dependees!!) {
+            dependee.updateImportanceIfNecessary(importance)
+         }
+      }
+
+      for ((_, relationship) in relationshipMap) {
+         for (dependee in relationship.dependees!!) {
+            dependee.updateImportanceIfNecessary(relationship.importance)
+         }
+      }
+
+      // ---- remove unaffectable records
+      for ((file, metadata) in metadataList) {
+         metadata.circulationRecord.removeUnaffectableSections(currentPeriod)
+
+         RandomAccessFile(file, "rw").use {
+            try {
+               it.seek(6L)
+
+               val circulationRecordPosition = it.readUnsignedShort().toLong()
+               it.seek(circulationRecordPosition)
+
+               metadata.circulationRecord.writeTo(it)
+            } catch (e: IOException) {
+               // continue
+            }
+         }
+      }
+
+      // ---- delete files while totalFileSize > idealTotalFileSize
+
+      /*
+       * Files whose importance are equal must be deleted at once. So it needs
+       * a list of lists of files.
+       *
+       *     [
+       *        [ file1, file2 ], // Files whose importance is the lowest.
+       *        [ file3 ],        // The 2nd lowest
+       *        // ...            // And so on.
+       *     ]
+       */
+      val sortedFileList = run {
+         val fileListMappedImportance = relationshipMap.asIterable()
+               .groupBy({ it.value.importance }, { it.key })
+
+         fileListMappedImportance.asSequence()
+               .sortedBy { it.key }
+               .map { it.value }
+      }
+
+      var totalFileSize = sortedFileList
+            .flatten()
+            .map { it.length() }
+            .sum()
+
+      for (fileList in sortedFileList) {
+         if (totalFileSize <= idealTotalFileSize) break
+
+         for (file in fileList) {
+            totalFileSize -= file.length()
+            file.delete()
+         }
+      }
+
+      isRunningGc = false
    }
 
    /**
@@ -250,5 +355,27 @@ class Cac7er
       if (idealTotalFileSize != Long.MAX_VALUE) {
          gc(idealTotalFileSize)
       }
+   }
+
+   private fun loadAllMetadata(): List<Pair<File, Metadata>> {
+      val allMetadata = ArrayList<Pair<File, Metadata>>()
+
+      for (repo in repositories) {
+         if (repo == null) continue
+
+         for (file in repo.dir.listFiles()) {
+            if (file.isDirectory) continue
+
+            val metadata = try {
+               loadMetadata(file)
+            } catch (e: IOException) {
+               continue
+            }
+
+            allMetadata += file to metadata
+         }
+      }
+
+      return allMetadata
    }
 }

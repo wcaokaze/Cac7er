@@ -87,35 +87,37 @@ final class CirculationRecord {
             droppedOldest((Section) older));
    }
 
-   /**
-    * @param periodList
-    *   For performance, <b>Must be sorted by desc. No longer available after
-    *   this calling.</b> This function has a side effect.
-    */
-   final void removeAll(final LinkedList<Integer> periodList) {
-      topNode = filtered(topNode, periodList);
+   final float calcImportance(final int currentPeriod) {
+      return calcImportance(topNode, currentPeriod);
    }
 
-   private static Node filtered(final Node node,
-                                final LinkedList<Integer> periodList)
+   private static float calcImportance(final Node node,
+                                       final int currentPeriod)
    {
+      if (node == Terminal.SINGLETON) return 0.0f;
+
+      final Section section = (Section) node;
+
+      return section.calcImportance(currentPeriod) +
+            calcImportance(section.older, currentPeriod);
+   }
+
+   final void removeUnaffectableSections(final int currentPeriod) {
+      topNode = filterAffectable(topNode, currentPeriod);
+   }
+
+   private static Node filterAffectable(final Node node, final int currentPeriod) {
       if (node == Terminal.SINGLETON) return node;
 
       final Section section = (Section) node;
 
-      final int period = periodList.getFirst();
-
-      if (section.period == period) {
-         periodList.removeFirst();
-         return filtered(section.older, periodList);
+      if (section.calcImportance(currentPeriod) < 0.25f) {
+         return node;
+      } else {
+         return new Section(
+               section.period, section.accessCount,
+               filterAffectable(section.older, currentPeriod));
       }
-
-      if (section.period > period) {
-         periodList.removeFirst();
-      }
-
-      return new Section(section.period, section.accessCount,
-            filtered(section.older, periodList));
    }
 
    final void writeTo(final RandomAccessFile file) throws IOException {
@@ -128,7 +130,7 @@ final class CirculationRecord {
    {
       if (node == Terminal.SINGLETON) return;
 
-      Section section = (Section) node;
+      final Section section = (Section) node;
 
       writeTo(file, section.older);
 
@@ -172,7 +174,7 @@ final class CirculationRecord {
       final Section section2 = (Section) node2;
 
       return section1.period == section2.period &&
-            Math.abs(section1.accessCount - section2.accessCount) < .001f &&
+            Math.abs(section1.accessCount - section2.accessCount) < 0.001f &&
             equals(section1.older, section2.older);
    }
 
@@ -215,6 +217,10 @@ final class CirculationRecord {
          this.period      = period;
          this.accessCount = accessCount;
          this.older       = older;
+      }
+
+      final float calcImportance(final int currentPeriod) {
+         return accessCount / (float) (currentPeriod - period + 2);
       }
    }
 }
