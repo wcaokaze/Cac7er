@@ -25,6 +25,7 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
 
       uniformizer.repository.launch {
          save(uniformizer)
+         cac7er.autoGc()
       }
    }
 

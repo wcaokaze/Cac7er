@@ -52,6 +52,7 @@ internal class RepositoryImpl<in K, V>
 
       launch {
          save(uniformizer)
+         cac7er.autoGc()
       }
 
       return CacheImpl(uniformizer)

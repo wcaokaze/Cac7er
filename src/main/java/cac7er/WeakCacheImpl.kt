@@ -27,6 +27,7 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
 
       uniformizer.repository.launch {
          save(uniformizer)
+         cac7er.autoGc()
       }
    }
 
