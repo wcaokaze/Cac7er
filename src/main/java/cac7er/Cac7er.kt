@@ -37,8 +37,8 @@ import kotlin.contracts.*
  * instantiation with [launch][CoroutineScope.launch].
  */
 @ExperimentalContracts
-fun buildCac7er(name: String, dir: File,
-                builderAction: Cac7er.Builder.() -> Unit): Cac7er
+inline fun buildCac7er(name: String, dir: File,
+                       builderAction: Cac7er.Builder.() -> Unit): Cac7er
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
@@ -150,7 +150,7 @@ class Cac7er
        */
       var idealTotalFileSize: Long = Long.MAX_VALUE
 
-      internal fun build(name: String, dir: File): Cac7er {
+      fun build(name: String, dir: File): Cac7er {
          if (!dir.exists()) {
             if (!dir.mkdirs()) throw IOException("can not mkdir: $dir")
          }
