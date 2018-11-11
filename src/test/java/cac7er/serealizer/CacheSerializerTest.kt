@@ -202,8 +202,8 @@ class CacheSerializerTest {
             statusCache = readCache()
       )
 
-      lateinit var twitterAccountRepo: WritableRepository<String, TwitterAccount>
-      lateinit var twitterStatusRepo:  WritableRepository<String, TwitterStatus>
+      val twitterAccountRepo: WritableRepository<String, TwitterAccount>
+      val twitterStatusRepo:  WritableRepository<String, TwitterStatus>
 
       val twitterCac7er = buildCac7er("twitter", File(testDir, "twitter")) {
          twitterAccountRepo = createRepository("account",
@@ -213,8 +213,8 @@ class CacheSerializerTest {
                CacheOutput::writeTwitterStatus, CacheInput::readTwitterStatus)
       }
 
-      lateinit var mastodonAccountRepo: WritableRepository<String, MastodonAccount>
-      lateinit var mastodonStatusRepo:  WritableRepository<String, MastodonStatus>
+      val mastodonAccountRepo: WritableRepository<String, MastodonAccount>
+      val mastodonStatusRepo:  WritableRepository<String, MastodonStatus>
 
       val mastodonCac7er = buildCac7er("mastodon", File(testDir, "mastodon")) {
          mastodonAccountRepo = createRepository("account",
