@@ -5,8 +5,6 @@ import org.junit.runner.*
 import org.junit.runners.*
 import java.io.*
 
-import java.util.LinkedList
-
 @RunWith(JUnit4::class)
 class CirculationRecordTest {
    @Test fun terminal() {
@@ -85,16 +83,6 @@ class CirculationRecordTest {
       assert(record1 == record2)
    }
 
-   @Test fun remove() {
-      val record1 = recordOf(1 to 1.0f, 2 to 2.0f, 3 to 3.0f, 4 to 4.0f, 5 to 5.0f)
-      val removingPeriods = linkedListOf(2, 4)
-      record1.removeAll(removingPeriods)
-
-      val record2 = recordOf(1 to 1.0f, 3 to 3.0f, 5 to 5.0f)
-
-      assert(record1 == record2)
-   }
-
    @Test fun serialize() {
       val file = RandomAccessFile("CirculationRecordTest", "rw")
 
@@ -120,6 +108,4 @@ class CirculationRecordTest {
 
       return record
    }
-
-   private fun <T> linkedListOf(vararg elements: T) = LinkedList(elements.asList())
 }
