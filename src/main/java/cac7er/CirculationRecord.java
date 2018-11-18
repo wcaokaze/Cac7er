@@ -1,7 +1,6 @@
 package cac7er;
 
 import java.io.*;
-import java.util.LinkedList;
 
 final class CirculationRecord {
    private static final int MAX_NODE_DEPTH = 255;
@@ -60,9 +59,9 @@ final class CirculationRecord {
 
       if (section.period < period) {
          if (shouldDrop) {
-            return new Section(period, accessCount, section);
-         } else {
             return new Section(period, accessCount, droppedOldest(section));
+         } else {
+            return new Section(period, accessCount, section);
          }
       }
 

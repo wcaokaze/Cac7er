@@ -50,7 +50,7 @@ internal class RepositoryImpl<in K, V>
 
       uniformizer.content = value
 
-      launch {
+      launch(writerCoroutineDispatcher) {
          save(uniformizer)
          cac7er.autoGc()
       }

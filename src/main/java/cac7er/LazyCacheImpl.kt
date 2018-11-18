@@ -13,7 +13,7 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       uniformizer.loadIfNecessary()
 
       if (accessCount != .0f) {
-         uniformizer.repository.launch {
+         uniformizer.repository.launch(writerCoroutineDispatcher) {
             uniformizer.circulationRecord.add(time, accessCount)
             saveCirculationRecord(uniformizer)
          }
@@ -26,7 +26,7 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       if (uniformizer.state != Uniformizer.State.INITIALIZED) return null
 
       if (accessCount != .0f) {
-         uniformizer.repository.launch {
+         uniformizer.repository.launch(writerCoroutineDispatcher) {
             uniformizer.circulationRecord.add(time, accessCount)
             saveCirculationRecord(uniformizer)
          }
@@ -38,7 +38,7 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun save(content: T) {
       uniformizer.content = content
 
-      uniformizer.repository.launch {
+      uniformizer.repository.launch(writerCoroutineDispatcher) {
          save(uniformizer)
          cac7er.autoGc()
       }

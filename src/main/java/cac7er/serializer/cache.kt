@@ -3,7 +3,6 @@ package cac7er.serializer
 import cac7er.*
 
 import java.io.*
-import cac7er.util.io.*
 
 /*
  *            delegatee
@@ -35,10 +34,7 @@ fun <T> CacheOutput.writeCache(value: Cache<T>) {
 
    val targetFile = File(repository.dir, cache.fileName)
 
-   val relativePath = RelativePathResolver
-         .toRelativePath(file.path, targetFile.path)
-
-   dependence += relativePath
+   dependence += targetFile.absolutePath
 }
 
 fun <T> CacheInput.readCache(): Cache<T> {
@@ -72,10 +68,7 @@ fun <T> CacheOutput.writeLazyCache(value: LazyCache<T>) {
 
    val targetFile = File(repository.dir, cache.fileName)
 
-   val relativePath = RelativePathResolver
-         .toRelativePath(file.path, targetFile.path)
-
-   dependence += relativePath
+   dependence += targetFile.absolutePath
 }
 
 fun <T> CacheInput.readLazyCache(): LazyCache<T> {

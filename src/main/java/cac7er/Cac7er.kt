@@ -42,7 +42,7 @@ inline fun buildCac7er(name: String, dir: File,
 {
    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
 
-   return Cac7er.Builder().apply(builderAction).build(name, dir)
+   return Cac7er.Builder(name).apply(builderAction).build(dir)
 }
 
 class Cac7er
@@ -65,9 +65,9 @@ class Cac7er
    private val job = Job()
    override val coroutineContext get() = job + Dispatchers.IO
 
-   private var isRunningGc = false
+   private var gcJob: Job? = null
 
-   class Builder {
+   class Builder(private val cac7erName: String) {
       private val repositories = LinkedList<RepositoryImpl<*, *>>()
 
       /**
@@ -91,6 +91,11 @@ class Cac7er
                                   deserializer: Deserializer<V>)
             : WritableRepository<K, V>
       {
+         if (name == cac7erName) {
+            throw IllegalArgumentException(
+                  "Repository cannot be named the same as its Cac7er")
+         }
+
          val repo = RepositoryImpl(name, fileNameSupplier, serializer, deserializer)
          repositories += repo
          return repo
@@ -150,12 +155,14 @@ class Cac7er
        */
       var idealTotalFileSize: Long = Long.MAX_VALUE
 
-      fun build(name: String, dir: File): Cac7er {
-         if (!dir.exists()) {
-            if (!dir.mkdirs()) throw IOException("can not mkdir: $dir")
+      fun build(dir: File): Cac7er {
+         val absDir = dir.absoluteFile
+
+         if (!absDir.exists()) {
+            if (!absDir.mkdirs()) throw IOException("can not mkdir: $absDir")
          }
 
-         val metadataFile = File(dir, name)
+         val metadataFile = File(absDir, cac7erName)
 
          val repoNames = Cac7erMetadataFileService.loadRepositoryNames(metadataFile)
          val repos = ArrayList<RepositoryImpl<*, *>?>()
@@ -167,7 +174,7 @@ class Cac7er
          var added = false
 
          for (repo in repositories) {
-            val repoName = name + '/' + repo.name
+            val repoName = cac7erName + '/' + repo.name
             val index = repoNames.indexOf(repoName)
 
             if (index >= 0) {
@@ -201,7 +208,7 @@ class Cac7er
                   .writeRepositoryNames(metadataFile, repoNames)
          }
 
-         val cac7er = Cac7er(name, dir, idealTotalFileSize, repos.toTypedArray())
+         val cac7er = Cac7er(cac7erName, absDir, idealTotalFileSize, repos.toTypedArray())
 
          for (repo in repositories) {
             repo.cac7er = cac7er
@@ -245,107 +252,121 @@ class Cac7er
     * @see WeakCache
     * @since 1.0.0
     */
-   fun gc(idealTotalFileSize: Long) {
-      synchronized (this) {
-         if (isRunningGc) return
-         isRunningGc = true
-      }
+   @Synchronized
+   fun gc(idealTotalFileSize: Long): Job {
+      if (gcJob?.isCompleted == false) return gcJob!!
 
-      val metadataList = loadAllMetadata()
+      gcJob = launch(writerCoroutineDispatcher) {
+         val metadataList = loadAllMetadata()
 
-      class Relationship {
-         var dependees: List<Relationship>? = null
-         var importance = .0f
-      }
-
-      val relationshipMap = HashMap<File, Relationship>()
-            .withDefault { Relationship() }
-
-      // ---- resolve dependency relationship
-      for ((file, metadata) in metadataList) {
-         relationshipMap[file]!!.dependees =
-               metadata.dependence.map { relationshipMap[File(it)]!! }
-      }
-
-      // ---- set raw importance
-      val currentPeriod = CirculationRecord.periodOf(System.currentTimeMillis())
-
-      for ((file, metadata) in metadataList) {
-         relationshipMap[file]!!.importance =
-               metadata.circulationRecord.calcImportance(currentPeriod)
-      }
-
-      // ---- update the importance of depended files
-      fun Relationship.updateImportanceIfNecessary(importance: Float) {
-         if (importance <= this.importance) return
-
-         this.importance = importance
-
-         for (dependee in dependees!!) {
-            dependee.updateImportanceIfNecessary(importance)
+         class Relationship {
+            var dependees: List<Relationship> = emptyList()
+            var importance = .0f
          }
-      }
 
-      for ((_, relationship) in relationshipMap) {
-         for (dependee in relationship.dependees!!) {
-            dependee.updateImportanceIfNecessary(relationship.importance)
+         val relationshipMap = object : HashMap<File, Relationship>() {
+            override operator fun get(key: File): Relationship {
+               var v = super.get(key)
+
+               if (v == null) {
+                  v = Relationship()
+                  this[key] = v
+               }
+
+               return v
+            }
          }
-      }
 
-      // ---- remove unaffectable records
-      for ((file, metadata) in metadataList) {
-         metadata.circulationRecord.removeUnaffectableSections(currentPeriod)
+         // ---- resolve dependency relationship
+         for ((file, metadata) in metadataList) {
+            relationshipMap[file].dependees =
+                  metadata.dependence.map { relationshipMap[File(it)] }
+         }
 
-         RandomAccessFile(file, "rw").use {
-            try {
-               it.seek(6L)
+         // ---- set raw importance
+         val currentPeriod = CirculationRecord.periodOf(System.currentTimeMillis())
 
-               val circulationRecordPosition = it.readUnsignedShort().toLong()
-               it.seek(circulationRecordPosition)
+         for ((file, metadata) in metadataList) {
+            relationshipMap[file].importance =
+                  metadata.circulationRecord.calcImportance(currentPeriod)
+         }
 
-               metadata.circulationRecord.writeTo(it)
-            } catch (e: IOException) {
-               // continue
+         // ---- update the importance of depended files
+         fun Relationship.updateImportanceIfNecessary(importance: Float) {
+            if (importance <= this.importance) return
+
+            this.importance = importance
+
+            for (dependee in dependees) {
+               dependee.updateImportanceIfNecessary(importance)
+            }
+         }
+
+         for ((_, relationship) in relationshipMap) {
+            for (dependee in relationship.dependees) {
+               dependee.updateImportanceIfNecessary(relationship.importance)
+            }
+         }
+
+         for ((file, relationship) in relationshipMap) {
+            println("$file(${relationship.importance}) -> [${relationship.dependees.joinToString(", ")}]")
+         }
+
+         // ---- remove unaffectable records
+         for ((file, metadata) in metadataList) {
+            metadata.circulationRecord.removeUnaffectableSections(currentPeriod)
+
+            RandomAccessFile(file, "rw").use {
+               try {
+                  it.seek(6L)
+
+                  val circulationRecordPosition = it.readUnsignedShort().toLong()
+                  it.seek(circulationRecordPosition)
+
+                  metadata.circulationRecord.writeTo(it)
+               } catch (e: IOException) {
+                  // continue
+               }
+            }
+         }
+
+         // ---- delete files while totalFileSize > idealTotalFileSize
+
+         /*
+          * Files whose importance are equal must be deleted at once. So it needs
+          * a list of lists of files.
+          *
+          *     [
+          *        [ file1, file2 ], // Files whose importance is the lowest.
+          *        [ file3 ],        // The 2nd lowest
+          *        // ...            // And so on.
+          *     ]
+          */
+         val sortedFileList = run {
+            val fileListMappedImportance = relationshipMap.asIterable()
+                  .groupBy({ it.value.importance }, { it.key })
+
+            fileListMappedImportance.asSequence()
+                  .sortedBy { it.key }
+                  .map { it.value }
+         }
+
+         var totalFileSize = sortedFileList
+               .flatten()
+               .map { it.length() }
+               .sum()
+
+         for (fileList in sortedFileList) {
+            if (totalFileSize <= idealTotalFileSize) break
+
+            for (file in fileList) {
+               totalFileSize -= file.length()
+               file.delete()
             }
          }
       }
 
-      // ---- delete files while totalFileSize > idealTotalFileSize
-
-      /*
-       * Files whose importance are equal must be deleted at once. So it needs
-       * a list of lists of files.
-       *
-       *     [
-       *        [ file1, file2 ], // Files whose importance is the lowest.
-       *        [ file3 ],        // The 2nd lowest
-       *        // ...            // And so on.
-       *     ]
-       */
-      val sortedFileList = run {
-         val fileListMappedImportance = relationshipMap.asIterable()
-               .groupBy({ it.value.importance }, { it.key })
-
-         fileListMappedImportance.asSequence()
-               .sortedBy { it.key }
-               .map { it.value }
-      }
-
-      var totalFileSize = sortedFileList
-            .flatten()
-            .map { it.length() }
-            .sum()
-
-      for (fileList in sortedFileList) {
-         if (totalFileSize <= idealTotalFileSize) break
-
-         for (file in fileList) {
-            totalFileSize -= file.length()
-            file.delete()
-         }
-      }
-
-      isRunningGc = false
+      return gcJob!!
    }
 
    /**
