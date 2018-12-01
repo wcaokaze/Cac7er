@@ -67,6 +67,10 @@ dokka {
         url = 'http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java'
         suffix = '#L'
     }
+
+    externalDocumentationLink {
+        url = new URL('https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/')
+    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

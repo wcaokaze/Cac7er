@@ -6,7 +6,7 @@ import java.lang.ref.*
  * looks like a [Map] whose values are created automatically, and removed
  * automatically.
  *
- * If this Pool doesn't have the value, [get] will invoke [valueSupplier]. The
+ * If this Pool doesn't have the value, [get] will invoke valueSupplier. The
  * values are referenced as [SoftReference]. GC may collect them.
  *
  * @since 1.0.0

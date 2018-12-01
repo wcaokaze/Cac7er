@@ -1,0 +1,13 @@
+[Cac7er](../../index.md) / [cac7er](../index.md) / [WritableCache](index.md) / [toLazyCache](./to-lazy-cache.md)
+
+# toLazyCache
+
+`abstract fun toLazyCache(): `[`WritableLazyCache`](../-writable-lazy-cache/index.md)`<`[`T`](index.md#T)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cache.kt#L97)
+
+Overrides [Cache.toLazyCache](../-cache/to-lazy-cache.md)
+
+converts this WritableCache to [WritableLazyCache](../-writable-lazy-cache/index.md).
+
+**Since**
+1.0.0
+

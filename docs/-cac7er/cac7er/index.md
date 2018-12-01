@@ -1,0 +1,29 @@
+[Cac7er](../index.md) / [cac7er](./index.md)
+
+## Package cac7er
+
+### Types
+
+| Name | Summary |
+|---|---|
+| [Cac7er](-cac7er/index.md) | `class Cac7er : `[`CoroutineScope`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html) |
+| [Cache](-cache/index.md) | `interface Cache<out T>`<br>The interface between a Kotlin instance and a file. |
+| [LazyCache](-lazy-cache/index.md) | `interface LazyCache<out T>`<br>Cache which doesn't load the content until calling [get](-lazy-cache/get.md). |
+| [Repository](-repository/index.md) | `interface Repository<in K, out V>`<br>Repository of [Cache](-cache/index.md)s. |
+| [WeakCache](-weak-cache/index.md) | `interface WeakCache<out T>`<br>Cache which doesn't depend on the content. See [Cac7er.gc](-cac7er/gc.md) first. |
+| [WritableCache](-writable-cache/index.md) | `interface WritableCache<T> : `[`Cache`](-cache/index.md)`<`[`T`](-writable-cache/index.md#T)`>`<br>Writable Cache. The name says it all. |
+| [WritableLazyCache](-writable-lazy-cache/index.md) | `interface WritableLazyCache<T> : `[`LazyCache`](-lazy-cache/index.md)`<`[`T`](-writable-lazy-cache/index.md#T)`>`<br>Writable LazyCache. The name says it all. |
+| [WritableRepository](-writable-repository/index.md) | `interface WritableRepository<in K, V> : `[`Repository`](-repository/index.md)`<`[`K`](-writable-repository/index.md#K)`, `[`V`](-writable-repository/index.md#V)`>`<br>Writable Repository. The name says it all. |
+| [WritableWeakCache](-writable-weak-cache/index.md) | `interface WritableWeakCache<T> : `[`WeakCache`](-weak-cache/index.md)`<`[`T`](-writable-weak-cache/index.md#T)`>`<br>Writable WeakCache. The name says it all. |
+
+### Functions
+
+| Name | Summary |
+|---|---|
+| [buildCac7er](build-cac7er.md) | `fun buildCac7er(name: `[`String`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)`, dir: `[`File`](http://docs.oracle.com/javase/6/docs/api/java/io/File.html)`, builderAction: `[`Builder`](-cac7er/-builder/index.md)`.() -> `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)`): `[`Cac7er`](-cac7er/index.md)<br>builds a new instance. |
+| [getOrCancel](get-or-cancel.md) | `suspend fun <T> `[`LazyCache`](-lazy-cache/index.md)`<`[`T`](get-or-cancel.md#T)`>.getOrCancel(accessCount: `[`Float`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)` = .0f): `[`T`](get-or-cancel.md#T)<br>loads the content or throws [CancellationException](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-cancellation-exception/index.html) if failed |
+| [getOrNull](get-or-null.md) | `suspend fun <T> `[`LazyCache`](-lazy-cache/index.md)`<`[`T`](get-or-null.md#T)`>.getOrNull(accessCount: `[`Float`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)` = .0f): `[`T`](get-or-null.md#T)`?`<br>loads the content or returns null if failed |
+| [loadOrCancel](load-or-cancel.md) | `suspend fun <K, V> `[`Repository`](-repository/index.md)`<`[`K`](load-or-cancel.md#K)`, `[`V`](load-or-cancel.md#V)`>.loadOrCancel(key: `[`K`](load-or-cancel.md#K)`): `[`Cache`](-cache/index.md)`<`[`V`](load-or-cancel.md#V)`>`<br>`suspend fun <K, V> `[`WritableRepository`](-writable-repository/index.md)`<`[`K`](load-or-cancel.md#K)`, `[`V`](load-or-cancel.md#V)`>.loadOrCancel(key: `[`K`](load-or-cancel.md#K)`): `[`WritableCache`](-writable-cache/index.md)`<`[`V`](load-or-cancel.md#V)`>`<br>loads a [Cache](-cache/index.md) or throws [CancellationException](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-cancellation-exception/index.html) if failed |
+| [loadOrNull](load-or-null.md) | `suspend fun <K, V> `[`Repository`](-repository/index.md)`<`[`K`](load-or-null.md#K)`, `[`V`](load-or-null.md#V)`>.loadOrNull(key: `[`K`](load-or-null.md#K)`): `[`Cache`](-cache/index.md)`<`[`V`](load-or-null.md#V)`>?`<br>`suspend fun <K, V> `[`WritableRepository`](-writable-repository/index.md)`<`[`K`](load-or-null.md#K)`, `[`V`](load-or-null.md#V)`>.loadOrNull(key: `[`K`](load-or-null.md#K)`): `[`WritableCache`](-writable-cache/index.md)`<`[`V`](load-or-null.md#V)`>?`<br>loads a [Cache](-cache/index.md) or returns null if failed |
+| [loadWeakCacheOrCancel](load-weak-cache-or-cancel.md) | `suspend fun <K, V> `[`Repository`](-repository/index.md)`<`[`K`](load-weak-cache-or-cancel.md#K)`, `[`V`](load-weak-cache-or-cancel.md#V)`>.loadWeakCacheOrCancel(key: `[`K`](load-weak-cache-or-cancel.md#K)`): `[`WeakCache`](-weak-cache/index.md)`<`[`V`](load-weak-cache-or-cancel.md#V)`>`<br>`suspend fun <K, V> `[`WritableRepository`](-writable-repository/index.md)`<`[`K`](load-weak-cache-or-cancel.md#K)`, `[`V`](load-weak-cache-or-cancel.md#V)`>.loadWeakCacheOrCancel(key: `[`K`](load-weak-cache-or-cancel.md#K)`): `[`WritableWeakCache`](-writable-weak-cache/index.md)`<`[`V`](load-weak-cache-or-cancel.md#V)`>`<br>loads a [WeakCache](-weak-cache/index.md) or throws [CancellationException](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-cancellation-exception/index.html) if failed |
+| [loadWeakCacheOrNull](load-weak-cache-or-null.md) | `suspend fun <K, V> `[`Repository`](-repository/index.md)`<`[`K`](load-weak-cache-or-null.md#K)`, `[`V`](load-weak-cache-or-null.md#V)`>.loadWeakCacheOrNull(key: `[`K`](load-weak-cache-or-null.md#K)`): `[`WeakCache`](-weak-cache/index.md)`<`[`V`](load-weak-cache-or-null.md#V)`>?`<br>`suspend fun <K, V> `[`WritableRepository`](-writable-repository/index.md)`<`[`K`](load-weak-cache-or-null.md#K)`, `[`V`](load-weak-cache-or-null.md#V)`>.loadWeakCacheOrNull(key: `[`K`](load-weak-cache-or-null.md#K)`): `[`WritableWeakCache`](-writable-weak-cache/index.md)`<`[`V`](load-weak-cache-or-null.md#V)`>?`<br>loads a [WeakCache](-weak-cache/index.md) or returns null if failed |
