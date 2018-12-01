@@ -43,6 +43,12 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = '1.6'
+
+    kotlinOptions {
+        freeCompilerArgs = [
+                '-Xuse-experimental=kotlin.Experimental',
+        ]
+    }
 }
 
 dokka {
