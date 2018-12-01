@@ -57,6 +57,9 @@ interface LazyCache<out T> {
     * the observer instance should be owned by any other instance. The easiest
     * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
+    * The observer also will be called when [get] has been completed to load the
+    * content.
+    *
     * @since 1.0.0
     */
    fun addObserver(observer: (T) -> Unit)
