@@ -4,7 +4,7 @@ import cac7er.serializer.*
 import cac7er.util.io.*
 import java.io.*
 
-private const val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
+private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
 
 /*
  * 0 MAGIC_NUMBER (4bytes)

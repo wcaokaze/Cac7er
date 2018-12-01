@@ -21,7 +21,7 @@ import java.lang.ref.*
  *
  * Then, [gc][Cac7er.gc] doesn't mind relationship, does delete `a` freely.
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface WeakCache<out T> {
    /**
@@ -43,7 +43,7 @@ interface WeakCache<out T> {
     *   [ClassCastException] is thrown by a cast operation complemented by
     *   the compiler.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun get(time: Long, accessCount: Float = .0f): T?
 
@@ -56,7 +56,7 @@ interface WeakCache<out T> {
     * the observer instance should be owned by any other instance. The easiest
     * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(observer: (T) -> Unit)
 
@@ -65,13 +65,13 @@ interface WeakCache<out T> {
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(owner: Any, observer: (T) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun removeObserver(observer: (T) -> Unit)
 
@@ -79,7 +79,7 @@ interface WeakCache<out T> {
     * converts this WeakCache to [Cache].
     *
     * @return Cache or null if the cache was deleted by GC.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun toCache(): Cache<T>?
 
@@ -87,14 +87,14 @@ interface WeakCache<out T> {
     * converts this WeakCache to [LazyCache].
     *
     * @return LazyCache or null if the cache was deleted by GC.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun toLazyCache(): LazyCache<T>?
 }
 
 /**
  * Writable WeakCache. The name says it all.
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface WritableWeakCache<T> : WeakCache<T> {
    /**
@@ -103,7 +103,7 @@ interface WritableWeakCache<T> : WeakCache<T> {
     * This function replaces the instance on JVM memory and returns immediately.
     * Some other thread writes it into the file at some future time.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun save(content: T)
 
@@ -111,7 +111,7 @@ interface WritableWeakCache<T> : WeakCache<T> {
     * converts this WritableWeakCache to [WritableCache].
     *
     * @return WritableCache or null if the cache was deleted by GC.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    override fun toCache(): WritableCache<T>?
 
@@ -119,7 +119,7 @@ interface WritableWeakCache<T> : WeakCache<T> {
     * converts this WritableWeakCache to [WritableLazyCache].
     *
     * @return WritableLazyCache or null if the cache was deleted by GC.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    override fun toLazyCache(): WritableLazyCache<T>?
 }

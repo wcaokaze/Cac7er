@@ -6,17 +6,17 @@ import java.lang.ref.*
  * Map whose values are referenced as [SoftReference]. This doesn't implement
  * [MutableMap] because it's peculiar.
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 class SoftReferencedValueMap<in K, V> {
    private val delegate = HashMap<K, SoftReferenceWithKey<K, V>>()
    private val referenceQueue = ReferenceQueue<V>()
 
-   /** @since 1.0.0 */
+   /** @since 0.1.0 */
    @Synchronized
    operator fun get(key: K): V? = delegate[key]?.get()
 
-   /** @since 1.0.0 */
+   /** @since 0.1.0 */
    @Synchronized
    operator fun set(key: K, value: V): V? {
       removeUnreachableReferences()

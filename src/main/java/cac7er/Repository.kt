@@ -6,7 +6,7 @@ import java.lang.ref.*
 /**
  * Repository of [Cache]s.
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface Repository<in K, out V> {
    val name: String
@@ -15,7 +15,7 @@ interface Repository<in K, out V> {
     * loads a [Cache].
     *
     * @throws IOException
-    * @since 1.0.0
+    * @since 0.1.0
     */
    suspend fun load(key: K): Cache<V>
 
@@ -27,7 +27,7 @@ interface Repository<in K, out V> {
     * a representation that the cache was deleted by [GC][Cac7er.gc].
     *
     * @throws IOException
-    * @since 1.0.0
+    * @since 0.1.0
     */
    suspend fun loadWeakCache(key: K): WeakCache<V>
 
@@ -35,7 +35,7 @@ interface Repository<in K, out V> {
     * returns a [LazyCache]. This is not a suspend function since loading is
     * lazy (see [LazyCache.get]).
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun loadLazyCache(key: K): LazyCache<V>
 
@@ -45,7 +45,7 @@ interface Repository<in K, out V> {
     * the observer instance should be owned by any other instance. The easiest
     * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(key: K, observer: (V) -> Unit)
 
@@ -54,20 +54,20 @@ interface Repository<in K, out V> {
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(owner: Any, key: K, observer: (V) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun removeObserver(key: K, observer: (V) -> Unit)
 }
 
 /**
  * Writable Repository. The name says it all.
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface WritableRepository<in K, V> : Repository<K, V> {
    override suspend fun load(key: K): WritableCache<V>
@@ -77,7 +77,7 @@ interface WritableRepository<in K, V> : Repository<K, V> {
    /**
     * saves a cache.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun save(key: K, value: V): WritableCache<V>
 }

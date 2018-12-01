@@ -10,7 +10,7 @@ import java.lang.ref.*
  *
  * @param T The type of the cached instance.
  * @see Cac7er
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface Cache<out T> {
    /**
@@ -30,7 +30,7 @@ interface Cache<out T> {
     *   [ClassCastException] is thrown by a cast operation complemented by
     *   the compiler.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun get(time: Long, accessCount: Float = .0f): T
 
@@ -43,7 +43,7 @@ interface Cache<out T> {
     * the observer instance should be owned by any other instance. The easiest
     * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(observer: (T) -> Unit)
 
@@ -52,32 +52,32 @@ interface Cache<out T> {
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(owner: Any, observer: (T) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun removeObserver(observer: (T) -> Unit)
 
    /**
     * converts this Cache to [LazyCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun toLazyCache(): LazyCache<T>
 
    /**
     * converts this Cache to [WeakCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun toWeakCache(): WeakCache<T>
 }
 
 /**
  * Writable Cache. The name says it all.
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface WritableCache<T> : Cache<T> {
    /**
@@ -86,19 +86,19 @@ interface WritableCache<T> : Cache<T> {
     * This function replaces the instance on JVM memory and returns immediately.
     * Some other thread writes it into the file at some future time.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun save(content: T)
 
    /**
     * converts this WritableCache to [WritableLazyCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    override fun toLazyCache(): WritableLazyCache<T>
 
    /**
     * converts this WritableCache to [WritableWeakCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    override fun toWeakCache(): WritableWeakCache<T>
 }
