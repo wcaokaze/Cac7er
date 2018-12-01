@@ -177,7 +177,7 @@ There is a unique instance for `User` "Alex". However, as serialized,
 
 ![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/badInstances2.svg)
 
-To avoid this, let `Status` have [Cache][].
+To avoid this, let `Status` have `Cache`.
 
 ![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/goodInstances.svg)
 
@@ -267,4 +267,30 @@ val user = userCache.get(accessCount = 1.0f)
 ```
 
 This is all you have to do.
+
+
+### WeakCache, LazyCache
+
+| interface | Time to load the content                 | suspends while loading themselves | suspends while getting the content | Condition to delete the file                        | `get` returns nullable |
+|:----------|:-----------------------------------------|----------------------------------:|-----------------------------------:|:----------------------------------------------------|-----------------------:|
+| Cache     | when Cache itself is loaded              |                               Yes |                                 No | `accessCount` is few and no other caches require it |                     No |
+| WeakCache | when WeakCache itself is loaded          |                               Yes |                                 No | `accessCount` is few                                |                    Yes |
+| LazyCache | when `get` is invoked for the first time |                                No |                                Yes | `accessCount` is few and no other caches require it |                     No |
+
+
+### Safe load functions
+
+```kotlin
+Repository<K, V>.loadOrNull(key: K): Cache<V>?
+Repository<K, V>.loadWeakCacheOrNull(key: K): WeakCache<V>?
+LazyCache<T>.getOrNull(accessCount: Float): T?
+```
+returns null if fails to load.
+
+```kotlin
+Repository<K, V>.loadOrCancel(key: K): Cache<V>
+Repository<K, V>.loadWeakCacheOrCancel(key: K): WeakCache<V>
+LazyCache<T>.getOrCancel(accessCount: Float): T
+```
+throws a `CancellationException` if fails to load.
 

@@ -6,16 +6,16 @@ import java.lang.ref.*
  * looks like a [Map] whose values are created automatically, and removed
  * automatically.
  *
- * If this Pool doesn't have the value, [get] will invoke [valueSupplier]. The
+ * If this Pool doesn't have the value, [get] will invoke valueSupplier. The
  * values are referenced as [SoftReference]. GC may collect them.
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 class Pool<in K, out V>(private val valueSupplier: (K) -> V) {
    private val delegate = HashMap<K, SoftReferenceWithKey<K, V>>()
    private val referenceQueue = ReferenceQueue<V>()
 
-   /** @since 1.0.0 */
+   /** @since 0.1.0 */
    @Synchronized
    operator fun get(key: K): V {
       var value = delegate[key]?.get()

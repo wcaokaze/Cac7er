@@ -35,6 +35,8 @@ import kotlin.contracts.*
  *
  * This can take time. If your Cac7er has many repositories, consider
  * instantiation with [launch][CoroutineScope.launch].
+ *
+ * @since 0.1.0
  */
 @ExperimentalContracts
 inline fun buildCac7er(name: String, dir: File,
@@ -55,11 +57,11 @@ class Cac7er
       : CoroutineScope
 {
    companion object {
-      const val MAJOR_VERSION = 1
-      const val MINOR_VERSION = 0
-      const val REVISION      = 0
+      val MAJOR_VERSION = 0
+      val MINOR_VERSION = 2
+      val REVISION      = 0
 
-      const val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
+      val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
    }
 
    private val job = Job()
@@ -76,6 +78,8 @@ class Cac7er
        * createRepository(name, { it.toString() },
        *       serializer, deserializer)
        * ```
+       *
+       * @since 0.1.0
        */
       fun <K, V> createRepository(name: String,
                                   serializer: Serializer<V>,
@@ -144,6 +148,8 @@ class Cac7er
        *          CacheOutput::writeStatus, CacheInput::readStatus)
        * }
        * ```
+       *
+       * @since 0.1.0
        */
       val delegatees: MutableSet<Cac7er> = HashSet()
 
@@ -152,6 +158,8 @@ class Cac7er
        *
        * [WritableCache.save] and [WritableRepository.save] check the total
        * size and call [gc] if necessary.
+       *
+       * @since 0.1.0
        */
       var idealTotalFileSize: Long = Long.MAX_VALUE
 
@@ -250,7 +258,7 @@ class Cac7er
     * @throws IOException when any file could not be loaded
     * @see Cache.get
     * @see WeakCache
-    * @since 1.0.0
+    * @since 0.1.0
     */
    @Synchronized
    fun gc(idealTotalFileSize: Long): Job {
@@ -371,6 +379,8 @@ class Cac7er
 
    /**
     * for [Builder.idealTotalFileSize]
+    *
+    * @since 0.1.0
     */
    internal fun autoGc() {
       if (idealTotalFileSize != Long.MAX_VALUE) {

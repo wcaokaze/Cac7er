@@ -9,7 +9,7 @@ import java.lang.ref.*
  * The content is stored as [SoftReference], whenever consumers get the content,
  * they have to call a suspend function.
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface LazyCache<out T> {
    /**
@@ -31,7 +31,7 @@ interface LazyCache<out T> {
     *   [ClassCastException] is thrown by a cast operation complemented by
     *   the compiler.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    suspend fun get(time: Long, accessCount: Float = .0f): T
 
@@ -46,7 +46,7 @@ interface LazyCache<out T> {
     *
     * @return the cached instance if it exists on JVM memory, otherwise `null`.
     * @throws ClassCastException
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun getIfAlreadyLoaded(time: Long = System.currentTimeMillis(),
                           accessCount: Float = .0f): T?
@@ -57,7 +57,10 @@ interface LazyCache<out T> {
     * the observer instance should be owned by any other instance. The easiest
     * way is using [addObserver(Any, (T) -> Unit)][addObserver].
     *
-    * @since 1.0.0
+    * The observer also will be called when [get] has been completed to load the
+    * content.
+    *
+    * @since 0.1.0
     */
    fun addObserver(observer: (T) -> Unit)
 
@@ -66,32 +69,32 @@ interface LazyCache<out T> {
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun addObserver(owner: Any, observer: (T) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun removeObserver(observer: (T) -> Unit)
 
    /**
     * converts this LazyCache to [Cache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    suspend fun toCache(): Cache<T>
 
    /**
     * converts this LazyCache to [WeakCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    suspend fun toWeakCache(): WeakCache<T>
 }
 
 /**
  * Writable LazyCache. The name says it all.
- * @since 1.0.0
+ * @since 0.1.0
  */
 interface WritableLazyCache<T> : LazyCache<T> {
    /**
@@ -100,19 +103,19 @@ interface WritableLazyCache<T> : LazyCache<T> {
     * This function replaces the instance on JVM memory and returns immediately.
     * Some other thread writes it into the file at some future time.
     *
-    * @since 1.0.0
+    * @since 0.1.0
     */
    fun save(content: T)
 
    /**
     * converts this WritableLazyCache to [WritableCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    override suspend fun toCache(): WritableCache<T>
 
    /**
     * converts this WritableLazyCache to [WritableWeakCache].
-    * @since 1.0.0
+    * @since 0.1.0
     */
    override suspend fun toWeakCache(): WritableWeakCache<T>
 }

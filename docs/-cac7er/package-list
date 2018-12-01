@@ -1,0 +1,11 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+cac7er
+cac7er.serializer
+cac7er.serializer.collection
+cac7er.serializer.date
+cac7er.serializer.net
+cac7er.serializer.util
+cac7er.util
+cac7er.util.io
