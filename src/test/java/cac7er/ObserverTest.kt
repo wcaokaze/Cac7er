@@ -35,6 +35,21 @@ class ObserverTest {
       assert(receivedValues == listOf(2, 5))
    }
 
+   @Test fun removeTest() {
+      val cache = intRepo.save("removeTest", 1)
+
+      val receivedValues = mutableListOf<Int>()
+
+      val observer: (Int) -> Unit = { receivedValues += it }
+
+      cache.addObserver(observer)
+      cache.save(2)
+      cache.removeObserver(observer)
+      cache.save(5)
+
+      assert(receivedValues == listOf(2))
+   }
+
    @Test fun observerViaRepo() {
       val cache = intRepo.save("observerViaRepo", 1)
 
