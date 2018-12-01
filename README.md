@@ -271,11 +271,11 @@ This is all you have to do.
 
 ### WeakCache, LazyCache
 
-| interface | Time to load the content                 | suspends while loading themselves | suspends while getting the content | Condition to delete the file                        | `get` returns nullable |
-|:----------|:-----------------------------------------|----------------------------------:|-----------------------------------:|:----------------------------------------------------|-----------------------:|
-| Cache     | when Cache itself is loaded              |                               Yes |                                 No | `accessCount` is few and no other caches require it |                     No |
-| WeakCache | when WeakCache itself is loaded          |                               Yes |                                 No | `accessCount` is few                                |                    Yes |
-| LazyCache | when `get` is invoked for the first time |                                No |                                Yes | `accessCount` is few and no other caches require it |                     No |
+| interface | Time to load the content                 | suspends while<br />loading themselves | suspends while<br />getting the content | Condition to delete the file                        | `get` returns nullable |
+|:----------|:-----------------------------------------|---------------------------------------:|----------------------------------------:|:----------------------------------------------------|-----------------------:|
+| Cache     | when Cache itself is loaded              |                                    Yes |                                      No | `accessCount` is few and no other caches require it |                     No |
+| WeakCache | when WeakCache itself is loaded          |                                    Yes |                                      No | `accessCount` is few                                |                    Yes |
+| LazyCache | when `get` is invoked for the first time |                                     No |                                     Yes | `accessCount` is few and no other caches require it |                     No |
 
 
 ### Safe load functions
