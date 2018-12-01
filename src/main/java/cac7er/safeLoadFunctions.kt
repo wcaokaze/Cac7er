@@ -2,6 +2,10 @@ package cac7er
 
 import kotlinx.coroutines.*
 
+/**
+ * loads a [Cache] or returns null if failed
+ * @return a [Cache] or null
+ */
 suspend fun <K, V> Repository<K, V>.loadOrNull(key: K): Cache<V>? {
    return try {
       load(key)
@@ -10,6 +14,10 @@ suspend fun <K, V> Repository<K, V>.loadOrNull(key: K): Cache<V>? {
    }
 }
 
+/**
+ * loads a [Cache] or returns null if failed
+ * @return a [Cache] or null
+ */
 suspend fun <K, V> WritableRepository<K, V>.loadOrNull(key: K): WritableCache<V>? {
    return try {
       load(key)
@@ -18,6 +26,10 @@ suspend fun <K, V> WritableRepository<K, V>.loadOrNull(key: K): WritableCache<V>
    }
 }
 
+/**
+ * loads a [Cache] or throws [CancellationException] if failed
+ * @throws CancellationException when failed to load a [Cache]
+ */
 suspend fun <K, V> Repository<K, V>.loadOrCancel(key: K): Cache<V> {
    return try {
       load(key)
@@ -26,6 +38,10 @@ suspend fun <K, V> Repository<K, V>.loadOrCancel(key: K): Cache<V> {
    }
 }
 
+/**
+ * loads a [Cache] or throws [CancellationException] if failed
+ * @throws CancellationException when failed to load a [Cache]
+ */
 suspend fun <K, V> WritableRepository<K, V>.loadOrCancel(key: K): WritableCache<V> {
    return try {
       load(key)
@@ -36,6 +52,10 @@ suspend fun <K, V> WritableRepository<K, V>.loadOrCancel(key: K): WritableCache<
 
 // =============================================================================
 
+/**
+ * loads a [WeakCache] or returns null if failed
+ * @return a [WeakCache] or null
+ */
 suspend fun <K, V> Repository<K, V>.loadWeakCacheOrNull(key: K): WeakCache<V>? {
    return try {
       loadWeakCache(key)
@@ -44,6 +64,10 @@ suspend fun <K, V> Repository<K, V>.loadWeakCacheOrNull(key: K): WeakCache<V>? {
    }
 }
 
+/**
+ * loads a [WeakCache] or returns null if failed
+ * @return a [WeakCache] or null
+ */
 suspend fun <K, V> WritableRepository<K, V>
       .loadWeakCacheOrNull(key: K): WritableWeakCache<V>?
 {
@@ -54,6 +78,10 @@ suspend fun <K, V> WritableRepository<K, V>
    }
 }
 
+/**
+ * loads a [WeakCache] or throws [CancellationException] if failed
+ * @throws CancellationException when failed to load a [WeakCache]
+ */
 suspend fun <K, V> Repository<K, V>.loadWeakCacheOrCancel(key: K): WeakCache<V> {
    return try {
       loadWeakCache(key)
@@ -62,6 +90,10 @@ suspend fun <K, V> Repository<K, V>.loadWeakCacheOrCancel(key: K): WeakCache<V> 
    }
 }
 
+/**
+ * loads a [WeakCache] or throws [CancellationException] if failed
+ * @throws CancellationException when failed to load a [WeakCache]
+ */
 suspend fun <K, V> WritableRepository<K, V>
       .loadWeakCacheOrCancel(key: K): WritableWeakCache<V>
 {
@@ -74,6 +106,10 @@ suspend fun <K, V> WritableRepository<K, V>
 
 // =============================================================================
 
+/**
+ * loads the content or returns null if failed
+ * @return the content of LazyCache or null
+ */
 suspend fun <T> LazyCache<T>.getOrNull(accessCount: Float = .0f): T? {
    return try {
       get(accessCount)
@@ -82,6 +118,10 @@ suspend fun <T> LazyCache<T>.getOrNull(accessCount: Float = .0f): T? {
    }
 }
 
+/**
+ * loads the content or throws [CancellationException] if failed
+ * @throws CancellationException when failed to load the content of LazyCache
+ */
 suspend fun <T> LazyCache<T>.getOrCancel(accessCount: Float = .0f): T {
    return try {
       get(accessCount)
