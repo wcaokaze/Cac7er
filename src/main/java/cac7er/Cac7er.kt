@@ -55,8 +55,8 @@ class Cac7er
       : CoroutineScope
 {
    companion object {
-      const val MAJOR_VERSION = 1
-      const val MINOR_VERSION = 0
+      const val MAJOR_VERSION = 0
+      const val MINOR_VERSION = 2
       const val REVISION      = 0
 
       const val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
