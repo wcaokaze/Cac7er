@@ -12,5 +12,5 @@ converts this WritableWeakCache to [WritableCache](../-writable-cache/index.md).
 WritableCache or null if the cache was deleted by GC.
 
 **Since**
-1.0.0
+0.1.0
 

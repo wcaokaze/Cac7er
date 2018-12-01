@@ -8,7 +8,7 @@ Map whose values are referenced as [SoftReference](http://docs.oracle.com/javase
 [MutableMap](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html) because it's peculiar.
 
 **Since**
-1.0.0
+0.1.0
 
 ### Constructors
 

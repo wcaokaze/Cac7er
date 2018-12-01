@@ -22,7 +22,7 @@ Cac7er.gc(100L)
 Then, [gc](../-cac7er/gc.md) doesn't mind relationship, does delete `a` freely.
 
 **Since**
-1.0.0
+0.1.0
 
 ### Functions
 

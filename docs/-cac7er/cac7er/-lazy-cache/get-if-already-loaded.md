@@ -17,5 +17,5 @@ time and accessCount only affect when the cached instance is returned.
 the cached instance if it exists on JVM memory, otherwise `null`.
 
 **Since**
-1.0.0
+0.1.0
 

@@ -12,5 +12,5 @@ converts this WritableWeakCache to [WritableLazyCache](../-writable-lazy-cache/i
 WritableLazyCache or null if the cache was deleted by GC.
 
 **Since**
-1.0.0
+0.1.0
 

@@ -9,5 +9,5 @@ Overrides [Cache.toLazyCache](../-cache/to-lazy-cache.md)
 converts this WritableCache to [WritableLazyCache](../-writable-lazy-cache/index.md).
 
 **Since**
-1.0.0
+0.1.0
 

@@ -10,5 +10,5 @@ returns a [LazyCache](../-lazy-cache/index.md). This is not a suspend function s
 lazy (see [LazyCache.get](../-lazy-cache/get.md)).
 
 **Since**
-1.0.0
+0.1.0
 

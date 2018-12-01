@@ -10,5 +10,5 @@ converts this WeakCache to [Cache](../-cache/index.md).
 Cache or null if the cache was deleted by GC.
 
 **Since**
-1.0.0
+0.1.0
 

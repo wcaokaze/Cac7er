@@ -7,5 +7,5 @@
 converts this LazyCache to [WeakCache](../-weak-cache/index.md).
 
 **Since**
-1.0.0
+0.1.0
 

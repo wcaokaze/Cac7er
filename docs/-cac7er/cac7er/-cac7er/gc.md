@@ -2,7 +2,7 @@
 
 # gc
 
-`@Synchronized fun gc(idealTotalFileSize: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)`): `[`Job`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html) [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L256)
+`@Synchronized fun gc(idealTotalFileSize: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)`): `[`Job`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html) [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L264)
 
 runs the garbage collector. GC deletes some files whose `importance` are
 low.
@@ -46,5 +46,5 @@ files even if your Cac7er depends on them.
 [WeakCache](../-weak-cache/index.md)
 
 **Since**
-1.0.0
+0.1.0
 

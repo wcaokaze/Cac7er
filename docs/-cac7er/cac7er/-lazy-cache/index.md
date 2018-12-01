@@ -10,7 +10,7 @@ The content is stored as [SoftReference](http://docs.oracle.com/javase/6/docs/ap
 they have to call a suspend function.
 
 **Since**
-1.0.0
+0.1.0
 
 ### Functions
 

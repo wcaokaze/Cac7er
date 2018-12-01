@@ -10,7 +10,7 @@ the observer instance should be owned by any other instance. The easiest
 way is using [addObserver(Any, (T) -&gt; Unit)](./add-observer.md).
 
 **Since**
-1.0.0
+0.1.0
 
 `abstract fun addObserver(owner: `[`Any`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)`, key: `[`K`](index.md#K)`, observer: (`[`V`](index.md#V)`) -> `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)`): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Repository.kt#L59)
 
@@ -19,5 +19,5 @@ As mentioned in another overload, observers are referenced as
 specified owner instance, and can observe until the owner is GCed.
 
 **Since**
-1.0.0
+0.1.0
 

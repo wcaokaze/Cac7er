@@ -17,5 +17,5 @@ a representation that the cache was deleted by [GC](../-cac7er/gc.md).
 `IOException` -
 
 **Since**
-1.0.0
+0.1.0
 

@@ -2,7 +2,7 @@
 
 # delegatees
 
-`val delegatees: `[`MutableSet`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html)`<`[`Cac7er`](../index.md)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L148)
+`val delegatees: `[`MutableSet`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html)`<`[`Cac7er`](../index.md)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L154)
 
 Normally, a instance of Cac7er cannot manage repositories in another
 Cac7er.
@@ -47,4 +47,7 @@ val statusCac7er = Cac7er("status", File("statuses")) {
          CacheOutput::writeStatus, CacheInput::readStatus)
 }
 ```
+
+**Since**
+0.1.0
 

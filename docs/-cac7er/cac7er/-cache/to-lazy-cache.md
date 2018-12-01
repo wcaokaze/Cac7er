@@ -7,5 +7,5 @@
 converts this Cache to [LazyCache](../-lazy-cache/index.md).
 
 **Since**
-1.0.0
+0.1.0
 

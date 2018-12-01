@@ -2,7 +2,7 @@
 
 # Cac7er
 
-`class Cac7er : `[`CoroutineScope`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html) [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L48)
+`class Cac7er : `[`CoroutineScope`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html) [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L50)
 
 ### Types
 
@@ -28,7 +28,7 @@
 
 | Name | Summary |
 |---|---|
-| [MAJOR_VERSION](-m-a-j-o-r_-v-e-r-s-i-o-n.md) | `const val MAJOR_VERSION: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
-| [MINOR_VERSION](-m-i-n-o-r_-v-e-r-s-i-o-n.md) | `const val MINOR_VERSION: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
-| [REVISION](-r-e-v-i-s-i-o-n.md) | `const val REVISION: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
-| [VERSION](-v-e-r-s-i-o-n.md) | `const val VERSION: `[`String`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
+| [MAJOR_VERSION](-m-a-j-o-r_-v-e-r-s-i-o-n.md) | `val MAJOR_VERSION: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
+| [MINOR_VERSION](-m-i-n-o-r_-v-e-r-s-i-o-n.md) | `val MINOR_VERSION: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
+| [REVISION](-r-e-v-i-s-i-o-n.md) | `val REVISION: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
+| [VERSION](-v-e-r-s-i-o-n.md) | `val VERSION: `[`String`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |

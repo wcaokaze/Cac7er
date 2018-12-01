@@ -7,7 +7,7 @@
 Repository of [Cache](../-cache/index.md)s.
 
 **Since**
-1.0.0
+0.1.0
 
 ### Properties
 

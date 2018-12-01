@@ -10,5 +10,5 @@ converts this WeakCache to [LazyCache](../-lazy-cache/index.md).
 LazyCache or null if the cache was deleted by GC.
 
 **Since**
-1.0.0
+0.1.0
 

@@ -7,5 +7,5 @@
 removes the observer. The name says it all.
 
 **Since**
-1.0.0
+0.1.0
 

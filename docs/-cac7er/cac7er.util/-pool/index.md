@@ -11,7 +11,7 @@ If this Pool doesn't have the value, [get](get.md) will invoke valueSupplier. Th
 values are referenced as [SoftReference](http://docs.oracle.com/javase/6/docs/api/java/lang/ref/SoftReference.html). GC may collect them.
 
 **Since**
-1.0.0
+0.1.0
 
 ### Constructors
 

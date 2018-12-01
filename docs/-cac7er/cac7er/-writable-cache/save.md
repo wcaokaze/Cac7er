@@ -10,5 +10,5 @@ This function replaces the instance on JVM memory and returns immediately.
 Some other thread writes it into the file at some future time.
 
 **Since**
-1.0.0
+0.1.0
 
