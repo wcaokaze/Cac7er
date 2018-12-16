@@ -269,7 +269,7 @@ class Cac7er
 
          class Relationship {
             var dependees: List<Relationship> = emptyList()
-            var importance = .0f
+            var importance = 0.0f
          }
 
          val relationshipMap = object : HashMap<File, Relationship>() {

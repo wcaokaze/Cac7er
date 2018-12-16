@@ -22,6 +22,9 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       return uniformizer.content
    }
 
+   override val hasContent: Boolean
+      get() = uniformizer.state == Uniformizer.State.INITIALIZED
+
    override fun getIfAlreadyLoaded(time: Long, accessCount: Float): T? {
       if (uniformizer.state != Uniformizer.State.INITIALIZED) return null
 
