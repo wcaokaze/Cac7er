@@ -45,9 +45,9 @@ interface WeakCache<out T> {
     *
     * @since 0.1.0
     */
-   fun get(time: Long, accessCount: Float = .0f): T?
+   fun get(time: Long, accessCount: Float = 0.0f): T?
 
-   fun get(accessCount: Float = .0f): T?
+   fun get(accessCount: Float = 0.0f): T?
          = get(System.currentTimeMillis(), accessCount)
 
    /**

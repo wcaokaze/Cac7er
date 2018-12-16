@@ -109,7 +109,7 @@ class ArraySerializerTest {
       val cac7er = buildCac7er("floatArray", testDir) {}
 
       val data = floatArrayOf(
-            .0f, .1f, 1.0f, 2.0f, -1.0f, -.0f,
+            0.0f, .1f, 1.0f, 2.0f, -1.0f, -0.0f,
             Float.MAX_VALUE, Float.MIN_VALUE,
             Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY,
             Float.NaN)
@@ -134,7 +134,7 @@ class ArraySerializerTest {
       val cac7er = buildCac7er("doubleArray", testDir) {}
 
       val data = doubleArrayOf(
-            .0, .1, 1.0, 2.0, -1.0, -.0,
+            0.0, .1, 1.0, 2.0, -1.0, -0.0,
             Double.MAX_VALUE, Double.MIN_VALUE,
             Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
             Double.NaN)

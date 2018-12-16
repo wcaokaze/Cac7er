@@ -119,7 +119,7 @@ suspend fun <K, V> WritableRepository<K, V>
  * @return the content of LazyCache or null
  * @since 0.1.0
  */
-suspend fun <T> LazyCache<T>.getOrNull(accessCount: Float = .0f): T? {
+suspend fun <T> LazyCache<T>.getOrNull(accessCount: Float = 0.0f): T? {
    return try {
       get(accessCount)
    } catch (e: Exception) {
@@ -132,7 +132,7 @@ suspend fun <T> LazyCache<T>.getOrNull(accessCount: Float = .0f): T? {
  * @throws CancellationException when failed to load the content of LazyCache
  * @since 0.2.0
  */
-suspend fun <T> LazyCache<T>.getOrCancel(accessCount: Float = .0f): T {
+suspend fun <T> LazyCache<T>.getOrCancel(accessCount: Float = 0.0f): T {
    return try {
       get(accessCount)
    } catch (e: Exception) {

@@ -33,10 +33,16 @@ interface LazyCache<out T> {
     *
     * @since 0.1.0
     */
-   suspend fun get(time: Long, accessCount: Float = .0f): T
+   suspend fun get(time: Long, accessCount: Float = 0.0f): T
 
-   suspend fun get(accessCount: Float = .0f): T
+   suspend fun get(accessCount: Float = 0.0f): T
          = get(System.currentTimeMillis(), accessCount)
+
+   /**
+    * @return whether the cached instance is already exists on JVM memory.
+    * @since 0.3.0
+    */
+   val hasContent: Boolean
 
    /**
     * returns the cached instance if it already exists on JVM memory, otherwise
@@ -49,7 +55,7 @@ interface LazyCache<out T> {
     * @since 0.1.0
     */
    fun getIfAlreadyLoaded(time: Long = System.currentTimeMillis(),
-                          accessCount: Float = .0f): T?
+                          accessCount: Float = 0.0f): T?
 
    /**
     * adds a function to observe this cache. Note that observers are referenced
