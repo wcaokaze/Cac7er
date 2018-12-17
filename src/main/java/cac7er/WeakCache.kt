@@ -54,26 +54,26 @@ interface WeakCache<out T> {
     * adds a function to observe this cache. Note that observers are referenced
     * as [WeakReference]. Simplex lambda will be collected by GC. To avoid GC,
     * the observer instance should be owned by any other instance. The easiest
-    * way is using [addObserver(Any, (T) -> Unit)][addObserver].
+    * way is using [addObserver(Any, (Cache<T>, T) -> Unit)][addObserver].
     *
-    * @since 0.1.0
+    * @since 0.3.0
     */
-   fun addObserver(observer: (T) -> Unit)
+   fun addObserver(observer: (Cache<T>, T) -> Unit)
 
    /**
     * As mentioned in another overload, observers are referenced as
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 0.1.0
+    * @since 0.3.0
     */
-   fun addObserver(owner: Any, observer: (T) -> Unit)
+   fun addObserver(owner: Any, observer: (Cache<T>, T) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 0.1.0
+    * @since 0.3.0
     */
-   fun removeObserver(observer: (T) -> Unit)
+   fun removeObserver(observer: (Cache<T>, T) -> Unit)
 
    /**
     * converts this WeakCache to [Cache].

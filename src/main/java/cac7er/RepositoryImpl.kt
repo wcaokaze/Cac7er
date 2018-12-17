@@ -111,17 +111,17 @@ internal class RepositoryImpl<in K, V>
       return LazyCacheImpl(uniformizer)
    }
 
-   override fun addObserver(key: K, observer: (V) -> Unit) {
+   override fun addObserver(key: K, observer: (Cache<V>, V) -> Unit) {
       val fileName = fileNameSupplier(key)
       uniformizerPool[fileName].addObserver(observer)
    }
 
-   override fun addObserver(owner: Any, key: K, observer: (V) -> Unit) {
+   override fun addObserver(owner: Any, key: K, observer: (Cache<V>, V) -> Unit) {
       val fileName = fileNameSupplier(key)
       uniformizerPool[fileName].addObserver(owner, observer)
    }
 
-   override fun removeObserver(key: K, observer: (V) -> Unit) {
+   override fun removeObserver(key: K, observer: (Cache<V>, V) -> Unit) {
       val fileName = fileNameSupplier(key)
       uniformizerPool[fileName].removeObserver(observer)
    }

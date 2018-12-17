@@ -17,13 +17,17 @@ final class Uniformizer<T> {
    private T content;
    private CirculationRecord circulationRecord;
 
-   private final List<WeakReference<Function1<? super T, ?>>> observers
-         = Collections.synchronizedList(
-               new LinkedList<WeakReference<Function1<? super T, ?>>>());
+   private final List<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>
+         observers = Collections.synchronizedList(
+               new LinkedList<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>()
+         );
 
-   private final Map<Object, Function1<? super T, ?>> observerAssociator
-         = Collections.synchronizedMap(
-               new WeakHashMap<Object, Function1<? super T, ?>>());
+   private final Map<Object, Function2<Cache<? extends T>, ? super T, ?>>
+         observerAssociator = Collections.synchronizedMap(
+               new WeakHashMap<Object, Function2<Cache<? extends T>, ? super T, ?>>()
+         );
+
+   private final Cache<T> cacheForObserver = new CacheImpl<T>(this);
 
    /**
     * <pre>
@@ -94,7 +98,7 @@ final class Uniformizer<T> {
    final void setContent(final T content) {
       if (state == State.INITIALIZED) {
          this.content = content;
-         notifyObservers(content);
+         notifyObservers(cacheForObserver, content);
          return;
       }
 
@@ -110,7 +114,7 @@ final class Uniformizer<T> {
          }
       }
 
-      notifyObservers(content);
+      notifyObservers(cacheForObserver, content);
    }
 
    final State getState() {
@@ -153,24 +157,34 @@ final class Uniformizer<T> {
 
    // ==========================================================================
 
-   final void addObserver(final Function1<? super T, ?> observer) {
-      observers.add(new WeakReference<Function1<? super T, ?>>(observer));
+   final void addObserver
+         (final Function2<Cache<? extends T>, ? super T, ?> observer)
+   {
+      observers.add(
+            new WeakReference<Function2<Cache<? extends T>, ? super T, ?>>(observer)
+      );
    }
 
-   final void addObserver(final Object owner,
-                          final Function1<? super T, ?> observer)
+   final void addObserver(
+         final Object owner,
+         final Function2<Cache<? extends T>, ? super T, ?> observer)
    {
-      observers.add(new WeakReference<Function1<? super T, ?>>(observer));
+      observers.add(
+            new WeakReference<Function2<Cache<? extends T>, ? super T, ?>>(observer)
+      );
+
       observerAssociator.put(owner, observer);
    }
 
-   final void removeObserver(final Function1<? super T, ?> observer) {
+   final void removeObserver
+         (final Function2<Cache<? extends T>, ? super T, ?> observer)
+   {
       synchronized (observers) {
-         final Iterator<WeakReference<Function1<? super T, ?>>> iter
-               = observers.iterator();
+         final Iterator<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>
+               iter = observers.iterator();
 
          while (iter.hasNext()) {
-            final Function1<? super T, ?> o = iter.next().get();
+            final Function2<Cache<? extends T>, ? super T, ?> o = iter.next().get();
 
             if (o == observer) {
                iter.remove();
@@ -179,11 +193,11 @@ final class Uniformizer<T> {
       }
 
       synchronized (observerAssociator) {
-         final Iterator<Map.Entry<Object, Function1<? super T, ?>>> iter
-               = observerAssociator.entrySet().iterator();
+         final Iterator<Map.Entry<Object, Function2<Cache<? extends T>, ? super T, ?>>>
+               iter = observerAssociator.entrySet().iterator();
 
          while (iter.hasNext()) {
-            final Function1<? super T, ?> o = iter.next().getValue();
+            final Function2<Cache<? extends T>, ? super T, ?> o = iter.next().getValue();
 
             if (o == observer) {
                iter.remove();
@@ -202,29 +216,30 @@ final class Uniformizer<T> {
       state = State.INITIALIZED;
       notifyAll();
 
-      notifyObservers(content);
+      notifyObservers(cacheForObserver, content);
    }
 
-   private void notifyObservers(final T content) {
+   private void notifyObservers(final Cache<T> cache, final T content) {
       observerNotifierExecutor.execute(new Runnable() {
          @Override
          public void run() {
             synchronized (observers) {
-               final Iterator<WeakReference<Function1<? super T, ?>>> iter
-                     = observers.iterator();
+               final Iterator<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>
+                     iter = observers.iterator();
 
                while (iter.hasNext()) {
-                  final WeakReference<Function1<? super T, ?>>
+                  final WeakReference<Function2<Cache<? extends T>, ? super T, ?>>
                         observerRef = iter.next();
 
-                  final Function1<? super T, ?> observer = observerRef.get();
+                  final Function2<Cache<? extends T>, ? super T, ?>
+                        observer = observerRef.get();
 
                   if (observer == null) {
                      iter.remove();
                      continue;
                   }
 
-                  observer.invoke(content);
+                  observer.invoke(cache, content);
                }
             }
          }
