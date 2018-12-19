@@ -2,7 +2,7 @@
 
 # toWeakCache
 
-`abstract suspend fun toWeakCache(): `[`WeakCache`](../-weak-cache/index.md)`<`[`T`](index.md#T)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/LazyCache.kt#L92)
+`abstract suspend fun toWeakCache(): `[`WeakCache`](../-weak-cache/index.md)`<`[`T`](index.md#T)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/LazyCache.kt#L98)
 
 converts this LazyCache to [WeakCache](../-weak-cache/index.md).
 
