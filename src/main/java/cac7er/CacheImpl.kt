@@ -29,15 +29,15 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
       }
    }
 
-   override fun addObserver(observer: (T) -> Unit) {
+   override fun addObserver(observer: (Cache<T>, T) -> Unit) {
       uniformizer.addObserver(observer)
    }
 
-   override fun addObserver(owner: Any, observer: (T) -> Unit) {
+   override fun addObserver(owner: Any, observer: (Cache<T>, T) -> Unit) {
       uniformizer.addObserver(owner, observer)
    }
 
-   override fun removeObserver(observer: (T) -> Unit) {
+   override fun removeObserver(observer: (Cache<T>, T) -> Unit) {
       uniformizer.removeObserver(observer)
    }
 

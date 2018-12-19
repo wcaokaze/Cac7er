@@ -43,26 +43,26 @@ interface Repository<in K, out V> {
     * adds a function to observe a key. Note that observers are referenced
     * as [WeakReference]. Simplex lambda will be collected by GC. To avoid GC,
     * the observer instance should be owned by any other instance. The easiest
-    * way is using [addObserver(Any, (T) -> Unit)][addObserver].
+    * way is using [addObserver(Any, (Cache<T>, T) -> Unit)][addObserver].
     *
-    * @since 0.1.0
+    * @since 0.3.0
     */
-   fun addObserver(key: K, observer: (V) -> Unit)
+   fun addObserver(key: K, observer: (Cache<V>, V) -> Unit)
 
    /**
     * As mentioned in another overload, observers are referenced as
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 0.1.0
+    * @since 0.3.0
     */
-   fun addObserver(owner: Any, key: K, observer: (V) -> Unit)
+   fun addObserver(owner: Any, key: K, observer: (Cache<V>, V) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 0.1.0
+    * @since 0.3.0
     */
-   fun removeObserver(key: K, observer: (V) -> Unit)
+   fun removeObserver(key: K, observer: (Cache<V>, V) -> Unit)
 }
 
 /**
