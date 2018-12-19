@@ -2,7 +2,7 @@
 
 # toCache
 
-`abstract suspend fun toCache(): `[`Cache`](../-cache/index.md)`<`[`T`](index.md#T)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/LazyCache.kt#L86)
+`abstract suspend fun toCache(): `[`Cache`](../-cache/index.md)`<`[`T`](index.md#T)`>` [(source)](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/LazyCache.kt#L92)
 
 converts this LazyCache to [Cache](../-cache/index.md).
 
