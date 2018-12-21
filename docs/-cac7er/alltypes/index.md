@@ -8,9 +8,11 @@
 | [cac7er.Cache](../cac7er/-cache/index.md) | The interface between a Kotlin instance and a file. |
 | [cac7er.serializer.CacheInput](../cac7er.serializer/-cache-input.md) |  |
 | [cac7er.serializer.CacheOutput](../cac7er.serializer/-cache-output.md) |  |
+| [kotlinx.coroutines.CoroutineScope](../cac7er.projector/kotlinx.coroutines.-coroutine-scope/index.md) (extensions in package cac7er.projector) |  |
 | [cac7er.serializer.Deserializer](../cac7er.serializer/-deserializer.md) |  |
 | [cac7er.LazyCache](../cac7er/-lazy-cache/index.md) | Cache which doesn't load the content until calling [get](../cac7er/-lazy-cache/get.md). |
 | [cac7er.util.Pool](../cac7er.util/-pool/index.md) | looks like a [Map](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html) whose values are created automatically, and removed automatically. |
+| [cac7er.projector.Projector](../cac7er.projector/-projector/index.md) | Projects a [Cache](../cac7er/-cache/index.md) into a View. |
 | [cac7er.util.io.RelativePathResolver](../cac7er.util.io/-relative-path-resolver/index.md) | faster than Kotlin stdlib while all arguments must be normalized |
 | [cac7er.Repository](../cac7er/-repository/index.md) | Repository of [Cache](../cac7er/-cache/index.md)s. |
 | [cac7er.serializer.Serializer](../cac7er.serializer/-serializer.md) |  |

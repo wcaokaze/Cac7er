@@ -149,11 +149,11 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     *
     * This must be invoked on the UI thread.
     *
-    * This will invoke [onCacheUpdate] to project the cache, and will increase
+    * This will invoke onCacheUpdate to project the cache, and will increase
     * accessCount of the [Cache] is increased immediately.
     *
     * At some future time, the cache being updated,
-    * [onCacheUpdate] will be invoked again but it will not affect accessCount.
+    * onCacheUpdate will be invoked again but it will not affect accessCount.
     * accessCount increases only for the first time.
     */
    fun setCache(cache: Cache<T>, accessCount: Float) {
