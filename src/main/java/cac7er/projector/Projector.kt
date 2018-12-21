@@ -27,15 +27,15 @@ fun <T> CoroutineScope.Projector(onStartToLoadLazyCache: () -> Unit = {},
  * ```
  *
  * @param onNull
- *   called when [LazyCache] attempts to load the content(onStartToLoadLazyCache),
- *   when [LazyCache] failed to load the content(onFailedToLoadLazyCache),
- *   when set [WeakCache] is already deleted by GC(onSetDeletedCache),
+ *   called when [LazyCache] attempts to load the content (onStartToLoadLazyCache),
+ *   when [LazyCache] failed to load the content (onFailedToLoadLazyCache),
+ *   when set [WeakCache] is already deleted by GC (onSetDeletedCache),
  *   when the new content is null.
  *
  * @param onContent
  *   called when the [Cache] has been set a new non-null content.
  *
- * @since 0.3.0
+ * @since 0.4.0
  */
 @Suppress("FunctionName")
 fun <T> CoroutineScope.Projector(onNull: () -> Unit,
@@ -55,7 +55,7 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
 }
 
 /**
- * Projects a [Cache] into an Android View.
+ * Projects a [Cache] into a View.
  *
  * ```kotlin
  * private val projector = Projector<User> {
@@ -67,10 +67,49 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
  *    projector.setCache(userCache, accessCount = 1.0f)
  * }
  * ```
- * When the cache is updated, The Projector reruns its lambda.
+ * When the cache is updated, The Projector reruns its lambda. `accessCount` is
+ * increased on the first time (in [setCache]).
+ *
+ * Notice that `projector` is a property, not a local variable. This is
+ * to avoid GC. Projectors can be deleted by GC, and if deleted, it cannot
+ * observe the cache.
  *
  * As you know, Cac7er provides three types of cache;
  * [Cache], [WeakCache], [LazyCache]. Projector is adaptable to all of them.
+ *
+ *
+ * #### RecyclerView (Android)
+ *
+ * ViewHolders are recycled but it's alright for Projector.
+ * ```kotlin
+ * class UserViewHolder(context: Context)
+ *       : RecyclerView.ViewHolder(LinearLayout(context))
+ * {
+ *    private val usernameView: TextView
+ *
+ *    private val projector = Projector<User> {
+ *       usernameView.text = it.username
+ *    }
+ *
+ *    fun bind(userCache: Cache<User>) {
+ *       projector.setCache(userCache, accessCount = 1.0f)
+ *    }
+ *
+ *    init {
+ *       ko5hian(itemView as LinearLayout) {
+ *          layout.width  = MATCH_PARENT
+ *          layout.height = WRAP_CONTENT
+ *          view.orientation = VERTICAL
+ *
+ *          usernameView = textView {
+ *             layout.width  = WRAP_CONTENT
+ *             layout.height = WRAP_CONTENT
+ *          }
+ *       }
+ *    }
+ * }
+ * ```
+ *
  *
  * @param onStartToLoadLazyCache
  *   invoked when [setLazyCache] attempts to load the file.
