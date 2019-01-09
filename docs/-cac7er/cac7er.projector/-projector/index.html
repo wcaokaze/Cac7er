@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Projector - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er.projector</a>&nbsp;/&nbsp;<a href="./index.html">Projector</a><br/>
+<br/>
+<h1>Projector</h1>
+<code><span class="keyword">class </span><span class="identifier">Projector</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/projector/Projector.kt#L133">(source)</a>
+<p>Projects a <a href="../../cac7er/-cache/index.html">Cache</a> into a View.</p>
+<pre><code class="lang-kotlin">private val projector = Projector&lt;User&gt; {
+   usernameView  .text = it.username
+   screenNameView.text = it.screenName
+}
+
+fun setUser(userCache: Cache&lt;User&gt;) {
+   projector.setCache(userCache, accessCount = 1.0f)
+}
+</code></pre>
+<p>When the cache is updated, The Projector reruns its lambda. <code>accessCount</code> is
+increased on the first time (in <a href="set-cache.html">setCache</a>).</p>
+<p>Notice that <code>projector</code> is a property, not a local variable. This is
+to avoid GC. Projectors can be deleted by GC, and if deleted, it cannot
+observe the cache.</p>
+<p>As you know, Cac7er provides three types of cache;
+<a href="../../cac7er/-cache/index.html">Cache</a>, <a href="../../cac7er/-weak-cache/index.html">WeakCache</a>, <a href="../../cac7er/-lazy-cache/index.html">LazyCache</a>. Projector is adaptable to all of them.</p>
+<h4>RecyclerView (Android)</h4>
+<p>ViewHolders are recycled but it's alright for Projector.</p>
+<pre><code class="lang-kotlin">class UserViewHolder(context: Context)
+      : RecyclerView.ViewHolder(LinearLayout(context))
+{
+   private val usernameView: TextView
+
+   private val projector = Projector&lt;User&gt; {
+      usernameView.text = it.username
+   }
+
+   fun bind(userCache: Cache&lt;User&gt;) {
+      projector.setCache(userCache, accessCount = 1.0f)
+   }
+
+   init {
+      ko5hian(itemView as LinearLayout) {
+         layout.width  = MATCH_PARENT
+         layout.height = WRAP_CONTENT
+         view.orientation = VERTICAL
+
+         usernameView = textView {
+            layout.width  = WRAP_CONTENT
+            layout.height = WRAP_CONTENT
+         }
+      }
+   }
+}
+</code></pre>
+<h3>Parameters</h3>
+<p><a name="onStartToLoadLazyCache"></a>
+<code>onStartToLoadLazyCache</code> - invoked when <a href="set-lazy-cache.html">setLazyCache</a> attempts to load the file.
+Typically this function clears the view which is showing another
+Cache contents; since the view is a child of RecyclerView.</p>
+<p><a name="onFailedToLoadLazyCache"></a>
+<code>onFailedToLoadLazyCache</code> - invoked when <a href="set-lazy-cache.html">setLazyCache</a> fails to load the file.</p>
+<p><a name="onSetDeletedCache"></a>
+<code>onSetDeletedCache</code> - invoked when <a href="set-weak-cache.html">setWeakCache</a> attempts to set a WeakCache which is already
+deleted by GC.</p>
+<p><a name="onCacheUpdate"></a>
+<code>onCacheUpdate</code> - invoked when the content of <a href="../../cac7er/-cache/index.html">Cache</a> is rewritten.</p>
+<p><strong>Since</strong><br/>
+0.4.0</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Projector</span><span class="symbol">(</span><span class="identifier" id="cac7er.projector.Projector$<init>(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.projector.Projector.T, kotlin.Unit)))/coroutineScope">coroutineScope</span><span class="symbol">:</span>&nbsp;<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html"><span class="identifier">CoroutineScope</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$<init>(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.projector.Projector.T, kotlin.Unit)))/onStartToLoadLazyCache">onStartToLoadLazyCache</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$<init>(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.projector.Projector.T, kotlin.Unit)))/onFailedToLoadLazyCache">onFailedToLoadLazyCache</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-exception/index.html"><span class="identifier">Exception</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$<init>(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.projector.Projector.T, kotlin.Unit)))/onSetDeletedCache">onSetDeletedCache</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../../cac7er/-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$<init>(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.projector.Projector.T, kotlin.Unit)))/onUnset">onUnset</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$<init>(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.projector.Projector.T, kotlin.Unit)))/onCacheUpdate">onCacheUpdate</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span></code>
+<p>Projects a <a href="../../cac7er/-cache/index.html">Cache</a> into a View.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="set-cache.html">setCache</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.projector.Projector$setCache(cac7er.Cache((cac7er.projector.Projector.T)), kotlin.Float)/cache">cache</span><span class="symbol">:</span>&nbsp;<a href="../../cac7er/-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$setCache(cac7er.Cache((cac7er.projector.Projector.T)), kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>set a <a href="../../cac7er/-cache/index.html">Cache</a> to this projector.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-lazy-cache.html">setLazyCache</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setLazyCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.projector.Projector$setLazyCache(cac7er.LazyCache((cac7er.projector.Projector.T)), kotlin.Float)/lazyCache">lazyCache</span><span class="symbol">:</span>&nbsp;<a href="../../cac7er/-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$setLazyCache(cac7er.LazyCache((cac7er.projector.Projector.T)), kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>set a <a href="../../cac7er/-lazy-cache/index.html">LazyCache</a> to this projector.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-weak-cache.html">setWeakCache</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setWeakCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.projector.Projector$setWeakCache(cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Float)/weakCache">weakCache</span><span class="symbol">:</span>&nbsp;<a href="../../cac7er/-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.projector.Projector$setWeakCache(cac7er.WeakCache((cac7er.projector.Projector.T)), kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>set a <a href="../../cac7er/-weak-cache/index.html">WeakCache</a> to this projector.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="unset.html">unset</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">unset</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>unset the <a href="../../cac7er/-cache/index.html">Cache</a> (or <a href="../../cac7er/-weak-cache/index.html">WeakCache</a>, <a href="../../cac7er/-lazy-cache/index.html">LazyCache</a>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

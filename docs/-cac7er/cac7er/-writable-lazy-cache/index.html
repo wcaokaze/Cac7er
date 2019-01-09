@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WritableLazyCache - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="./index.html">WritableLazyCache</a><br/>
+<br/>
+<h1>WritableLazyCache</h1>
+<code><span class="keyword">interface </span><span class="identifier">WritableLazyCache</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/LazyCache.kt#L105">(source)</a>
+<p>Writable LazyCache. The name says it all.</p>
+<p><strong>Since</strong><br/>
+0.1.0</p>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-lazy-cache/has-content.html">hasContent</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">hasContent</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="save.html">save</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">save</span><span class="symbol">(</span><span class="identifier" id="cac7er.WritableLazyCache$save(cac7er.WritableLazyCache.T)/content">content</span><span class="symbol">:</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>caches the new instance.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-cache.html">toCache</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">toCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>converts this WritableLazyCache to <a href="../-writable-cache/index.html">WritableCache</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-weak-cache.html">toWeakCache</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">toWeakCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>converts this WritableLazyCache to <a href="../-writable-weak-cache/index.html">WritableWeakCache</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-lazy-cache/add-observer.html">addObserver</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">addObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$addObserver(kotlin.Function2((cac7er.Cache((cac7er.LazyCache.T)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>adds a function to observe this cache. Note that observers are referenced
+as <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ref/WeakReference.html">WeakReference</a>. Simplex lambda will be collected by GC. To avoid GC,
+the observer instance should be owned by any other instance. The easiest
+way is using <a href="../-lazy-cache/add-observer.html">addObserver(Any, (Cache, T) -&gt; Unit)</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">addObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$addObserver(kotlin.Any, kotlin.Function2((cac7er.Cache((cac7er.LazyCache.T)), , kotlin.Unit)))/owner">owner</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.LazyCache$addObserver(kotlin.Any, kotlin.Function2((cac7er.Cache((cac7er.LazyCache.T)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>As mentioned in another overload, observers are referenced as
+<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ref/WeakReference.html">WeakReference</a>. In this function the observer is associated with the
+specified owner instance, and can observe until the owner is GCed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-lazy-cache/get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$get(kotlin.Long, kotlin.Float)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.LazyCache$get(kotlin.Long, kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$get(kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-lazy-cache/get-if-already-loaded.html">getIfAlreadyLoaded</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getIfAlreadyLoaded</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$getIfAlreadyLoaded(kotlin.Long, kotlin.Float)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;System.currentTimeMillis()<span class="symbol">, </span><span class="identifier" id="cac7er.LazyCache$getIfAlreadyLoaded(kotlin.Long, kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code>
+<p>returns the cached instance if it already exists on JVM memory, otherwise
+returns <code>null</code>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-lazy-cache/remove-observer.html">removeObserver</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">removeObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$removeObserver(kotlin.Function2((cac7er.Cache((cac7er.LazyCache.T)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="../-lazy-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>removes the observer. The name says it all.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../get-or-cancel.html">getOrCancel</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><a href="../get-or-cancel.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">getOrCancel</span><span class="symbol">(</span><span class="identifier" id="cac7er$getOrCancel(cac7er.LazyCache((cac7er.getOrCancel.T)), kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><a href="../get-or-cancel.html#T"><span class="identifier">T</span></a></code>
+<p>loads the content or throws <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-cancellation-exception/index.html">CancellationException</a> if failed</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../get-or-null.html">getOrNull</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><a href="../get-or-null.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">getOrNull</span><span class="symbol">(</span><span class="identifier" id="cac7er$getOrNull(cac7er.LazyCache((cac7er.getOrNull.T)), kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><a href="../get-or-null.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code>
+<p>loads the content or returns null if failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

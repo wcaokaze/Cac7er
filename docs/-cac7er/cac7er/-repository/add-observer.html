@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Repository.addObserver - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="index.html">Repository</a>&nbsp;/&nbsp;<a href="./add-observer.html">addObserver</a><br/>
+<br/>
+<h1>addObserver</h1>
+<a name="cac7er.Repository$addObserver(cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">addObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.Repository$addObserver(cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Repository$addObserver(cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Repository.kt#L50">(source)</a>
+<p>adds a function to observe a key. Note that observers are referenced
+as <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ref/WeakReference.html">WeakReference</a>. Simplex lambda will be collected by GC. To avoid GC,
+the observer instance should be owned by any other instance. The easiest
+way is using <a href="./add-observer.html">addObserver(Any, (Cache, T) -&gt; Unit)</a>.</p>
+<p><strong>Since</strong><br/>
+0.3.0</p>
+<a name="cac7er.Repository$addObserver(kotlin.Any, cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">addObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.Repository$addObserver(kotlin.Any, cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))/owner">owner</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Repository$addObserver(kotlin.Any, cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Repository$addObserver(kotlin.Any, cac7er.Repository.K, kotlin.Function2((cac7er.Cache((cac7er.Repository.V)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Repository.kt#L59">(source)</a>
+<p>As mentioned in another overload, observers are referenced as
+<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ref/WeakReference.html">WeakReference</a>. In this function the observer is associated with the
+specified owner instance, and can observe until the owner is GCed.</p>
+<p><strong>Since</strong><br/>
+0.3.0</p>
+</BODY>
+</HTML>

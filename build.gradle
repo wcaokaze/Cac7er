@@ -53,7 +53,7 @@ compileTestKotlin {
 
 dokka {
     moduleName = 'Cac7er'
-    outputFormat = 'gfm'
+    outputFormat = 'html'
     outputDirectory = 'docs'
 
     includes = ['src/main/java/packages.md']
