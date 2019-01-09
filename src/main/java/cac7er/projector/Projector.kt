@@ -8,11 +8,12 @@ import kotlinx.coroutines.*
 fun <T> CoroutineScope.Projector(onStartToLoadLazyCache: () -> Unit = {},
                                  onFailedToLoadLazyCache: (Exception) -> Unit = {},
                                  onSetDeletedCache: (WeakCache<T>) -> Unit = {},
+                                 onUnset: () -> Unit,
                                  onCacheUpdate: (T) -> Unit): Projector<T>
 {
    return Projector(this,
       onStartToLoadLazyCache, onFailedToLoadLazyCache,
-      onSetDeletedCache, onCacheUpdate)
+      onSetDeletedCache, onUnset, onCacheUpdate)
 }
 
 /**
@@ -42,16 +43,17 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
                                  onContent: (T) -> Unit): Projector<T?>
 {
    return Projector(this,
-      onStartToLoadLazyCache  = onNull,
-      onFailedToLoadLazyCache = { onNull() },
-      onSetDeletedCache       = { onNull() },
-      onCacheUpdate = {
-         if (it == null) {
-            onNull()
-         } else {
-            onContent(it)
-         }
-      })
+         onStartToLoadLazyCache  = onNull,
+         onFailedToLoadLazyCache = { onNull() },
+         onSetDeletedCache       = { onNull() },
+         onUnset                 = { onNull() },
+         onCacheUpdate = {
+            if (it == null) {
+               onNull()
+            } else {
+               onContent(it)
+            }
+         })
 }
 
 /**
@@ -125,11 +127,14 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
  *
  * @param onCacheUpdate
  *   invoked when the content of [Cache] is rewritten.
+ *
+ * @since 0.4.0
  */
 class Projector<in T>(private val coroutineScope: CoroutineScope,
                       private val onStartToLoadLazyCache: () -> Unit = {},
                       private val onFailedToLoadLazyCache: (Exception) -> Unit = {},
                       private val onSetDeletedCache: (WeakCache<T>) -> Unit = {},
+                      private val onUnset: () -> Unit = {},
                       private val onCacheUpdate: (T) -> Unit)
 {
    private val observer: (Cache<T>, T) -> Unit = { cache, cacheContent ->
@@ -145,6 +150,18 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
    private var _cache: Cache<T>? = null
 
    /**
+    * unset the [Cache] (or [WeakCache], [LazyCache]).
+    *
+    * @since 0.5.0
+    */
+   fun unset() {
+      _cache?.removeObserver(observer)
+      _cache = null
+
+      onUnset()
+   }
+
+   /**
     * set a [Cache] to this projector.
     *
     * This must be invoked on the UI thread.
@@ -155,6 +172,8 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     * At some future time, the cache being updated,
     * onCacheUpdate will be invoked again but it will not affect accessCount.
     * accessCount increases only for the first time.
+    *
+    * @since 0.4.0
     */
    fun setCache(cache: Cache<T>, accessCount: Float) {
       _cache?.removeObserver(observer)
@@ -170,6 +189,8 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     *
     * Almost same as [setCache], except that this function may load the LazyCache
     * if necessary.
+    *
+    * @since 0.4.0
     */
    fun setLazyCache(lazyCache: LazyCache<T>, accessCount: Float) {
       coroutineScope.launch(Dispatchers.Main, CoroutineStart.UNDISPATCHED) {
@@ -199,6 +220,8 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     * set a [WeakCache] to this projector.
     *
     * Almost same as [setCache].
+    *
+    * @since 0.4.0
     */
    fun setWeakCache(weakCache: WeakCache<T>, accessCount: Float) {
       _cache?.removeObserver(observer)

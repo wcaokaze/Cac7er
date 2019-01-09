@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Cac7er.Builder - Cac7er</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../../index.html">cac7er</a>&nbsp;/&nbsp;<a href="../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="./index.html">Builder</a><br/>
+<br/>
+<h1>Builder</h1>
+<code><span class="keyword">class </span><span class="identifier">Builder</span></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/Cac7er.kt#L72">(source)</a>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Builder</span><span class="symbol">(</span><span class="identifier" id="cac7er.Cac7er.Builder$<init>(kotlin.String)/cac7erName">cac7erName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="delegatees.html">delegatees</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">delegatees</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="../index.html"><span class="identifier">Cac7er</span></a><span class="symbol">&gt;</span></code>
+<p>Normally, a instance of Cac7er cannot manage repositories in another
+Cac7er.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="ideal-total-file-size.html">idealTotalFileSize</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">idealTotalFileSize</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>The total size of cache files to run <a href="../gc.html">gc</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="build.html">build</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">build</span><span class="symbol">(</span><span class="identifier" id="cac7er.Cac7er.Builder$build(java.io.File)/dir">dir</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html"><span class="identifier">File</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../index.html"><span class="identifier">Cac7er</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="create-repository.html">createRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <span class="identifier">createRepository</span><span class="symbol">(</span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/serializer">serializer</span><span class="symbol">:</span>&nbsp;<a href="../../../cac7er.serializer/-serializer.html"><span class="identifier">Serializer</span></a><span class="symbol">&lt;</span><a href="create-repository.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/deserializer">deserializer</span><span class="symbol">:</span>&nbsp;<a href="../../../cac7er.serializer/-deserializer.html"><span class="identifier">Deserializer</span></a><span class="symbol">&lt;</span><a href="create-repository.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../-writable-repository/index.html"><span class="identifier">WritableRepository</span></a><span class="symbol">&lt;</span><a href="create-repository.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="create-repository.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>equivalent to</p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <span class="identifier">createRepository</span><span class="symbol">(</span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function1((cac7er.Cac7er.Builder.createRepository.K, kotlin.String)), kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function1((cac7er.Cac7er.Builder.createRepository.K, kotlin.String)), kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/fileNameSupplier">fileNameSupplier</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="create-repository.html#K"><span class="identifier">K</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function1((cac7er.Cac7er.Builder.createRepository.K, kotlin.String)), kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/serializer">serializer</span><span class="symbol">:</span>&nbsp;<a href="../../../cac7er.serializer/-serializer.html"><span class="identifier">Serializer</span></a><span class="symbol">&lt;</span><a href="create-repository.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.Cac7er.Builder$createRepository(kotlin.String, kotlin.Function1((cac7er.Cac7er.Builder.createRepository.K, kotlin.String)), kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.Cac7er.Builder.createRepository.V, kotlin.Unit)), kotlin.Function1((cac7er.serializer.CacheInput, cac7er.Cac7er.Builder.createRepository.V)))/deserializer">deserializer</span><span class="symbol">:</span>&nbsp;<a href="../../../cac7er.serializer/-deserializer.html"><span class="identifier">Deserializer</span></a><span class="symbol">&lt;</span><a href="create-repository.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../-writable-repository/index.html"><span class="identifier">WritableRepository</span></a><span class="symbol">&lt;</span><a href="create-repository.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="create-repository.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
