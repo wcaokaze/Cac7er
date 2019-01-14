@@ -162,6 +162,23 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
    }
 
    /**
+    * set an instance.
+    *
+    * Of course this cannot observe any [Cache]. Projector will call
+    * onCacheUpdate exactly once and will never call any more, until this
+    * Projector is set another [Cache].
+    *
+    * @since 0.6.0
+    */
+   fun setStatic(content: T) {
+      _cache?.removeObserver(observer)
+
+      onCacheUpdate(content)
+
+      _cache = null
+   }
+
+   /**
     * set a [Cache] to this projector.
     *
     * This must be invoked on the UI thread.
