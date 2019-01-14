@@ -58,16 +58,18 @@ observe the cache.</p>
 </code></pre>
 <h3>Parameters</h3>
 <p><a name="onStartToLoadLazyCache"></a>
-<code>onStartToLoadLazyCache</code> - invoked when <a href="set-lazy-cache.html">setLazyCache</a> attempts to load the file.
+<code>onStartToLoadLazyCache</code> - will be invoked when <a href="set-lazy-cache.html">setLazyCache</a> attempts to load the file.
 Typically this function clears the view which is showing another
 Cache contents; since the view is a child of RecyclerView.</p>
 <p><a name="onFailedToLoadLazyCache"></a>
-<code>onFailedToLoadLazyCache</code> - invoked when <a href="set-lazy-cache.html">setLazyCache</a> fails to load the file.</p>
+<code>onFailedToLoadLazyCache</code> - will be invoked when <a href="set-lazy-cache.html">setLazyCache</a> fails to load the file.</p>
 <p><a name="onSetDeletedCache"></a>
-<code>onSetDeletedCache</code> - invoked when <a href="set-weak-cache.html">setWeakCache</a> attempts to set a WeakCache which is already
+<code>onSetDeletedCache</code> - will be invoked when <a href="set-weak-cache.html">setWeakCache</a> attempts to set a WeakCache which is already
 deleted by GC.</p>
+<p><a name="onUnset"></a>
+<code>onUnset</code> - will be invoked when <a href="unset.html">unset</a> is called.</p>
 <p><a name="onCacheUpdate"></a>
-<code>onCacheUpdate</code> - invoked when the content of <a href="../../cac7er/-cache/index.html">Cache</a> is rewritten.</p>
+<code>onCacheUpdate</code> - will be invoked when the content of <a href="../../cac7er/-cache/index.html">Cache</a> is rewritten.</p>
 <p><strong>Since</strong><br/>
 0.4.0</p>
 </BODY>
