@@ -114,19 +114,22 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
  *
  *
  * @param onStartToLoadLazyCache
- *   invoked when [setLazyCache] attempts to load the file.
+ *   will be invoked when [setLazyCache] attempts to load the file.
  *   Typically this function clears the view which is showing another
  *   Cache contents; since the view is a child of RecyclerView.
  *
  * @param onFailedToLoadLazyCache
- *   invoked when [setLazyCache] fails to load the file.
+ *   will be invoked when [setLazyCache] fails to load the file.
  *
  * @param onSetDeletedCache
- *   invoked when [setWeakCache] attempts to set a WeakCache which is already
+ *   will be invoked when [setWeakCache] attempts to set a WeakCache which is already
  *   deleted by GC.
  *
+ * @param onUnset
+ *   will be invoked when [unset] is called.
+ *
  * @param onCacheUpdate
- *   invoked when the content of [Cache] is rewritten.
+ *   will be invoked when the content of [Cache] is rewritten.
  *
  * @since 0.4.0
  */
