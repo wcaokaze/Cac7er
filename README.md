@@ -24,6 +24,12 @@ Requirements
 - [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines)
 
 
+Documents
+--------------------------------------------------------------------------------
+
+[KDoc](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/pages/-cac7er/index.html)
+
+
 Tutorial
 --------------------------------------------------------------------------------
 
