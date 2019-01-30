@@ -37,7 +37,15 @@ fun <T> CacheOutput.writeCache(value: Cache<T>) {
    dependence += targetFile.absolutePath
 }
 
-fun <T> CacheInput.readCache(): Cache<T> {
+/** @since 0.6.1 */
+fun <T> CacheOutput.writeWritableCache(value: WritableCache<T>)
+      = writeCache(value)
+
+fun <T> CacheInput.readCache(): Cache<T>
+      = readWritableCache()
+
+/** @since 0.6.1 */
+fun <T> CacheInput.readWritableCache(): WritableCache<T> {
    val repositoryIndex = readInt()
    val fileName = readString()
 
@@ -45,8 +53,10 @@ fun <T> CacheInput.readCache(): Cache<T> {
          ?: throw IOException("Cac7er which wrote the file is not in delegatee.")
 
    @Suppress("UNCHECKED_CAST")
-   return repository.loadBlocking(fileName) as Cache<T>
+   return repository.loadBlocking(fileName) as WritableCache<T>
 }
+
+// =============================================================================
 
 fun <T> CacheOutput.writeLazyCache(value: LazyCache<T>) {
    val cache = value as? LazyCacheImpl<T> ?: throw IllegalArgumentException()
@@ -71,7 +81,15 @@ fun <T> CacheOutput.writeLazyCache(value: LazyCache<T>) {
    dependence += targetFile.absolutePath
 }
 
-fun <T> CacheInput.readLazyCache(): LazyCache<T> {
+/** @since 0.6.1 */
+fun <T> CacheOutput.writeWritableLazyCache(value: WritableLazyCache<T>)
+      = writeLazyCache(value)
+
+fun <T> CacheInput.readLazyCache(): LazyCache<T>
+      = readWritableLazyCache()
+
+/** @since 0.6.1 */
+fun <T> CacheInput.readWritableLazyCache(): WritableLazyCache<T> {
    val repositoryIndex = readInt()
    val fileName = readString()
 
@@ -79,8 +97,10 @@ fun <T> CacheInput.readLazyCache(): LazyCache<T> {
          ?: throw IOException("Cac7er which wrote the file is not in delegatee.")
 
    @Suppress("UNCHECKED_CAST")
-   return repository.loadLazyCacheBlocking(fileName) as LazyCache<T>
+   return repository.loadLazyCacheBlocking(fileName) as WritableLazyCache<T>
 }
+
+// =============================================================================
 
 fun <T> CacheOutput.writeWeakCache(value: WeakCache<T>) {
    val cache = value as? WeakCacheImpl<T> ?: throw IllegalArgumentException()
@@ -101,7 +121,15 @@ fun <T> CacheOutput.writeWeakCache(value: WeakCache<T>) {
    writeString(cache.fileName)
 }
 
-fun <T> CacheInput.readWeakCache(): WeakCache<T> {
+/** @since 0.6.1 */
+fun <T> CacheOutput.writeWritableWeakCache(value: WritableWeakCache<T>)
+      = writeWeakCache(value)
+
+/** @since 0.6.1 */
+fun <T> CacheInput.readWeakCache(): WeakCache<T>
+      = readWritableWeakCache()
+
+fun <T> CacheInput.readWritableWeakCache(): WritableWeakCache<T> {
    val repositoryIndex = readInt()
    val fileName = readString()
 
@@ -109,5 +137,5 @@ fun <T> CacheInput.readWeakCache(): WeakCache<T> {
          ?: throw IOException("Cac7er which wrote the file is not in delegatee.")
 
    @Suppress("UNCHECKED_CAST")
-   return repository.loadWeakCacheBlocking(fileName) as WeakCache<T>
+   return repository.loadWeakCacheBlocking(fileName) as WritableWeakCache<T>
 }
