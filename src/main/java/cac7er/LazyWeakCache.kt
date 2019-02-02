@@ -4,26 +4,15 @@ import java.io.*
 import java.lang.ref.*
 
 /**
- * Cache which doesn't depend on the content. See [Cac7er.gc] first.
+ * Cache which has features both [LazyCache] and [WeakCache].
  *
- * ```kotlin
- * class A
- * class B(val aCache: WeakCache<A>)
- * //                  ^^^^
+ * The content is not loaded until calling [get]. [gc][Cac7er.gc] doesn't mind
+ * relationship, gc can delete LazyWeakCache even if it is depended by another
+ * Cache.
  *
- * val aCache = aRepository.save("a", A())
- * val bCache = bRepository.save("b", B(aCache))
- *
- * // ...
- *
- * Cac7er.gc(100L)
- * ```
- *
- * Then, [gc][Cac7er.gc] doesn't mind relationship, does delete `a` freely.
- *
- * @since 0.1.0
+ * @since 0.7.0
  */
-interface WeakCache<out T> {
+interface LazyWeakCache<out T> {
    /**
     * @param time
     *   the time when the Cache is accessed. [Cac7er.gc] makes this a criteria
@@ -43,12 +32,31 @@ interface WeakCache<out T> {
     *   [ClassCastException] is thrown by a cast operation complemented by
     *   the compiler.
     *
-    * @since 0.1.0
+    * @since 0.7.0
     */
-   fun get(time: Long, accessCount: Float = 0.0f): T?
+   suspend fun get(time: Long, accessCount: Float = 0.0f): T?
 
-   fun get(accessCount: Float = 0.0f): T?
+   suspend fun get(accessCount: Float = 0.0f): T?
          = get(System.currentTimeMillis(), accessCount)
+
+   /**
+    * @return whether the cached instance is already exists on JVM memory.
+    * @since 0.7.0
+    */
+   val hasContent: Boolean
+
+   /**
+    * returns the cached instance if it already exists on JVM memory, otherwise
+    * returns `null`.
+    *
+    * time and accessCount only affect when the cached instance is returned.
+    *
+    * @return the cached instance if it exists on JVM memory, otherwise `null`.
+    * @throws ClassCastException
+    * @since 0.7.0
+    */
+   fun getIfAlreadyLoaded(time: Long = System.currentTimeMillis(),
+                          accessCount: Float = 0.0f): T?
 
    /**
     * adds a function to observe this cache. Note that observers are referenced
@@ -56,7 +64,10 @@ interface WeakCache<out T> {
     * the observer instance should be owned by any other instance. The easiest
     * way is using [addObserver(Any, (Cache<T>, T) -> Unit)][addObserver].
     *
-    * @since 0.3.0
+    * The observer also will be called when [get] has been completed to load the
+    * content.
+    *
+    * @since 0.7.0
     */
    fun addObserver(observer: (Cache<T>, T) -> Unit)
 
@@ -65,13 +76,13 @@ interface WeakCache<out T> {
     * [WeakReference]. In this function the observer is associated with the
     * specified owner instance, and can observe until the owner is GCed.
     *
-    * @since 0.3.0
+    * @since 0.7.0
     */
    fun addObserver(owner: Any, observer: (Cache<T>, T) -> Unit)
 
    /**
     * removes the observer. The name says it all.
-    * @since 0.3.0
+    * @since 0.7.0
     */
    fun removeObserver(observer: (Cache<T>, T) -> Unit)
 
@@ -79,59 +90,63 @@ interface WeakCache<out T> {
     * converts this WeakCache to [Cache].
     *
     * @return Cache or null if the cache was deleted by GC.
-    * @since 0.1.0
+    * @since 0.7.0
     */
-   fun toCache(): Cache<T>?
+   suspend fun toCache(): Cache<T>?
 
    /**
     * converts this WeakCache to [LazyCache].
     *
+    * This may suspend to check if the cache is deleted.
+    *
     * @return LazyCache or null if the cache was deleted by GC.
-    * @since 0.1.0
-    */
-   fun toLazyCache(): LazyCache<T>?
-
-   /**
-    * converts this WeakCache to [LazyWeakCache].
     * @since 0.7.0
     */
-   fun toLazyWeakCache(): LazyWeakCache<T>
+   suspend fun toLazyCache(): LazyCache<T>?
+
+   /**
+    * converts this LazyWeakCache to [WeakCache].
+    * @since 0.7.0
+    */
+   suspend fun toWeakCache(): WeakCache<T>
 }
 
 /**
- * Writable WeakCache. The name says it all.
- * @since 0.1.0
+ * Writable LazyWeakCache. The name says it all.
+ * @since 0.7.0
  */
-interface WritableWeakCache<T> : WeakCache<T> {
+interface WritableLazyWeakCache<T> : LazyWeakCache<T> {
    /**
     * caches the new instance.
     *
     * This function replaces the instance on JVM memory and returns immediately.
     * Some other thread writes it into the file at some future time.
     *
-    * @since 0.1.0
+    * @since 0.7.0
     */
    fun save(content: T)
 
    /**
-    * converts this WritableWeakCache to [WritableCache].
+    * converts this WritableLazyWeakCache to [WritableCache].
     *
     * @return WritableCache or null if the cache was deleted by GC.
-    * @since 0.1.0
+    * @since 0.7.0
     */
-   override fun toCache(): WritableCache<T>?
+   override suspend fun toCache(): WritableCache<T>
 
    /**
     * converts this WritableWeakCache to [WritableLazyCache].
     *
+    * This may suspend to check if the cache is deleted.
+    *
     * @return WritableLazyCache or null if the cache was deleted by GC.
-    * @since 0.1.0
-    */
-   override fun toLazyCache(): WritableLazyCache<T>?
-
-   /**
-    * converts this WritableWeakCache to [WritableLazyWeakCache].
     * @since 0.7.0
     */
-   override fun toLazyWeakCache(): WritableLazyWeakCache<T>
+   override suspend fun toLazyCache(): WritableLazyCache<T>?
+
+   /**
+    * converts this WritableLazyWeakCache to [WritableWeakCache].
+    * @since 0.7.0
+    */
+   override suspend fun toWeakCache(): WritableWeakCache<T>
 }

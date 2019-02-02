@@ -96,6 +96,12 @@ interface LazyCache<out T> {
     * @since 0.1.0
     */
    suspend fun toWeakCache(): WeakCache<T>
+
+   /**
+    * converts this LazyCache to [LazyWeakCache].
+    * @since 0.7.0
+    */
+   fun toLazyWeakCache(): LazyWeakCache<T>
 }
 
 /**
@@ -124,4 +130,10 @@ interface WritableLazyCache<T> : LazyCache<T> {
     * @since 0.1.0
     */
    override suspend fun toWeakCache(): WritableWeakCache<T>
+
+   /**
+    * converts this WritableLazyCache to [WritableLazyWeakCache].
+    * @since 0.7.0
+    */
+   override fun toLazyWeakCache(): WritableLazyWeakCache<T>
 }
