@@ -14,8 +14,12 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
 
       if (accessCount != .0f) {
          uniformizer.repository.launch(writerCoroutineDispatcher) {
-            uniformizer.circulationRecord.add(time, accessCount)
-            saveCirculationRecord(uniformizer)
+            try {
+               uniformizer.circulationRecord.add(time, accessCount)
+               saveCirculationRecord(uniformizer)
+            } catch (e: Exception) {
+               // ignore
+            }
          }
       }
 
@@ -26,8 +30,12 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       uniformizer.content = content
 
       uniformizer.repository.launch(writerCoroutineDispatcher) {
-         save(uniformizer)
-         cac7er.autoGc()
+         try {
+            save(uniformizer)
+            cac7er.autoGc()
+         } catch (e: Exception) {
+            // ignore
+         }
       }
    }
 

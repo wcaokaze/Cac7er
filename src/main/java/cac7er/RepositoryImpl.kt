@@ -51,8 +51,12 @@ internal class RepositoryImpl<in K, V>
       uniformizer.content = value
 
       launch(writerCoroutineDispatcher) {
-         save(uniformizer)
-         cac7er.autoGc()
+         try {
+            save(uniformizer)
+            cac7er.autoGc()
+         } catch (e: Exception) {
+            // ignore
+         }
       }
 
       return CacheImpl(uniformizer)
