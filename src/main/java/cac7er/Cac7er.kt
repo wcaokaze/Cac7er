@@ -264,7 +264,7 @@ class Cac7er
    fun gc(idealTotalFileSize: Long): Job {
       if (gcJob?.isCompleted == false) return gcJob!!
 
-      gcJob = launch(writerCoroutineDispatcher) {
+      gcJob = launch(writerCoroutineDispatcher + SupervisorJob()) {
          val metadataList = loadAllMetadata()
 
          class Relationship {

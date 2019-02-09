@@ -50,7 +50,7 @@ internal class RepositoryImpl<in K, V>
 
       uniformizer.content = value
 
-      launch(writerCoroutineDispatcher) {
+      launch(writerCoroutineDispatcher + SupervisorJob()) {
          try {
             save(uniformizer)
             cac7er.autoGc()
@@ -135,7 +135,7 @@ internal suspend fun Uniformizer<*>.loadIfNecessary() {
    if (state != Uniformizer.State.EMPTY) return
 
    onStartToLoadContent()
-   repository.async { load(this@loadIfNecessary) } .await()
+   repository.async(SupervisorJob()) { load(this@loadIfNecessary) } .await()
 }
 
 internal fun Uniformizer<*>.loadBlockingIfNecessary() {

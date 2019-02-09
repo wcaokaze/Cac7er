@@ -11,7 +11,7 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
 
    override fun get(time: Long, accessCount: Float): T {
       if (accessCount != 0.0f) {
-         uniformizer.repository.launch(writerCoroutineDispatcher) {
+         uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
             try {
                uniformizer.circulationRecord.add(time, accessCount)
                saveCirculationRecord(uniformizer)
@@ -27,7 +27,7 @@ internal class CacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun save(content: T) {
       uniformizer.content = content
 
-      uniformizer.repository.launch(writerCoroutineDispatcher) {
+      uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
          try {
             save(uniformizer)
             cac7er.autoGc()
