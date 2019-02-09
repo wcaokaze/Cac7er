@@ -7,12 +7,12 @@ import java.io.*
 private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
 
 /*
- * 0 MAGIC_NUMBER (4bytes)
- * 4 dependencePosition (2bytes)
- * 6 circulationRecordPosition (2bytes)
- * 8 content
- * ? dependence
- * ? circulationRecord
+ *  0 MAGIC_NUMBER (4bytes)
+ *  4 dependencePosition (4bytes)
+ *  8 circulationRecordPosition (4bytes)
+ * 12 content
+ *  ? dependence
+ *  ? circulationRecord
  */
 
 /**
@@ -40,7 +40,7 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
 
    RandomAccessFile(tmpFile, "rw").use {
       it.writeInt(MAGIC_NUMBER)
-      it.seek(8L)
+      it.seek(12L)
 
       val output = CacheOutput(it, cacheFile, uniformizer.repository.cac7er)
 
@@ -52,13 +52,13 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
       val circulationRecordPosition = it.filePointer
       uniformizer.circulationRecord.writeTo(it)
 
-      if (circulationRecordPosition > 65535) {
+      if (circulationRecordPosition > Int.MAX_VALUE) {
          throw IOException("The cache is too huge.")
       }
 
       it.seek(4L)
-      it.writeShort(dependencePosition.toInt())
-      it.writeShort(circulationRecordPosition.toInt())
+      it.writeInt(dependencePosition.toInt())
+      it.writeInt(circulationRecordPosition.toInt())
    }
 
    if (!tmpFile.renameTo(cacheFile)) {
@@ -77,9 +77,9 @@ internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
 
    if (file.exists()) {
       RandomAccessFile(file, "rw").use {
-         it.seek(6L)
+         it.seek(8L)
 
-         val circulationRecordPosition = it.readUnsignedShort().toLong()
+         val circulationRecordPosition = it.readInt().toLong()
          it.seek(circulationRecordPosition)
 
          uniformizer.circulationRecord.writeTo(it)
@@ -109,8 +109,8 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
       }
 
       @Suppress("UNUSED_VARIABLE")
-      val dependencePosition        = it.readUnsignedShort().toLong()
-      val circulationRecordPosition = it.readUnsignedShort().toLong()
+      val dependencePosition        = it.readInt().toLong()
+      val circulationRecordPosition = it.readInt().toLong()
 
       val input = CacheInput(it, uniformizer.repository.cac7er)
 
@@ -142,7 +142,7 @@ internal fun loadMetadata(file: File): Metadata {
                "The file was not written by Cac7er")
       }
 
-      val dependencePosition = it.readUnsignedShort().toLong()
+      val dependencePosition = it.readInt().toLong()
 
       it.seek(dependencePosition)
 
