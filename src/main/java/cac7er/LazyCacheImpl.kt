@@ -63,10 +63,6 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       uniformizer.addObserver(observer)
    }
 
-   override fun addObserver(owner: Any, observer: (Cache<T>, T) -> Unit) {
-      uniformizer.addObserver(owner, observer)
-   }
-
    override fun removeObserver(observer: (Cache<T>, T) -> Unit) {
       uniformizer.removeObserver(observer)
    }

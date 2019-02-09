@@ -1,7 +1,6 @@
 package cac7er
 
 import java.io.IOException
-import java.lang.ref.*
 
 /**
  * Repository of [Cache]s.
@@ -40,23 +39,10 @@ interface Repository<in K, out V> {
    fun loadLazyCache(key: K): LazyCache<V>
 
    /**
-    * adds a function to observe a key. Note that observers are referenced
-    * as [WeakReference]. Simplex lambda will be collected by GC. To avoid GC,
-    * the observer instance should be owned by any other instance. The easiest
-    * way is using [addObserver(Any, (Cache<T>, T) -> Unit)][addObserver].
-    *
+    * adds a function to observe a key.
     * @since 0.3.0
     */
    fun addObserver(key: K, observer: (Cache<V>, V) -> Unit)
-
-   /**
-    * As mentioned in another overload, observers are referenced as
-    * [WeakReference]. In this function the observer is associated with the
-    * specified owner instance, and can observe until the owner is GCed.
-    *
-    * @since 0.3.0
-    */
-   fun addObserver(owner: Any, key: K, observer: (Cache<V>, V) -> Unit)
 
    /**
     * removes the observer. The name says it all.

@@ -120,11 +120,6 @@ internal class RepositoryImpl<in K, V>
       uniformizerPool[fileName].addObserver(observer)
    }
 
-   override fun addObserver(owner: Any, key: K, observer: (Cache<V>, V) -> Unit) {
-      val fileName = fileNameSupplier(key)
-      uniformizerPool[fileName].addObserver(owner, observer)
-   }
-
    override fun removeObserver(key: K, observer: (Cache<V>, V) -> Unit) {
       val fileName = fileNameSupplier(key)
       uniformizerPool[fileName].removeObserver(observer)

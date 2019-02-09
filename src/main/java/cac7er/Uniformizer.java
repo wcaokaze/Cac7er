@@ -1,11 +1,9 @@
 package cac7er;
 
-import java.lang.ref.*;
-
 import kotlin.jvm.functions.*;
 
-import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 final class Uniformizer<T> {
    private static final Executor observerNotifierExecutor
@@ -17,15 +15,12 @@ final class Uniformizer<T> {
    private T content;
    private CirculationRecord circulationRecord;
 
-   private final List<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>
-         observers = Collections.synchronizedList(
-               new LinkedList<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>()
-         );
+   private static final Function2[] EMPTY_OBSERVERS = new Function2[0];
 
-   private final Map<Object, Function2<Cache<? extends T>, ? super T, ?>>
-         observerAssociator = Collections.synchronizedMap(
-               new WeakHashMap<Object, Function2<Cache<? extends T>, ? super T, ?>>()
-         );
+   @SuppressWarnings("unchecked")
+   private final AtomicReference<Function2<Cache<? extends T>, ? super T, ?>[]>
+         observers = new AtomicReference<Function2<Cache<? extends T>, ? super T, ?>[]>(
+               EMPTY_OBSERVERS);
 
    private final Cache<T> cacheForObserver = new CacheImpl<T>(this);
 
@@ -157,51 +152,69 @@ final class Uniformizer<T> {
 
    // ==========================================================================
 
+   @SuppressWarnings("unchecked")
    final void addObserver
          (final Function2<Cache<? extends T>, ? super T, ?> observer)
    {
-      observers.add(
-            new WeakReference<Function2<Cache<? extends T>, ? super T, ?>>(observer)
-      );
+      while (true) {
+         final Function2<Cache<? extends T>, ? super T, ?>[] oldArray
+               = observers.get();
+
+         final int newLen = oldArray.length + 1;
+
+         final Function2<Cache<? extends T>, ? super T, ?>[] newArray;
+
+         if (newLen == 1) {
+            newArray = new Function2[] { observer };
+         } else {
+            newArray = new Function2[newLen];
+            System.arraycopy(oldArray, 0, newArray, 0, newLen - 1);
+            newArray[newLen - 1] = observer;
+         }
+
+         if (observers.compareAndSet(oldArray, newArray)) return;
+      }
    }
 
-   final void addObserver(
-         final Object owner,
-         final Function2<Cache<? extends T>, ? super T, ?> observer)
-   {
-      observers.add(
-            new WeakReference<Function2<Cache<? extends T>, ? super T, ?>>(observer)
-      );
-
-      observerAssociator.put(owner, observer);
-   }
-
+   @SuppressWarnings("unchecked")
    final void removeObserver
          (final Function2<Cache<? extends T>, ? super T, ?> observer)
    {
-      synchronized (observers) {
-         final Iterator<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>
-               iter = observers.iterator();
+      while (true) {
+         final Function2<Cache<? extends T>, ? super T, ?>[] oldArray
+               = observers.get();
 
-         while (iter.hasNext()) {
-            final Function2<Cache<? extends T>, ? super T, ?> o = iter.next().get();
+         final int oldLen = oldArray.length;
 
-            if (o == observer) {
-               iter.remove();
+         if (oldLen == 0) {
+            return;
+         } else if (oldLen == 1) {
+            if (oldArray[0] == observer) {
+               if (observers.compareAndSet(oldArray, EMPTY_OBSERVERS)) return;
+            } else {
+               return;
             }
-         }
-      }
+         } else {
+            int obsIdx = -1;
 
-      synchronized (observerAssociator) {
-         final Iterator<Map.Entry<Object, Function2<Cache<? extends T>, ? super T, ?>>>
-               iter = observerAssociator.entrySet().iterator();
-
-         while (iter.hasNext()) {
-            final Function2<Cache<? extends T>, ? super T, ?> o = iter.next().getValue();
-
-            if (o == observer) {
-               iter.remove();
+            for (int i = 0; i < oldLen; i++) {
+               if (oldArray[i] == observer) {
+                  obsIdx = i;
+                  break;
+               }
             }
+
+            if (obsIdx < 0) return;
+
+            final int newLen = oldArray.length - 1;
+
+            final Function2<Cache<? extends T>, ? super T, ?>[] newArray
+                  = new Function2[newLen];
+
+            System.arraycopy(oldArray,          0, newArray,      0, obsIdx);
+            System.arraycopy(oldArray, obsIdx + 1, newArray, obsIdx, newLen - obsIdx);
+
+            if (observers.compareAndSet(oldArray, newArray)) return;
          }
       }
    }
@@ -223,24 +236,10 @@ final class Uniformizer<T> {
       observerNotifierExecutor.execute(new Runnable() {
          @Override
          public void run() {
-            synchronized (observers) {
-               final Iterator<WeakReference<Function2<Cache<? extends T>, ? super T, ?>>>
-                     iter = observers.iterator();
-
-               while (iter.hasNext()) {
-                  final WeakReference<Function2<Cache<? extends T>, ? super T, ?>>
-                        observerRef = iter.next();
-
-                  final Function2<Cache<? extends T>, ? super T, ?>
-                        observer = observerRef.get();
-
-                  if (observer == null) {
-                     iter.remove();
-                     continue;
-                  }
-
-                  observer.invoke(cache, content);
-               }
+            for (final Function2<Cache<? extends T>, ? super T, ?> observer
+                  : observers.get())
+            {
+               observer.invoke(cache, content);
             }
          }
       });
