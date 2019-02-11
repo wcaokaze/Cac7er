@@ -65,7 +65,7 @@ class Cac7er
    }
 
    private val job = Job()
-   override val coroutineContext get() = job + Dispatchers.IO
+   override val coroutineContext get() = job + readerCoroutineDispatcher
 
    private var gcJob: Job? = null
 

@@ -130,7 +130,10 @@ internal suspend fun Uniformizer<*>.loadIfNecessary() {
    if (state != Uniformizer.State.EMPTY) return
 
    onStartToLoadContent()
-   repository.async(SupervisorJob()) { load(this@loadIfNecessary) } .await()
+
+   withContext(repository.coroutineContext + SupervisorJob()) {
+      load(this@loadIfNecessary)
+   }
 }
 
 internal fun Uniformizer<*>.loadBlockingIfNecessary() {

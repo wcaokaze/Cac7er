@@ -100,7 +100,7 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
       return
    }
 
-   RandomAccessFile(file, "r").use {
+   DataInputStream(file.inputStream().buffered()).use {
       val magicNumber = it.readInt()
 
       if (magicNumber != MAGIC_NUMBER) {
@@ -108,7 +108,6 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
                "The file was not written by Cac7er")
       }
 
-      @Suppress("UNUSED_VARIABLE")
       val dependencePosition        = it.readInt().toLong()
       val circulationRecordPosition = it.readInt().toLong()
 
@@ -116,7 +115,7 @@ internal fun <T> load(uniformizer: Uniformizer<T>) {
 
       val content = uniformizer.repository.deserializer(input)
 
-      it.seek(circulationRecordPosition)
+      it.skip(circulationRecordPosition - dependencePosition)
 
       val circulationRecord = try {
          CirculationRecord.readFrom(it)
