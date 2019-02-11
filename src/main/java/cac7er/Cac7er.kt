@@ -316,10 +316,6 @@ class Cac7er
             }
          }
 
-         for ((file, relationship) in relationshipMap) {
-            println("$file(${relationship.importance}) -> [${relationship.dependees.joinToString(", ")}]")
-         }
-
          // ---- remove unaffectable records
          for ((file, metadata) in metadataList) {
             metadata.circulationRecord.removeUnaffectableSections(currentPeriod)
@@ -399,7 +395,7 @@ class Cac7er
 
             val metadata = try {
                loadMetadata(file)
-            } catch (e: IOException) {
+            } catch (e: Throwable) {
                continue
             }
 
