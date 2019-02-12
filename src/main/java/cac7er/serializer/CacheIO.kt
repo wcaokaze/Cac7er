@@ -18,6 +18,6 @@ class CacheOutput
 
 class CacheInput
       internal constructor(
-            internal val input: RandomAccessFile,
+            internal val input: DataInputStream,
             internal val cac7er: Cac7er
       )

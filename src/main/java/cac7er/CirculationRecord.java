@@ -137,7 +137,7 @@ final class CirculationRecord {
       file.writeFloat(section.accessCount);
    }
 
-   static CirculationRecord readFrom(final RandomAccessFile file)
+   static CirculationRecord readFrom(final DataInput file)
          throws IOException
    {
       final int depth = file.readUnsignedByte();

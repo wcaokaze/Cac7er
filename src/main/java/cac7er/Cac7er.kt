@@ -65,7 +65,7 @@ class Cac7er
    }
 
    private val job = Job()
-   override val coroutineContext get() = job + Dispatchers.IO
+   override val coroutineContext get() = job + readerCoroutineDispatcher
 
    private var gcJob: Job? = null
 
@@ -264,7 +264,7 @@ class Cac7er
    fun gc(idealTotalFileSize: Long): Job {
       if (gcJob?.isCompleted == false) return gcJob!!
 
-      gcJob = launch(writerCoroutineDispatcher) {
+      gcJob = launch(writerCoroutineDispatcher + SupervisorJob()) {
          val metadataList = loadAllMetadata()
 
          class Relationship {
@@ -314,10 +314,6 @@ class Cac7er
             for (dependee in relationship.dependees) {
                dependee.updateImportanceIfNecessary(relationship.importance)
             }
-         }
-
-         for ((file, relationship) in relationshipMap) {
-            println("$file(${relationship.importance}) -> [${relationship.dependees.joinToString(", ")}]")
          }
 
          // ---- remove unaffectable records
@@ -399,7 +395,7 @@ class Cac7er
 
             val metadata = try {
                loadMetadata(file)
-            } catch (e: IOException) {
+            } catch (e: Throwable) {
                continue
             }
 

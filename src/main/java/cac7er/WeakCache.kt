@@ -1,7 +1,6 @@
 package cac7er
 
 import java.io.*
-import java.lang.ref.*
 
 /**
  * Cache which doesn't depend on the content. See [Cac7er.gc] first.
@@ -51,23 +50,14 @@ interface WeakCache<out T> {
          = get(System.currentTimeMillis(), accessCount)
 
    /**
-    * adds a function to observe this cache. Note that observers are referenced
-    * as [WeakReference]. Simplex lambda will be collected by GC. To avoid GC,
-    * the observer instance should be owned by any other instance. The easiest
-    * way is using [addObserver(Any, (Cache<T>, T) -> Unit)][addObserver].
+    * adds a function to observe this cache.
+    *
+    * If you are good at RxJava, you may prefer
+    * [RxCac7er](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/RxCac7er)
     *
     * @since 0.3.0
     */
    fun addObserver(observer: (Cache<T>, T) -> Unit)
-
-   /**
-    * As mentioned in another overload, observers are referenced as
-    * [WeakReference]. In this function the observer is associated with the
-    * specified owner instance, and can observe until the owner is GCed.
-    *
-    * @since 0.3.0
-    */
-   fun addObserver(owner: Any, observer: (Cache<T>, T) -> Unit)
 
    /**
     * removes the observer. The name says it all.
