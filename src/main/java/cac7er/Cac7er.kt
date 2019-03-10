@@ -58,8 +58,8 @@ class Cac7er
 {
    companion object {
       val MAJOR_VERSION = 0
-      val MINOR_VERSION = 6
-      val REVISION      = 1
+      val MINOR_VERSION = 7
+      val REVISION      = 0
 
       val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
    }
