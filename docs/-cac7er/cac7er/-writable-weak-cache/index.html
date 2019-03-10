@@ -8,7 +8,7 @@
 <a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="./index.html">WritableWeakCache</a><br/>
 <br/>
 <h1>WritableWeakCache</h1>
-<code><span class="keyword">interface </span><span class="identifier">WritableWeakCache</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/WeakCache.kt#L99">(source)</a>
+<code><span class="keyword">interface </span><span class="identifier">WritableWeakCache</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/src/main/java/cac7er/WeakCache.kt#L89">(source)</a>
 <p>Writable WeakCache. The name says it all.</p>
 <p><strong>Since</strong><br/>
 0.1.0</p>
@@ -53,14 +53,7 @@
 </td>
 <td>
 <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">addObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.WeakCache$addObserver(kotlin.Function2((cac7er.Cache((cac7er.WeakCache.T)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="../-weak-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="../-weak-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
-<p>adds a function to observe this cache. Note that observers are referenced
-as <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ref/WeakReference.html">WeakReference</a>. Simplex lambda will be collected by GC. To avoid GC,
-the observer instance should be owned by any other instance. The easiest
-way is using <a href="../-weak-cache/add-observer.html">addObserver(Any, (Cache, T) -&gt; Unit)</a>.</p>
-<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">addObserver</span><span class="symbol">(</span><span class="identifier" id="cac7er.WeakCache$addObserver(kotlin.Any, kotlin.Function2((cac7er.Cache((cac7er.WeakCache.T)), , kotlin.Unit)))/owner">owner</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.WeakCache$addObserver(kotlin.Any, kotlin.Function2((cac7er.Cache((cac7er.WeakCache.T)), , kotlin.Unit)))/observer">observer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><a href="../-weak-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="../-weak-cache/index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
-<p>As mentioned in another overload, observers are referenced as
-<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ref/WeakReference.html">WeakReference</a>. In this function the observer is associated with the
-specified owner instance, and can observe until the owner is GCed.</p>
+<p>adds a function to observe this cache.</p>
 </td>
 </tr>
 <tr>
