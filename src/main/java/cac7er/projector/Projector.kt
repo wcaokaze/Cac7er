@@ -8,7 +8,7 @@ import kotlinx.coroutines.*
 fun <T> CoroutineScope.Projector(onStartToLoadLazyCache: () -> Unit = {},
                                  onFailedToLoadLazyCache: (Exception) -> Unit = {},
                                  onSetDeletedCache: (WeakCache<T>) -> Unit = {},
-                                 onUnset: () -> Unit,
+                                 onUnset: () -> Unit = {},
                                  onCacheUpdate: (T) -> Unit): Projector<T>
 {
    return Projector(this,
