@@ -133,24 +133,25 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
  *
  * @since 0.4.0
  */
-class Projector<in T>(private val coroutineScope: CoroutineScope,
-                      private val onStartToLoadLazyCache: () -> Unit = {},
-                      private val onFailedToLoadLazyCache: (Exception) -> Unit = {},
-                      private val onSetDeletedCache: (WeakCache<T>) -> Unit = {},
-                      private val onUnset: () -> Unit = {},
-                      private val onCacheUpdate: (T) -> Unit)
+class Projector<T>(private val coroutineScope: CoroutineScope,
+                   private val onStartToLoadLazyCache: () -> Unit = {},
+                   private val onFailedToLoadLazyCache: (Exception) -> Unit = {},
+                   private val onSetDeletedCache: (WeakCache<T>) -> Unit = {},
+                   private val onUnset: () -> Unit = {},
+                   private val onCacheUpdate: (T) -> Unit)
 {
    private val observer: (Cache<T>, T) -> Unit = { cache, cacheContent ->
       coroutineScope.launch(Dispatchers.Main) {
-         // between launch invocation and coroutine running, _cache can be restored.
-         // synchronized is not necessary since all accessors for _cache run on the main thread.
-         if (cache != _cache) throw CancellationException()
+         // between launch invocation and coroutine running, cache can be restored.
+         // synchronized is not necessary since all accessors for cache run on the main thread.
+         if (cache != this@Projector.cache) throw CancellationException()
 
          onCacheUpdate(cacheContent)
       }
    }
 
-   private var _cache: Cache<T>? = null
+   var cache: Cache<T>? = null
+      private set
 
    /**
     * unset the [Cache] (or [WeakCache], [LazyCache]).
@@ -158,9 +159,9 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     * @since 0.5.0
     */
    fun unset() {
-      if (_cache != null) {
-         _cache?.removeObserver(observer)
-         _cache = null
+      if (cache != null) {
+         cache?.removeObserver(observer)
+         cache = null
          onUnset()
       }
    }
@@ -175,9 +176,9 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     * @since 0.6.0
     */
    fun setStatic(content: T) {
-      if (_cache != null) {
-         _cache?.removeObserver(observer)
-         _cache = null
+      if (cache != null) {
+         cache?.removeObserver(observer)
+         cache = null
       }
 
       onCacheUpdate(content)
@@ -198,13 +199,13 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
     * @since 0.4.0
     */
    fun setCache(cache: Cache<T>, accessCount: Float) {
-      if (cache == _cache) return
+      if (cache == this.cache) return
 
-      _cache?.removeObserver(observer)
+      this.cache?.removeObserver(observer)
 
       onCacheUpdate(cache.get(accessCount))
 
-      _cache = cache
+      this.cache = cache
       cache.addObserver(observer)
    }
 
@@ -220,9 +221,9 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
       coroutineScope.launch(Dispatchers.Main, CoroutineStart.UNDISPATCHED) {
          val cache = lazyCache.toCache()
 
-         if (cache == _cache) return@launch
+         if (cache == this@Projector.cache) return@launch
 
-         _cache?.removeObserver(observer)
+         this@Projector.cache?.removeObserver(observer)
 
          var value = lazyCache.getIfAlreadyLoaded(accessCount = accessCount)
 
@@ -239,7 +240,7 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
 
          onCacheUpdate(value!!)
 
-         _cache = cache
+         this@Projector.cache = cache
          lazyCache.addObserver(observer)
       }
    }
@@ -254,9 +255,9 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
    fun setWeakCache(weakCache: WeakCache<T>, accessCount: Float) {
       val cache = weakCache.toCache()
 
-      if (cache == _cache) return
+      if (cache == this.cache) return
 
-      _cache?.removeObserver(observer)
+      this.cache?.removeObserver(observer)
 
       val value = weakCache.get(accessCount)
 
@@ -266,7 +267,7 @@ class Projector<in T>(private val coroutineScope: CoroutineScope,
          onCacheUpdate(value)
       }
 
-      _cache = cache
+      this.cache = cache
       weakCache.addObserver(observer)
    }
 }
