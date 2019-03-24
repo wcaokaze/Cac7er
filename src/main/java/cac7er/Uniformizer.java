@@ -48,12 +48,14 @@ final class Uniformizer<T> {
 
       if (state == State.INITIALIZED) return content;
 
-      if (state == State.EMPTY || state == State.DELETED) {
+      if (state == State.DELETED) {
          throw new IllegalStateException();
       }
 
       synchronized (this) {
-         while (this.state == State.INITIALIZING) {
+         while (this.state == State.INITIALIZING ||
+                this.state == State.EMPTY)
+         {
             try {
                wait();
             } catch (final InterruptedException e) {
