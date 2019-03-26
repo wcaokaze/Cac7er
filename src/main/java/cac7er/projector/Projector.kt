@@ -159,11 +159,9 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
     * @since 0.5.0
     */
    fun unset() {
-      if (cache != null) {
-         cache?.removeObserver(observer)
-         cache = null
-         onUnset()
-      }
+      cache?.removeObserver(observer)
+      cache = null
+      onUnset()
    }
 
    /**
