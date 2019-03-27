@@ -121,7 +121,8 @@ private fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
 
    if (file.exists()) {
       RandomAccessFile(file, "rw").use {
-         it.seek(8L)
+         // faster than seek(8L)
+         it.readLong()
 
          val circulationRecordPosition = it.readInt().toLong()
          it.seek(circulationRecordPosition)
@@ -196,7 +197,7 @@ internal data class Metadata(
 )
 
 internal fun loadMetadata(file: File): Metadata {
-   RandomAccessFile(file, "r").use {
+   DataInputStream(file.inputStream().buffered()).use {
       val magicNumber = it.readInt()
 
       if (magicNumber != MAGIC_NUMBER) {
@@ -205,13 +206,12 @@ internal fun loadMetadata(file: File): Metadata {
       }
 
       val dependencePosition = it.readInt().toLong()
-
-      it.seek(dependencePosition)
+      it.skip(dependencePosition - 8L)
 
       val dependence = loadDependence(it, file.absolutePath)
       val circulationRecord = CirculationRecord.readFrom(it)
 
-      return cac7er.Metadata(dependence, circulationRecord)
+      return Metadata(dependence, circulationRecord)
    }
 }
 
@@ -229,7 +229,7 @@ private fun writeDependence(randomAccessFile: DataOutputStream,
    }
 }
 
-private fun loadDependence(randomAccessFile: RandomAccessFile,
+private fun loadDependence(randomAccessFile: DataInputStream,
                            baseCacheFilePath: String): List<String>
 {
    val size = randomAccessFile.readInt()

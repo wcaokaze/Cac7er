@@ -264,10 +264,10 @@ class Cac7er
    fun gc(idealTotalFileSize: Long): Job {
       if (gcJob?.isCompleted == false) return gcJob!!
 
-      println("Cac7er: started gc...")
-      val startTime = System.currentTimeMillis()
-
       gcJob = launch(writerCoroutineDispatcher + SupervisorJob()) {
+         println("Cac7er: started gc...")
+         val startTime = System.currentTimeMillis()
+
          val metadataList = loadAllMetadata()
 
          class Relationship {
@@ -321,18 +321,22 @@ class Cac7er
 
          // ---- remove unaffectable records
          for ((file, metadata) in metadataList) {
-            metadata.circulationRecord.removeUnaffectableSections(currentPeriod)
+            val shouldSave = metadata.circulationRecord
+                  .removeUnaffectableSections(currentPeriod)
 
-            RandomAccessFile(file, "rw").use {
-               try {
-                  it.seek(6L)
+            if (shouldSave) {
+               RandomAccessFile(file, "rw").use {
+                  try {
+                     // same as saveCirculationRecord(Uniformizer<*>)
+                     it.readLong()
 
-                  val circulationRecordPosition = it.readUnsignedShort().toLong()
-                  it.seek(circulationRecordPosition)
+                     val circulationRecordPosition = it.readInt().toLong()
+                     it.seek(circulationRecordPosition)
 
-                  metadata.circulationRecord.writeTo(it)
-               } catch (e: IOException) {
-                  // continue
+                     metadata.circulationRecord.writeTo(it)
+                  } catch (e: IOException) {
+                     // continue
+                  }
                }
             }
          }

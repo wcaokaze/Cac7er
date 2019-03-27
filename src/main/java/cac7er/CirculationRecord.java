@@ -101,8 +101,16 @@ final class CirculationRecord {
             calcImportance(section.older, currentPeriod);
    }
 
-   final void removeUnaffectableSections(final int currentPeriod) {
-      topNode = filterAffectable(topNode, currentPeriod);
+   /**
+    * @return true if any section was removed
+    */
+   final boolean removeUnaffectableSections(final int currentPeriod) {
+      final Node newTopNode = filterAffectable(topNode, currentPeriod);
+
+      final boolean removedAnySection = newTopNode != topNode;
+      topNode = newTopNode;
+
+      return removedAnySection;
    }
 
    private static Node filterAffectable(final Node node, final int currentPeriod) {
@@ -111,11 +119,13 @@ final class CirculationRecord {
       final Section section = (Section) node;
 
       if (section.calcImportance(currentPeriod) < 0.25f) {
-         return node;
+         return section.older;
       } else {
-         return new Section(
-               section.period, section.accessCount,
-               filterAffectable(section.older, currentPeriod));
+         final Node filtered = filterAffectable(section.older, currentPeriod);
+
+         if (filtered == section.older) return node;
+
+         return new Section(section.period, section.accessCount, filtered);
       }
    }
 
