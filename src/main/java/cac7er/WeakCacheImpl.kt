@@ -1,7 +1,5 @@
 package cac7er
 
-import kotlinx.coroutines.*
-
 internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableWeakCache<T>
 {
@@ -12,16 +10,7 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun get(time: Long, accessCount: Float): T? {
       if (uniformizer.state == Uniformizer.State.DELETED) return null
 
-      if (accessCount != .0f) {
-         uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
-            try {
-               uniformizer.circulationRecord.add(time, accessCount)
-               saveCirculationRecord(uniformizer)
-            } catch (e: Exception) {
-               // ignore
-            }
-         }
-      }
+      incrementCirculationRecordLazy(uniformizer, time, accessCount)
 
       return uniformizer.weakContent
    }
@@ -29,14 +18,7 @@ internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun save(content: T) {
       uniformizer.content = content
 
-      uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
-         try {
-            save(uniformizer)
-            cac7er.autoGc()
-         } catch (e: Exception) {
-            // ignore
-         }
-      }
+      saveLazy(uniformizer)
    }
 
    override fun addObserver(observer: (Cache<T>, T) -> Unit) {

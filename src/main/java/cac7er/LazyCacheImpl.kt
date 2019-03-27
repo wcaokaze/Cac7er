@@ -1,7 +1,5 @@
 package cac7er
 
-import kotlinx.coroutines.*
-
 internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
       : WritableLazyCache<T>
 {
@@ -11,17 +9,7 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
 
    override suspend fun get(time: Long, accessCount: Float): T {
       uniformizer.loadIfNecessary()
-
-      if (accessCount != .0f) {
-         uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
-            try {
-               uniformizer.circulationRecord.add(time, accessCount)
-               saveCirculationRecord(uniformizer)
-            } catch (e: Exception) {
-               // ignore
-            }
-         }
-      }
+      incrementCirculationRecordLazy(uniformizer, time, accessCount)
 
       return uniformizer.content
    }
@@ -32,16 +20,7 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun getIfAlreadyLoaded(time: Long, accessCount: Float): T? {
       if (uniformizer.state != Uniformizer.State.INITIALIZED) return null
 
-      if (accessCount != .0f) {
-         uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
-            try {
-               uniformizer.circulationRecord.add(time, accessCount)
-               saveCirculationRecord(uniformizer)
-            } catch (e: Exception) {
-               // ignore
-            }
-         }
-      }
+      incrementCirculationRecordLazy(uniformizer, time, accessCount)
 
       return uniformizer.content
    }
@@ -49,14 +28,7 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
    override fun save(content: T) {
       uniformizer.content = content
 
-      uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
-         try {
-            save(uniformizer)
-            cac7er.autoGc()
-         } catch (e: Exception) {
-            // ignore
-         }
-      }
+      saveLazy(uniformizer)
    }
 
    override fun addObserver(observer: (Cache<T>, T) -> Unit) {

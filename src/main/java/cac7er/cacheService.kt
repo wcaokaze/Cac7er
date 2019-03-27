@@ -4,6 +4,8 @@ import cac7er.serializer.*
 import cac7er.util.io.*
 import java.io.*
 
+import kotlinx.coroutines.*
+
 private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
 
 /*
@@ -15,6 +17,32 @@ private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
  *  ? circulationRecord
  */
 
+internal fun <T> saveLazy(uniformizer: Uniformizer<T>) {
+   uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
+      try {
+         save(uniformizer)
+         uniformizer.repository.cac7er.autoGc()
+      } catch (e: Exception) {
+         e.printStackTrace()
+      }
+   }
+}
+
+internal fun <T> incrementCirculationRecordLazy
+      (uniformizer: Uniformizer<T>, time: Long, accessCount: Float)
+{
+   if (accessCount == 0.0f) return
+
+   uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
+      try {
+         uniformizer.circulationRecord.add(time, accessCount)
+         saveCirculationRecord(uniformizer)
+      } catch (e: Exception) {
+         e.printStackTrace()
+      }
+   }
+}
+
 /**
  * writes the content of the specified cache into the file.
  *
@@ -24,7 +52,7 @@ private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
  *
  * @throws IOException
  */
-internal fun <T> save(uniformizer: Uniformizer<T>) {
+private fun <T> save(uniformizer: Uniformizer<T>) {
    if (uniformizer.fileName.endsWith(".tmp")) {
       throw IllegalArgumentException(
             "The name of cache file must not end with \".tmp\"")
@@ -77,7 +105,7 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
  *
  * @throws IOException
  */
-internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
+private fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
    println("Cac7er: saving circulationRecord for ${uniformizer.fileName}...")
    val startTime = System.currentTimeMillis()
 
@@ -99,10 +127,27 @@ internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
    println("Cac7er: saving circulationRecord for ${uniformizer.fileName} done! (${System.currentTimeMillis() - startTime}ms)")
 }
 
+internal suspend fun Uniformizer<*>.loadIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+
+   withContext(repository.coroutineContext + SupervisorJob()) {
+      load(this@loadIfNecessary)
+   }
+}
+
+internal fun Uniformizer<*>.loadBlockingIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+   load(this)
+}
+
 /**
  * loads a cache and set it into the uniformizer.
  */
-internal fun <T> load(uniformizer: Uniformizer<T>) {
+private fun <T> load(uniformizer: Uniformizer<T>) {
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
 
    if (!file.exists()) {

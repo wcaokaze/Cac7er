@@ -50,14 +50,7 @@ internal class RepositoryImpl<in K, V>
 
       uniformizer.content = value
 
-      launch(writerCoroutineDispatcher + SupervisorJob()) {
-         try {
-            save(uniformizer)
-            cac7er.autoGc()
-         } catch (e: Exception) {
-            // ignore
-         }
-      }
+      saveLazy(uniformizer)
 
       return CacheImpl(uniformizer)
    }
@@ -124,21 +117,4 @@ internal class RepositoryImpl<in K, V>
       val fileName = fileNameSupplier(key)
       uniformizerPool[fileName].removeObserver(observer)
    }
-}
-
-internal suspend fun Uniformizer<*>.loadIfNecessary() {
-   if (state != Uniformizer.State.EMPTY) return
-
-   onStartToLoadContent()
-
-   withContext(repository.coroutineContext + SupervisorJob()) {
-      load(this@loadIfNecessary)
-   }
-}
-
-internal fun Uniformizer<*>.loadBlockingIfNecessary() {
-   if (state != Uniformizer.State.EMPTY) return
-
-   onStartToLoadContent()
-   load(this)
 }
