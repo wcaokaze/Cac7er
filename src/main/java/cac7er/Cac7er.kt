@@ -62,12 +62,15 @@ class Cac7er
       val REVISION      = 0
 
       val VERSION = "$MAJOR_VERSION.$MINOR_VERSION.$REVISION"
+
+      private const val GC_IGNORE_DURATION = 30L * 60L * 1000L
    }
 
    private val job = Job()
    override val coroutineContext get() = job + readerCoroutineDispatcher
 
    private var gcJob: Job? = null
+   private var lastGcTime = System.currentTimeMillis()
 
    class Builder(private val cac7erName: String) {
       private val repositories = LinkedList<RepositoryImpl<*, *>>()
@@ -265,6 +268,10 @@ class Cac7er
       if (gcJob?.isCompleted == false) return gcJob!!
 
       gcJob = launch(writerCoroutineDispatcher + SupervisorJob()) {
+         if (System.currentTimeMillis() - lastGcTime <= GC_IGNORE_DURATION) {
+            return@launch
+         }
+
          println("Cac7er: started gc...")
          val startTime = System.currentTimeMillis()
 
@@ -377,6 +384,8 @@ class Cac7er
          }
 
          println("Cac7er: GC done!! (${System.currentTimeMillis() - startTime}ms)")
+
+         lastGcTime = System.currentTimeMillis()
       }
 
       return gcJob!!
@@ -388,7 +397,9 @@ class Cac7er
     * @since 0.1.0
     */
    internal fun autoGc() {
-      if (idealTotalFileSize != Long.MAX_VALUE) {
+      if (idealTotalFileSize != Long.MAX_VALUE
+            && System.currentTimeMillis() - lastGcTime > GC_IGNORE_DURATION)
+      {
          gc(idealTotalFileSize)
       }
    }
