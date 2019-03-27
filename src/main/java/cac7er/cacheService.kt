@@ -30,6 +30,9 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
             "The name of cache file must not end with \".tmp\"")
    }
 
+   println("Cac7er: saving ${uniformizer.fileName}...")
+   val startTime = System.currentTimeMillis()
+
    // mkdir was invoked on the constructor of Repository
    val repositoryDir = uniformizer.repository.dir
 
@@ -64,6 +67,8 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
    if (!tmpFile.renameTo(cacheFile)) {
       throw IOException("cannot rename file: ${cacheFile.absoluteFile}")
    }
+
+   println("Cac7er: saving ${uniformizer.fileName} done! (${System.currentTimeMillis() - startTime}ms)")
 }
 
 /**
@@ -73,6 +78,9 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
  * @throws IOException
  */
 internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
+   println("Cac7er: saving circulationRecord for ${uniformizer.fileName}...")
+   val startTime = System.currentTimeMillis()
+
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
 
    if (file.exists()) {
@@ -87,6 +95,8 @@ internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
    } else {
       save(uniformizer)
    }
+
+   println("Cac7er: saving circulationRecord for ${uniformizer.fileName} done! (${System.currentTimeMillis() - startTime}ms)")
 }
 
 /**

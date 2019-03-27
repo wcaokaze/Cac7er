@@ -264,6 +264,9 @@ class Cac7er
    fun gc(idealTotalFileSize: Long): Job {
       if (gcJob?.isCompleted == false) return gcJob!!
 
+      println("Cac7er: started gc...")
+      val startTime = System.currentTimeMillis()
+
       gcJob = launch(writerCoroutineDispatcher + SupervisorJob()) {
          val metadataList = loadAllMetadata()
 
@@ -368,6 +371,8 @@ class Cac7er
                file.delete()
             }
          }
+
+         println("Cac7er: GC done!! (${System.currentTimeMillis() - startTime}ms)")
       }
 
       return gcJob!!
