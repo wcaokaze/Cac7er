@@ -119,22 +119,22 @@ final class CirculationRecord {
       }
    }
 
-   final void writeTo(final RandomAccessFile file) throws IOException {
-      file.writeByte(topNode.depth);
-      writeTo(file, topNode);
+   final void writeTo(final DataOutput output) throws IOException {
+      output.writeByte(topNode.depth);
+      writeTo(output, topNode);
    }
 
-   private static void writeTo(final RandomAccessFile file, final Node node)
+   private static void writeTo(final DataOutput output, final Node node)
          throws IOException
    {
       if (node == Terminal.SINGLETON) return;
 
       final Section section = (Section) node;
 
-      writeTo(file, section.older);
+      writeTo(output, section.older);
 
-      file.writeInt(section.period);
-      file.writeFloat(section.accessCount);
+      output.writeInt(section.period);
+      output.writeFloat(section.accessCount);
    }
 
    static CirculationRecord readFrom(final DataInput file)
