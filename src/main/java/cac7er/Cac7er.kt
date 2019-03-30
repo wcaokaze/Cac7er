@@ -9,6 +9,7 @@ import java.util.LinkedList
 import kotlin.collections.*
 
 import kotlin.contracts.*
+import kotlin.system.*
 
 /**
  * builds a new instance.
@@ -272,10 +273,16 @@ class Cac7er
             return@launch
          }
 
-         println("Cac7er: started gc...")
+         println("Cac7er GC: started...")
          val startTime = System.currentTimeMillis()
 
-         val metadataList = loadAllMetadata()
+         lateinit var metadataList: List<Pair<File, Metadata>>
+
+         val metadataDuration = measureTimeMillis {
+            metadataList = loadAllMetadata()
+         }
+
+         println("Cac7er GC: loaded metadata ($metadataDuration ms)")
 
          class Relationship {
             var dependees: List<Relationship> = emptyList()
@@ -296,18 +303,26 @@ class Cac7er
          }
 
          // ---- resolve dependency relationship
-         for ((file, metadata) in metadataList) {
-            relationshipMap[file].dependees =
-                  metadata.dependence.map { relationshipMap[File(it)] }
+         val relationshipDuration = measureTimeMillis {
+            for ((file, metadata) in metadataList) {
+               relationshipMap[file].dependees =
+                     metadata.dependence.map { relationshipMap[File(it)] }
+            }
          }
+
+         println("Cac7er GC: resolved cache relationship ($relationshipDuration ms)")
 
          // ---- set raw importance
          val currentPeriod = CirculationRecord.periodOf(System.currentTimeMillis())
 
-         for ((file, metadata) in metadataList) {
-            relationshipMap[file].importance =
-                  metadata.circulationRecord.calcImportance(currentPeriod)
+         val importanceDuration = measureTimeMillis {
+            for ((file, metadata) in metadataList) {
+               relationshipMap[file].importance =
+                     metadata.circulationRecord.calcImportance(currentPeriod)
+            }
          }
+
+         println("Cac7er GC: calculated importance ($importanceDuration ms)")
 
          // ---- update the importance of depended files
          fun Relationship.updateImportanceIfNecessary(importance: Float) {
@@ -320,33 +335,41 @@ class Cac7er
             }
          }
 
-         for ((_, relationship) in relationshipMap) {
-            for (dependee in relationship.dependees) {
-               dependee.updateImportanceIfNecessary(relationship.importance)
+         val updateImportanceDuration = measureTimeMillis {
+            for ((_, relationship) in relationshipMap) {
+               for (dependee in relationship.dependees) {
+                  dependee.updateImportanceIfNecessary(relationship.importance)
+               }
             }
          }
 
+         println("Cac7er GC: updated dependee importance ($updateImportanceDuration ms)")
+
          // ---- remove unaffectable records
-         for ((file, metadata) in metadataList) {
-            val shouldSave = metadata.circulationRecord
-                  .removeUnaffectableSections(currentPeriod)
+         val removingRecordsDuration = measureTimeMillis {
+            for ((file, metadata) in metadataList) {
+               val shouldSave = metadata.circulationRecord
+                     .removeUnaffectableSections(currentPeriod)
 
-            if (shouldSave) {
-               RandomAccessFile(file, "rw").use {
-                  try {
-                     // same as saveCirculationRecord(Uniformizer<*>)
-                     it.readLong()
+               if (shouldSave) {
+                  RandomAccessFile(file, "rw").use {
+                     try {
+                        // same as saveCirculationRecord(Uniformizer<*>)
+                        it.readLong()
 
-                     val circulationRecordPosition = it.readInt().toLong()
-                     it.seek(circulationRecordPosition)
+                        val circulationRecordPosition = it.readInt().toLong()
+                        it.seek(circulationRecordPosition)
 
-                     metadata.circulationRecord.writeTo(it)
-                  } catch (e: IOException) {
-                     // continue
+                        metadata.circulationRecord.writeTo(it)
+                     } catch (e: IOException) {
+                        // continue
+                     }
                   }
                }
             }
          }
+
+         println("Cac7er GC: removed unaffectable records ($removingRecordsDuration ms)")
 
          // ---- delete files while totalFileSize > idealTotalFileSize
 
@@ -360,30 +383,40 @@ class Cac7er
           *        // ...            // And so on.
           *     ]
           */
-         val sortedFileList = run {
-            val fileListMappedImportance = relationshipMap.asIterable()
-                  .groupBy({ it.value.importance }, { it.key })
+         lateinit var sortedFileList: Sequence<List<File>>
 
-            fileListMappedImportance.asSequence()
-                  .sortedBy { it.key }
-                  .map { it.value }
-         }
+         val sortingDuration = measureTimeMillis {
+            sortedFileList = run {
+               val fileListMappedImportance = relationshipMap.asIterable()
+                     .groupBy({ it.value.importance }, { it.key })
 
-         var totalFileSize = sortedFileList
-               .flatten()
-               .map { it.length() }
-               .sum()
-
-         for (fileList in sortedFileList) {
-            if (totalFileSize <= idealTotalFileSize) break
-
-            for (file in fileList) {
-               totalFileSize -= file.length()
-               file.delete()
+               fileListMappedImportance.asSequence()
+                     .sortedBy { it.key }
+                     .map { it.value }
             }
          }
 
-         println("Cac7er: GC done!! (${System.currentTimeMillis() - startTime}ms)")
+         println("Cac7er GC: sorted files by every size ($sortingDuration ms)")
+
+         val deletingDuration = measureTimeMillis {
+            var totalFileSize = sortedFileList
+                  .flatten()
+                  .map { it.length() }
+                  .sum()
+
+            for (fileList in sortedFileList) {
+               if (totalFileSize <= idealTotalFileSize) break
+
+               for (file in fileList) {
+                  totalFileSize -= file.length()
+                  file.delete()
+               }
+            }
+         }
+
+         println("Cac7er GC: deleted files ($deletingDuration ms)")
+
+         println("Cac7er GC: Done!! (${System.currentTimeMillis() - startTime} ms)")
 
          lastGcTime = System.currentTimeMillis()
       }
