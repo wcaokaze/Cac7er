@@ -4,6 +4,8 @@ import cac7er.serializer.*
 import cac7er.util.io.*
 import java.io.*
 
+import kotlinx.coroutines.*
+
 private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
 
 /*
@@ -15,6 +17,32 @@ private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
  *  ? circulationRecord
  */
 
+internal fun <T> saveLazy(uniformizer: Uniformizer<T>) {
+   uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
+      try {
+         save(uniformizer)
+         uniformizer.repository.cac7er.autoGc()
+      } catch (e: Exception) {
+         e.printStackTrace()
+      }
+   }
+}
+
+internal fun <T> incrementCirculationRecordLazy
+      (uniformizer: Uniformizer<T>, time: Long, accessCount: Float)
+{
+   if (accessCount == 0.0f) return
+
+   uniformizer.repository.launch(writerCoroutineDispatcher + SupervisorJob()) {
+      try {
+         uniformizer.circulationRecord.add(time, accessCount)
+         saveCirculationRecord(uniformizer)
+      } catch (e: Exception) {
+         e.printStackTrace()
+      }
+   }
+}
+
 /**
  * writes the content of the specified cache into the file.
  *
@@ -24,11 +52,14 @@ private val MAGIC_NUMBER = 0xcac7e000.toInt() or Cac7er.MAJOR_VERSION
  *
  * @throws IOException
  */
-internal fun <T> save(uniformizer: Uniformizer<T>) {
+private fun <T> save(uniformizer: Uniformizer<T>) {
    if (uniformizer.fileName.endsWith(".tmp")) {
       throw IllegalArgumentException(
             "The name of cache file must not end with \".tmp\"")
    }
+
+   println("Cac7er: saving ${uniformizer.fileName}...")
+   val startTime = System.currentTimeMillis()
 
    // mkdir was invoked on the constructor of Repository
    val repositoryDir = uniformizer.repository.dir
@@ -38,32 +69,42 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
    val cacheFile = File(repositoryDir, fileName)
    val tmpFile = File(repositoryDir, "$fileName.tmp")
 
-   RandomAccessFile(tmpFile, "rw").use {
-      it.writeInt(MAGIC_NUMBER)
-      it.seek(12L)
+   var dependencePosition = 0
+   var circulationRecordPosition = 0
 
-      val output = CacheOutput(it, cacheFile, uniformizer.repository.cac7er)
+   try {
+      DataOutputStream(tmpFile.outputStream().buffered()).use {
+         it.write(ByteArray(12))
 
-      uniformizer.repository.serializer(output, uniformizer.content)
+         val output = CacheOutput(it, cacheFile, uniformizer.repository.cac7er)
 
-      val dependencePosition = it.filePointer
-      writeDependence(it, cacheFile.absolutePath, output.dependence)
+         uniformizer.repository.serializer(output, uniformizer.content)
 
-      val circulationRecordPosition = it.filePointer
-      uniformizer.circulationRecord.writeTo(it)
+         dependencePosition = it.size()
+         writeDependence(it, cacheFile.absolutePath, output.dependence)
 
-      if (circulationRecordPosition > Int.MAX_VALUE) {
-         throw IOException("The cache is too huge.")
+         circulationRecordPosition = it.size()
+         uniformizer.circulationRecord.writeTo(it)
+
+         if (circulationRecordPosition > Int.MAX_VALUE) {
+            throw IOException("The cache is too huge.")
+         }
       }
 
-      it.seek(4L)
-      it.writeInt(dependencePosition.toInt())
-      it.writeInt(circulationRecordPosition.toInt())
+      RandomAccessFile(tmpFile, "rw").use {
+         it.writeInt(MAGIC_NUMBER)
+         it.writeInt(dependencePosition)
+         it.writeInt(circulationRecordPosition)
+      }
+
+      if (!tmpFile.renameTo(cacheFile)) {
+         throw IOException("cannot rename file: ${cacheFile.absoluteFile}")
+      }
+   } finally {
+      tmpFile.delete()
    }
 
-   if (!tmpFile.renameTo(cacheFile)) {
-      throw IOException("cannot rename file: ${cacheFile.absoluteFile}")
-   }
+   println("Cac7er: saving ${uniformizer.fileName} done! (${System.currentTimeMillis() - startTime}ms)")
 }
 
 /**
@@ -72,12 +113,16 @@ internal fun <T> save(uniformizer: Uniformizer<T>) {
  *
  * @throws IOException
  */
-internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
+private fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
+   println("Cac7er: saving circulationRecord for ${uniformizer.fileName}...")
+   val startTime = System.currentTimeMillis()
+
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
 
    if (file.exists()) {
       RandomAccessFile(file, "rw").use {
-         it.seek(8L)
+         // faster than seek(8L)
+         it.readLong()
 
          val circulationRecordPosition = it.readInt().toLong()
          it.seek(circulationRecordPosition)
@@ -87,12 +132,31 @@ internal fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
    } else {
       save(uniformizer)
    }
+
+   println("Cac7er: saving circulationRecord for ${uniformizer.fileName} done! (${System.currentTimeMillis() - startTime}ms)")
+}
+
+internal suspend fun Uniformizer<*>.loadIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+
+   withContext(repository.coroutineContext + SupervisorJob()) {
+      load(this@loadIfNecessary)
+   }
+}
+
+internal fun Uniformizer<*>.loadBlockingIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) return
+
+   onStartToLoadContent()
+   load(this)
 }
 
 /**
  * loads a cache and set it into the uniformizer.
  */
-internal fun <T> load(uniformizer: Uniformizer<T>) {
+private fun <T> load(uniformizer: Uniformizer<T>) {
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
 
    if (!file.exists()) {
@@ -133,7 +197,7 @@ internal data class Metadata(
 )
 
 internal fun loadMetadata(file: File): Metadata {
-   RandomAccessFile(file, "r").use {
+   DataInputStream(file.inputStream().buffered()).use {
       val magicNumber = it.readInt()
 
       if (magicNumber != MAGIC_NUMBER) {
@@ -142,17 +206,16 @@ internal fun loadMetadata(file: File): Metadata {
       }
 
       val dependencePosition = it.readInt().toLong()
-
-      it.seek(dependencePosition)
+      it.skip(dependencePosition - 8L)
 
       val dependence = loadDependence(it, file.absolutePath)
       val circulationRecord = CirculationRecord.readFrom(it)
 
-      return cac7er.Metadata(dependence, circulationRecord)
+      return Metadata(dependence, circulationRecord)
    }
 }
 
-private fun writeDependence(randomAccessFile: RandomAccessFile,
+private fun writeDependence(randomAccessFile: DataOutputStream,
                             baseCacheFilePath: String,
                             dependence: List<String>)
 {
@@ -166,7 +229,7 @@ private fun writeDependence(randomAccessFile: RandomAccessFile,
    }
 }
 
-private fun loadDependence(randomAccessFile: RandomAccessFile,
+private fun loadDependence(randomAccessFile: DataInputStream,
                            baseCacheFilePath: String): List<String>
 {
    val size = randomAccessFile.readInt()

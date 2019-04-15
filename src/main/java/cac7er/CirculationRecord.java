@@ -101,8 +101,16 @@ final class CirculationRecord {
             calcImportance(section.older, currentPeriod);
    }
 
-   final void removeUnaffectableSections(final int currentPeriod) {
-      topNode = filterAffectable(topNode, currentPeriod);
+   /**
+    * @return true if any section was removed
+    */
+   final boolean removeUnaffectableSections(final int currentPeriod) {
+      final Node newTopNode = filterAffectable(topNode, currentPeriod);
+
+      final boolean removedAnySection = newTopNode != topNode;
+      topNode = newTopNode;
+
+      return removedAnySection;
    }
 
    private static Node filterAffectable(final Node node, final int currentPeriod) {
@@ -111,30 +119,32 @@ final class CirculationRecord {
       final Section section = (Section) node;
 
       if (section.calcImportance(currentPeriod) < 0.25f) {
-         return node;
+         return section.older;
       } else {
-         return new Section(
-               section.period, section.accessCount,
-               filterAffectable(section.older, currentPeriod));
+         final Node filtered = filterAffectable(section.older, currentPeriod);
+
+         if (filtered == section.older) return node;
+
+         return new Section(section.period, section.accessCount, filtered);
       }
    }
 
-   final void writeTo(final RandomAccessFile file) throws IOException {
-      file.writeByte(topNode.depth);
-      writeTo(file, topNode);
+   final void writeTo(final DataOutput output) throws IOException {
+      output.writeByte(topNode.depth);
+      writeTo(output, topNode);
    }
 
-   private static void writeTo(final RandomAccessFile file, final Node node)
+   private static void writeTo(final DataOutput output, final Node node)
          throws IOException
    {
       if (node == Terminal.SINGLETON) return;
 
       final Section section = (Section) node;
 
-      writeTo(file, section.older);
+      writeTo(output, section.older);
 
-      file.writeInt(section.period);
-      file.writeFloat(section.accessCount);
+      output.writeInt(section.period);
+      output.writeFloat(section.accessCount);
    }
 
    static CirculationRecord readFrom(final DataInput file)

@@ -7,7 +7,7 @@ import java.util.*
 
 class CacheOutput
       internal constructor(
-            internal val output: RandomAccessFile,
+            internal val output: DataOutputStream,
             internal val file: File,
             internal val cac7er: Cac7er
       )
