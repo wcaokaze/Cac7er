@@ -49,7 +49,8 @@ final class Uniformizer<T> {
       if (state == State.INITIALIZED) return content;
 
       if (state == State.DELETED) {
-         throw new IllegalStateException();
+         throw new IllegalStateException(
+               "repository: " + repository.getName() + ", file: " + fileName);
       }
 
       synchronized (this) {
