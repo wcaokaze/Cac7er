@@ -268,4 +268,17 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
       this.cache = cache
       weakCache.addObserver(observer)
    }
+
+   /**
+    * set a [FutureCache] to this projector.
+    *
+    * NOTE:
+    * [FutureCache] doesn't provide any functions to load the content,
+    * but this function loads the content if possible. This is similar to
+    * [setLazyCache].
+    *
+    * @since 0.4.0
+    */
+   fun setFutureCache(futureCache: FutureCache<T>) {
+   }
 }
