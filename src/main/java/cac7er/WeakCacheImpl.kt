@@ -1,8 +1,6 @@
 package cac7er
 
-internal class WeakCacheImpl<T>(private val uniformizer: Uniformizer<T>)
-      : WritableWeakCache<T>
-{
+internal class WeakCacheImpl<T>(val uniformizer: Uniformizer<T>) : WritableWeakCache<T> {
    val repository: RepositoryImpl<*, T> get() = uniformizer.repository
    val cac7er: Cac7er                   get() = uniformizer.repository.cac7er
    val fileName: String                 get() = uniformizer.fileName
