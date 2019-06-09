@@ -22,7 +22,7 @@ import java.io.*
  *
  * @since 0.1.0
  */
-interface WeakCache<out T> {
+interface WeakCache<out T> : Observable<T> {
    /**
     * @param time
     *   the time when the Cache is accessed. [Cac7er.gc] makes this a criteria
@@ -48,22 +48,6 @@ interface WeakCache<out T> {
 
    fun get(accessCount: Float = 0.0f): T?
          = get(System.currentTimeMillis(), accessCount)
-
-   /**
-    * adds a function to observe this cache.
-    *
-    * If you are good at RxJava, you may prefer
-    * [RxCac7er](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/RxCac7er)
-    *
-    * @since 0.3.0
-    */
-   fun addObserver(observer: (Cache<T>, T) -> Unit)
-
-   /**
-    * removes the observer. The name says it all.
-    * @since 0.3.0
-    */
-   fun removeObserver(observer: (Cache<T>, T) -> Unit)
 
    /**
     * converts this WeakCache to [Cache].

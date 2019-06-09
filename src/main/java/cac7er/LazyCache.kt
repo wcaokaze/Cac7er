@@ -9,7 +9,7 @@ import java.io.*
  *
  * @since 0.1.0
  */
-interface LazyCache<out T> {
+interface LazyCache<out T> : Observable<T> {
    /**
     * @param time
     *   the time when the Cache is accessed. [Cac7er.gc] makes this a criteria
@@ -66,13 +66,7 @@ interface LazyCache<out T> {
     *
     * @since 0.3.0
     */
-   fun addObserver(observer: (Cache<T>, T) -> Unit)
-
-   /**
-    * removes the observer. The name says it all.
-    * @since 0.3.0
-    */
-   fun removeObserver(observer: (Cache<T>, T) -> Unit)
+   override fun addObserver(observer: (Cache<T>, T) -> Unit)
 
    /**
     * converts this LazyCache to [Cache].
