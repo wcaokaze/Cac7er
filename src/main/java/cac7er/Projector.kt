@@ -1,6 +1,4 @@
-package cac7er.projector
-
-import cac7er.*
+package cac7er
 
 import kotlinx.coroutines.*
 
@@ -12,8 +10,8 @@ fun <T> CoroutineScope.Projector(onStartToLoadLazyCache: () -> Unit = {},
                                  onCacheUpdate: (T) -> Unit): Projector<T>
 {
    return Projector(this,
-      onStartToLoadLazyCache, onFailedToLoadLazyCache,
-      onSetDeletedCache, onUnset, onCacheUpdate)
+         onStartToLoadLazyCache, onFailedToLoadLazyCache,
+         onSetDeletedCache, onUnset, onCacheUpdate)
 }
 
 /**
@@ -43,10 +41,10 @@ fun <T> CoroutineScope.Projector(onNull: () -> Unit,
                                  onContent: (T) -> Unit): Projector<T?>
 {
    return Projector(this,
-         onStartToLoadLazyCache  = onNull,
+         onStartToLoadLazyCache = onNull,
          onFailedToLoadLazyCache = { onNull() },
-         onSetDeletedCache       = { onNull() },
-         onUnset                 = { onNull() },
+         onSetDeletedCache = { onNull() },
+         onUnset = { onNull() },
          onCacheUpdate = {
             if (it == null) {
                onNull()
@@ -140,18 +138,24 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
                    private val onUnset: () -> Unit = {},
                    private val onCacheUpdate: (T) -> Unit)
 {
-   private val observer: (Cache<T>, T) -> Unit = { cache, cacheContent ->
+   private val observer = fun (cache: Cache<T>, cacheContent: T) {
+      if (cache !is CacheImpl) { return }
+
       coroutineScope.launch(Dispatchers.Main) {
          // between launch invocation and coroutine running, cache can be restored.
          // synchronized is not necessary since all accessors for cache run on the main thread.
-         if (cache != this@Projector.cache) throw CancellationException()
+         if (cache.uniformizer !== uniformizer) { throw CancellationException() }
 
          onCacheUpdate(cacheContent)
       }
    }
 
-   var cache: Cache<T>? = null
-      private set
+   private var uniformizer: Uniformizer<T>? = null
+
+   /*
+   val cache: Cache<T>?
+      get() = uniformizer?.let { CacheImpl(it) }
+      */
 
    /**
     * unset the [Cache] (or [WeakCache], [LazyCache]).
@@ -159,8 +163,8 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
     * @since 0.5.0
     */
    fun unset() {
-      cache?.removeObserver(observer)
-      cache = null
+      uniformizer?.removeObserver(observer)
+      uniformizer = null
       onUnset()
    }
 
@@ -174,9 +178,9 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
     * @since 0.6.0
     */
    fun setStatic(content: T) {
-      if (cache != null) {
-         cache?.removeObserver(observer)
-         cache = null
+      if (uniformizer != null) {
+         uniformizer?.removeObserver(observer)
+         uniformizer = null
       }
 
       onCacheUpdate(content)
@@ -197,14 +201,20 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
     * @since 0.4.0
     */
    fun setCache(cache: Cache<T>, accessCount: Float) {
-      if (cache == this.cache) return
+      if (cache !is CacheImpl) {
+         throw IllegalArgumentException("Don't use another Cache implementation.")
+      }
 
-      this.cache?.removeObserver(observer)
+      val uniformizer = cache.uniformizer
+
+      if (uniformizer === this.uniformizer) { return }
+
+      this.uniformizer?.removeObserver(observer)
 
       onCacheUpdate(cache.get(accessCount))
 
-      this.cache = cache
-      cache.addObserver(observer)
+      this.uniformizer = uniformizer
+      uniformizer.addObserver(observer)
    }
 
    /**
@@ -216,12 +226,16 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
     * @since 0.4.0
     */
    fun setLazyCache(lazyCache: LazyCache<T>, accessCount: Float) {
+      if (lazyCache !is LazyCacheImpl) {
+         throw IllegalArgumentException("Don't use another LazyCache implementation.")
+      }
+
       coroutineScope.launch(Dispatchers.Main, CoroutineStart.UNDISPATCHED) {
-         val cache = lazyCache.toCache()
+         val uniformizer = lazyCache.uniformizer
 
-         if (cache == this@Projector.cache) return@launch
+         if (uniformizer === this@Projector.uniformizer) { return@launch }
 
-         this@Projector.cache?.removeObserver(observer)
+         this@Projector.uniformizer?.removeObserver(observer)
 
          var value = lazyCache.getIfAlreadyLoaded(accessCount = accessCount)
 
@@ -238,8 +252,8 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
 
          onCacheUpdate(value!!)
 
-         this@Projector.cache = cache
-         lazyCache.addObserver(observer)
+         this@Projector.uniformizer = uniformizer
+         uniformizer.addObserver(observer)
       }
    }
 
@@ -251,11 +265,15 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
     * @since 0.4.0
     */
    fun setWeakCache(weakCache: WeakCache<T>, accessCount: Float) {
-      val cache = weakCache.toCache()
+      if (weakCache !is WeakCacheImpl) {
+         throw IllegalArgumentException("Don't use another WeakCache implementation.")
+      }
 
-      if (cache == this.cache) return
+      val uniformizer = weakCache.uniformizer
 
-      this.cache?.removeObserver(observer)
+      if (uniformizer === this.uniformizer) { return }
+
+      this.uniformizer?.removeObserver(observer)
 
       val value = weakCache.get(accessCount)
 
@@ -265,7 +283,48 @@ class Projector<T>(private val coroutineScope: CoroutineScope,
          onCacheUpdate(value)
       }
 
-      this.cache = cache
-      weakCache.addObserver(observer)
+      this.uniformizer = uniformizer
+      uniformizer.addObserver(observer)
+   }
+
+   /**
+    * set a [FutureCache] to this projector.
+    *
+    * NOTE:
+    * [FutureCache] doesn't provide any functions to load the content,
+    * but this function loads the content if possible. This is similar to
+    * [setLazyCache].
+    *
+    * @since 0.4.0
+    */
+   fun setFutureCache(futureCache: FutureCache<T>) {
+      if (futureCache !is LazyCacheImpl) {
+         throw IllegalArgumentException("Don't use another FutureCache implementation.")
+      }
+
+      coroutineScope.launch(Dispatchers.Main, CoroutineStart.UNDISPATCHED) {
+         val uniformizer = futureCache.uniformizer
+
+         if (uniformizer === this@Projector.uniformizer) { return@launch }
+
+         this@Projector.uniformizer?.removeObserver(observer)
+
+         var value = futureCache.getIfAlreadyLoaded()
+
+         if (value == null) {
+            onStartToLoadLazyCache()
+
+            value = futureCache.getOrNull()
+
+            if (value == null) {
+               onUnset()
+            }
+         }
+
+         onCacheUpdate(value!!)
+
+         this@Projector.uniformizer = uniformizer
+         uniformizer.addObserver(observer)
+      }
    }
 }

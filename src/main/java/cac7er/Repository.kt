@@ -11,6 +11,12 @@ interface Repository<in K, out V> {
    val name: String
 
    /**
+    * @return FutureCache for the specified key
+    * @since 0.8.0
+    */
+   fun getFuture(key: K): FutureCache<V>
+
+   /**
     * loads a [Cache].
     *
     * @throws IOException

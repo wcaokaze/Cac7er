@@ -1,7 +1,7 @@
 package cac7er
 
-internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
-      : WritableLazyCache<T>
+internal class LazyCacheImpl<T>(val uniformizer: Uniformizer<T>)
+      : WritableLazyCache<T>, FutureCache<T>
 {
    val repository: RepositoryImpl<*, T> get() = uniformizer.repository
    val cac7er: Cac7er                   get() = uniformizer.repository.cac7er
@@ -24,6 +24,9 @@ internal class LazyCacheImpl<T>(private val uniformizer: Uniformizer<T>)
 
       return uniformizer.content
    }
+
+   override fun getIfAlreadySaved(time: Long, accessCount: Float): T?
+         = getIfAlreadyLoaded(time, accessCount)
 
    override fun save(content: T) {
       uniformizer.content = content

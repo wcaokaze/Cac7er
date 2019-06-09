@@ -55,6 +55,13 @@ internal class RepositoryImpl<in K, V>
       return CacheImpl(uniformizer)
    }
 
+   override fun getFuture(key: K): FutureCache<V> {
+      val fileName = fileNameSupplier(key)
+      val uniformizer = uniformizerPool[fileName]
+
+      return LazyCacheImpl(uniformizer)
+   }
+
    override suspend fun load(key: K): WritableCache<V> {
       val fileName = fileNameSupplier(key)
       return load(fileName)
