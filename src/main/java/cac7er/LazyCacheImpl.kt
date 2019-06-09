@@ -25,6 +25,9 @@ internal class LazyCacheImpl<T>(val uniformizer: Uniformizer<T>)
       return uniformizer.content
    }
 
+   override fun getIfAlreadySaved(time: Long, accessCount: Float): T?
+         = getIfAlreadyLoaded(time, accessCount)
+
    override fun save(content: T) {
       uniformizer.content = content
 

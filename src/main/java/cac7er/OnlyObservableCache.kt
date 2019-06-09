@@ -38,4 +38,10 @@ interface FutureCache<out T> {
     * @since 0.8.0
     */
    fun removeObserver(observer: (Cache<T>, T) -> Unit)
+
+   /**
+    * @since 0.8.0
+    */
+   fun getIfAlreadySaved(time: Long = System.currentTimeMillis(),
+                         accessCount: Float = 0.0f): T?
 }
