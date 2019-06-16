@@ -94,6 +94,8 @@ final class Uniformizer<T> {
    }
 
    final void setContent(final T content) {
+      System.out.println("Cac7er: setContent (state == " + state + ", fileName == " + fileName + ")");
+
       if (state == State.INITIALIZED) {
          this.content = content;
          notifyObservers(cacheForObserver, content);
@@ -146,10 +148,12 @@ final class Uniformizer<T> {
    }
 
    final void onStartToLoadContent() {
+      System.out.println("Cac7er: onStartToLoadContent (state == " + state + ", fileName == " + fileName + ")");
       state = State.INITIALIZING;
    }
 
    final void setDeleted() {
+      System.out.println("Cac7er: setDeleted (state == " + state + ", fileName == " + fileName + ")");
       state = State.DELETED;
    }
 
@@ -226,6 +230,8 @@ final class Uniformizer<T> {
          final T content,
          final CirculationRecord circulationRecord)
    {
+      System.out.println("Cac7er: setLoadedContent (state == " + state + ", fileName == " + fileName + ")");
+
       this.content           = content;
       this.circulationRecord = circulationRecord;
 
