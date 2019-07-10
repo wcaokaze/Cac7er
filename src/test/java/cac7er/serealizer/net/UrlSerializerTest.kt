@@ -45,12 +45,12 @@ class UrlSerializerTest {
    private fun Cac7er.getCacheOutput(name: String): CacheOutput {
       val file = File(testDir, name)
 
-      return CacheOutput(RandomAccessFile(file, "rw"), file, this)
+      return CacheOutput(DataOutputStream(file.outputStream()), file, this)
    }
 
    private fun Cac7er.getCacheInput(name: String): CacheInput {
       val file = File(testDir, name)
 
-      return CacheInput(RandomAccessFile(file, "r"), this)
+      return CacheInput(DataInputStream(file.inputStream()), this)
    }
 }

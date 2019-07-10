@@ -71,7 +71,7 @@ class Cac7er
    override val coroutineContext get() = job + readerCoroutineDispatcher
 
    private var gcJob: Job? = null
-   private var lastGcTime = System.currentTimeMillis()
+   private var lastGcTime = 0L
 
    class Builder(private val cac7erName: String) {
       private val repositories = LinkedList<RepositoryImpl<*, *>>()

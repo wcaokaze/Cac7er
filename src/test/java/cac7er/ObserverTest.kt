@@ -27,7 +27,7 @@ class ObserverTest {
 
       val receivedValues = mutableListOf<Int>()
 
-      cache.addObserver { receivedValues += it }
+      cache.addObserver { _, content -> receivedValues += content }
 
       cache.save(2)
       cache.save(5)
@@ -40,7 +40,7 @@ class ObserverTest {
 
       val receivedValues = mutableListOf<Int>()
 
-      val observer: (Int) -> Unit = { receivedValues += it }
+      val observer: (Cache<Int>, Int) -> Unit = { _, content -> receivedValues += content }
 
       cache.addObserver(observer)
       cache.save(2)
@@ -55,7 +55,7 @@ class ObserverTest {
 
       val receivedValues = mutableListOf<Int>()
 
-      cache.addObserver { receivedValues += it }
+      cache.addObserver { _, content -> receivedValues += content }
 
       intRepo.save("observerViaRepo", 2)
       intRepo.save("anotherCache", 5)
@@ -64,33 +64,12 @@ class ObserverTest {
       assert(receivedValues == listOf(2, 7))
    }
 
-   @Test fun owner() {
-      val cache = intRepo.save("owner", 1)
-
-      val receivedValuesWithoutOwner = mutableListOf<Int>()
-      val receivedValuesWithOwner    = mutableListOf<Int>()
-
-      cache.addObserver { receivedValuesWithoutOwner += it }
-
-      val owner = Any()
-      cache.addObserver(owner) { receivedValuesWithOwner += it }
-
-      System.gc()
-      Thread.sleep(500L)
-
-      cache.save(2)
-      cache.save(5)
-
-      assert(receivedValuesWithoutOwner == emptyList<Int>())
-      assert(receivedValuesWithOwner    == listOf(2, 5))
-   }
-
    @Test fun weakCacheObserverTest() {
       val cache = intRepo.save("weakCacheObserverTest", 1).toWeakCache()
 
       val receivedValues = mutableListOf<Int>()
 
-      cache.addObserver { receivedValues += it }
+      cache.addObserver { _, cache -> receivedValues += cache }
 
       cache.save(2)
       cache.save(5)
