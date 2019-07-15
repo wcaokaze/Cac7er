@@ -5,6 +5,9 @@ import java.io.IOException
 /**
  * Repository of [Cache]s.
  *
+ * Note that [java.net.URL] is unsuitable for Repository keys, since
+ * [equals][java.net.URL.equals] is a blocking operation. This is a subtle trap.
+ *
  * @since 0.1.0
  */
 interface Repository<in K, out V> {
