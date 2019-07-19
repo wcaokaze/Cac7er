@@ -7,6 +7,9 @@ internal class LazyCacheImpl<T>(val uniformizer: Uniformizer<T>)
    val cac7er: Cac7er                   get() = uniformizer.repository.cac7er
    val fileName: String                 get() = uniformizer.fileName
 
+   override val hasContent: Boolean
+      get() = uniformizer.state == Uniformizer.State.INITIALIZED
+
    override suspend fun get(time: Long, accessCount: Float): T {
       uniformizer.loadIfNecessary()
       incrementCirculationRecordLazy(uniformizer, time, accessCount)
@@ -14,15 +17,27 @@ internal class LazyCacheImpl<T>(val uniformizer: Uniformizer<T>)
       return uniformizer.content
    }
 
-   override val hasContent: Boolean
-      get() = uniformizer.state == Uniformizer.State.INITIALIZED
-
    override fun getIfAlreadyLoaded(time: Long, accessCount: Float): T? {
       if (uniformizer.state != Uniformizer.State.INITIALIZED) return null
 
       incrementCirculationRecordLazy(uniformizer, time, accessCount)
 
       return uniformizer.content
+   }
+
+   override suspend fun load(time: Long, accessCount: Float): T? {
+      try {
+         uniformizer.loadIgnoreDeletedIfNecessary()
+      } catch (e: Exception) {
+         return null
+      }
+
+      incrementCirculationRecordLazy(uniformizer, time, accessCount)
+      return uniformizer.content
+   }
+
+   override fun loadAsync() {
+      uniformizer.loadIgnoreDeletedAsyncIfNecessary()
    }
 
    override fun getIfAlreadySaved(time: Long, accessCount: Float): T?

@@ -137,7 +137,7 @@ private fun saveCirculationRecord(uniformizer: Uniformizer<*>) {
 }
 
 internal suspend fun Uniformizer<*>.loadIfNecessary() {
-   if (state != Uniformizer.State.EMPTY) return
+   if (state != Uniformizer.State.EMPTY) { return }
 
    onStartToLoadContent()
 
@@ -147,10 +147,37 @@ internal suspend fun Uniformizer<*>.loadIfNecessary() {
 }
 
 internal fun Uniformizer<*>.loadBlockingIfNecessary() {
-   if (state != Uniformizer.State.EMPTY) return
+   if (state != Uniformizer.State.EMPTY) { return }
 
    onStartToLoadContent()
    load(this)
+}
+
+/**
+ * without setting [Uniformizer.State.DELETED] even if the content is not found.
+ */
+internal suspend fun Uniformizer<*>.loadIgnoreDeletedIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) { return }
+
+   onStartToLoadContent()
+
+   withContext(repository.coroutineContext + SupervisorJob()) {
+      loadIgnoreDeleted(this@loadIgnoreDeletedIfNecessary)
+   }
+}
+
+internal fun Uniformizer<*>.loadIgnoreDeletedAsyncIfNecessary() {
+   if (state != Uniformizer.State.EMPTY) { return }
+
+   onStartToLoadContent()
+
+   repository.launch(SupervisorJob()) {
+      try {
+         loadIgnoreDeleted(this@loadIgnoreDeletedAsyncIfNecessary)
+      } catch (e: Exception) {
+         // ignore
+      }
+   }
 }
 
 /**
@@ -163,6 +190,12 @@ private fun <T> load(uniformizer: Uniformizer<T>) {
       uniformizer.setDeleted()
       return
    }
+
+   loadIgnoreDeleted(uniformizer)
+}
+
+private fun <T> loadIgnoreDeleted(uniformizer: Uniformizer<T>) {
+   val file = File(uniformizer.repository.dir, uniformizer.fileName)
 
    DataInputStream(file.inputStream().buffered()).use {
       val magicNumber = it.readInt()
