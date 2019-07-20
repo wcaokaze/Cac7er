@@ -64,8 +64,7 @@ interface FutureCache<out T> : Observable<T> {
     * Basically, FutureCache denotes an empty file. But Cac7er may have
     * the file by coincidence.
     *
-    * This is not a suspend function and returns Unit. [addObserver] to
-    * receive the loaded content.
+    * This function returns Unit. [addObserver] to receive the loaded content.
     *
     * @since 0.8.0
     */

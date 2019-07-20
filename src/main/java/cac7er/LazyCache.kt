@@ -37,6 +37,15 @@ interface LazyCache<out T> : Observable<T> {
          = get(System.currentTimeMillis(), accessCount)
 
    /**
+    * loads the content in the background.
+    *
+    * This function returns Unit. [addObserver] to receive the loaded content.
+    *
+    * @since 0.8.0
+    */
+   fun loadAsync()
+
+   /**
     * @return whether the cached instance is already exists on JVM memory.
     * @since 0.3.0
     */
