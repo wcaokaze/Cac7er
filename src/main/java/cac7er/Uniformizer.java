@@ -46,9 +46,9 @@ final class Uniformizer<T> {
    final T getContent() {
       final State state = this.state;
 
-      if (state == State.INITIALIZED) return content;
+      if (state == State.INITIALIZED) { return content; }
 
-      if (state == State.DELETED) {
+      if (state == State.DELETED || state == State.UNLOADABLE) {
          throw new IllegalStateException(
                "repository: " + repository.getName() + ", file: " + fileName);
       }
@@ -75,10 +75,11 @@ final class Uniformizer<T> {
    final T getWeakContent() {
       final State state = this.state;
 
-      if (state == State.INITIALIZED) return content;
-      if (state == State.DELETED)     return null;
+      if (state == State.INITIALIZED) { return content; }
+      if (state == State.DELETED)     { return null;    }
+      if (state == State.UNLOADABLE)  { return null;    }
 
-      if (state == State.EMPTY) throw new IllegalStateException();
+      if (state == State.EMPTY) { throw new IllegalStateException(); }
 
       synchronized (this) {
          while (this.state == State.INITIALIZING) {
@@ -128,9 +129,12 @@ final class Uniformizer<T> {
    final CirculationRecord getCirculationRecord() {
       final State state = this.state;
 
-      if (state == State.INITIALIZED) return circulationRecord;
+      if (state == State.INITIALIZED) { return circulationRecord; }
 
-      if (state == State.EMPTY || state == State.DELETED) {
+      if (state == State.EMPTY   ||
+          state == State.DELETED ||
+          state == State.UNLOADABLE)
+      {
          throw new IllegalStateException();
       }
 
@@ -155,6 +159,11 @@ final class Uniformizer<T> {
    final void setDeleted() {
       System.out.println("Cac7er: setDeleted (state == " + state + ", fileName == " + fileName + ")");
       state = State.DELETED;
+   }
+
+   final void setUnloadable() {
+      System.out.println("Cac7er: setUnloadable (state == " + state + ", fileName == " + fileName + ")");
+      state = State.UNLOADABLE;
    }
 
    // ==========================================================================
@@ -266,5 +275,8 @@ final class Uniformizer<T> {
 
       /** The content has been deleted by {@link Cac7er#gc(long) GC}. */
       DELETED,
+
+      /** failed to load the content. */
+      UNLOADABLE,
    }
 }

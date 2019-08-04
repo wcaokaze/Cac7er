@@ -6,7 +6,11 @@ internal class WeakCacheImpl<T>(val uniformizer: Uniformizer<T>) : WritableWeakC
    val fileName: String                 get() = uniformizer.fileName
 
    override fun get(time: Long, accessCount: Float): T? {
-      if (uniformizer.state == Uniformizer.State.DELETED) return null
+      if (uniformizer.state == Uniformizer.State.DELETED ||
+          uniformizer.state == Uniformizer.State.UNLOADABLE)
+      {
+         return null
+      }
 
       incrementCirculationRecordLazy(uniformizer, time, accessCount)
 
@@ -28,7 +32,9 @@ internal class WeakCacheImpl<T>(val uniformizer: Uniformizer<T>) : WritableWeakC
    }
 
    override fun toCache(): WritableCache<T>? {
-      return if (uniformizer.state == Uniformizer.State.DELETED) {
+      return if (uniformizer.state == Uniformizer.State.DELETED ||
+                 uniformizer.state == Uniformizer.State.UNLOADABLE)
+      {
          null
       } else {
          CacheImpl(uniformizer)
@@ -36,7 +42,9 @@ internal class WeakCacheImpl<T>(val uniformizer: Uniformizer<T>) : WritableWeakC
    }
 
    override fun toLazyCache(): WritableLazyCache<T>? {
-      return if (uniformizer.state == Uniformizer.State.DELETED) {
+      return if (uniformizer.state == Uniformizer.State.DELETED ||
+                 uniformizer.state == Uniformizer.State.UNLOADABLE)
+      {
          null
       } else {
          LazyCacheImpl(uniformizer)

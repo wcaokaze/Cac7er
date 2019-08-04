@@ -197,30 +197,34 @@ private fun <T> load(uniformizer: Uniformizer<T>) {
 private fun <T> loadIgnoreDeleted(uniformizer: Uniformizer<T>) {
    val file = File(uniformizer.repository.dir, uniformizer.fileName)
 
-   DataInputStream(file.inputStream().buffered()).use {
-      val magicNumber = it.readInt()
+   try {
+      DataInputStream(file.inputStream().buffered()).use {
+         val magicNumber = it.readInt()
 
-      if (magicNumber != MAGIC_NUMBER) {
-         throw IOException("Cannot load a cache. " +
-               "The file was not written by Cac7er")
+         if (magicNumber != MAGIC_NUMBER) {
+            throw IOException("Cannot load a cache. " +
+                  "The file was not written by Cac7er")
+         }
+
+         val dependencePosition        = it.readInt().toLong()
+         val circulationRecordPosition = it.readInt().toLong()
+
+         val input = CacheInput(it, uniformizer.repository.cac7er)
+
+         val content = uniformizer.repository.deserializer(input)
+
+         it.skip(circulationRecordPosition - dependencePosition)
+
+         val circulationRecord = try {
+            CirculationRecord.readFrom(it)
+         } catch (e: Exception) {
+            CirculationRecord()
+         }
+
+         uniformizer.setLoadedContent(content, circulationRecord)
       }
-
-      val dependencePosition        = it.readInt().toLong()
-      val circulationRecordPosition = it.readInt().toLong()
-
-      val input = CacheInput(it, uniformizer.repository.cac7er)
-
-      val content = uniformizer.repository.deserializer(input)
-
-      it.skip(circulationRecordPosition - dependencePosition)
-
-      val circulationRecord = try {
-         CirculationRecord.readFrom(it)
-      } catch (e: Exception) {
-         CirculationRecord()
-      }
-
-      uniformizer.setLoadedContent(content, circulationRecord)
+   } catch (e: Exception) {
+      uniformizer.setUnloadable()
    }
 }
 

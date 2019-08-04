@@ -71,7 +71,12 @@ internal class RepositoryImpl<in K, V>
       val uniformizer = uniformizerPool[fileName]
 
       uniformizer.loadIfNecessary()
-      if (uniformizer.state == Uniformizer.State.DELETED) throw IOException()
+
+      if (uniformizer.state == Uniformizer.State.DELETED ||
+          uniformizer.state == Uniformizer.State.UNLOADABLE)
+      {
+         throw IOException()
+      }
 
       return CacheImpl(uniformizer)
    }
@@ -80,7 +85,12 @@ internal class RepositoryImpl<in K, V>
       val uniformizer = uniformizerPool[fileName]
 
       uniformizer.loadBlockingIfNecessary()
-      if (uniformizer.state == Uniformizer.State.DELETED) throw IOException()
+
+      if (uniformizer.state == Uniformizer.State.DELETED ||
+          uniformizer.state == Uniformizer.State.UNLOADABLE)
+      {
+         throw IOException()
+      }
 
       return CacheImpl(uniformizer)
    }
