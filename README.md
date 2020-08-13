@@ -27,7 +27,7 @@ Requirements
 Documents
 --------------------------------------------------------------------------------
 
-[KDoc](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/pages/-cac7er/index.html)
+[KDoc](https://wcaokaze.github.io/Cac7er/-cac7er/index.html)
 
 
 Tutorial
