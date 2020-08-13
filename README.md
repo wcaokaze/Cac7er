@@ -1,17 +1,6 @@
 
 Cac7er
 ================================================================================
-[Cac2er](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac2er) works too slowly.
-Cac2er's encapsulation is too poor. Cac2er has many similar functions.
-
-Cac7er decided to stop using reflection (including Serializable) even though we
-must write a great number of functions to serialize. Cac7er decided to make core
-functions private even though its extendability becomes poor. Cac7er decided to
-rename functions as readable even though them names becomes longer.
-
-
-Introduction
---------------------------------------------------------------------------------
 Cac7er is a library for 2wiqua. It provides simple APIs to cache instances into
 files. Cac7er is written in [Kotlin](http://kotlinlang.org) and suited for
 Kotlin.
