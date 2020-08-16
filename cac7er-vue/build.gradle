@@ -71,7 +71,7 @@ dokka {
 
         sourceLink {
             path = "$projectDir/src/main/java"
-            url = 'http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/blob/master/cac7er-vue/src/main/java'
+            url = 'https://github.com/wcaokaze/Cac7er/blob/master/cac7er-vue/src/main/java'
             lineSuffix = '#L'
         }
 
