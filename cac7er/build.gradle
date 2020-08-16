@@ -24,6 +24,13 @@ apply plugin: 'maven'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = '1.6'
+        freeCompilerArgs = ["-Xuse-experimental=kotlin.Experimental"]
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -35,20 +42,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = '1.6'
-}
-
-compileTestKotlin {
-    kotlinOptions.jvmTarget = '1.6'
-
-    kotlinOptions {
-        freeCompilerArgs = [
-                '-Xuse-experimental=kotlin.Experimental',
-        ]
-    }
 }
 
 dokka {
