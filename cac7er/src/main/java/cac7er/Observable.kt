@@ -9,9 +9,6 @@ interface Observable<out T> {
    /**
     * adds a function to observe this cache.
     *
-    * If you are good at RxJava, you may prefer
-    * [RxCac7er](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/RxCac7er)
-    *
     * @since 0.3.0
     */
    fun addObserver(observer: (Cache<T>, T) -> Unit)

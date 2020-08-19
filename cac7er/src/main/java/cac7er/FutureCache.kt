@@ -8,9 +8,6 @@ import java.io.*
  * This can instantiate without any saving process, and can observe the file in
  * which the content will be written at some future time.
  *
- * Of course [Projector][cac7er.Projector] and RxCac7er are available.
- * This is so useful for asynchronous downloading.
- *
  * ```
  * fun fetchStatus(statusId: Long): FutureCache<Status> {
  *    launch(Dispatchers.IO) {

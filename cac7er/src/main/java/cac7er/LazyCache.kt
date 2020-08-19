@@ -67,9 +67,6 @@ interface LazyCache<out T> : Observable<T> {
    /**
     * adds a function to observe this cache.
     *
-    * If you are good at RxJava, you may prefer
-    * [RxCac7er](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/RxCac7er)
-    *
     * The observer also will be called when [get] has been completed to load the
     * content.
     *
