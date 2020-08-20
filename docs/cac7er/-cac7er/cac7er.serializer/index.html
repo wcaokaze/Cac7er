@@ -1,0 +1,414 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>cac7er.serializer - Cac7er</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="./index.html">cac7er.serializer</a><br/>
+<br/>
+<h2>Package cac7er.serializer</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-cache-input.html">CacheInput</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CacheInput</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-cache-output.html">CacheOutput</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CacheOutput</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-deserializer.html">Deserializer</a></h4>
+</td>
+<td>
+<code><span class="keyword">typealias </span><span class="identifier">Deserializer</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;<a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-serializer.html">Serializer</a></h4>
+</td>
+<td>
+<code><span class="keyword">typealias </span><span class="identifier">Serializer</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;<a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="identifier">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="read-array.html">readArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$readArray(cac7er.serializer.CacheInput, kotlin.Function1((cac7er.serializer.CacheInput, cac7er.serializer.readArray.T)))/elementDeserializer">elementDeserializer</span><span class="symbol">:</span>&nbsp;<a href="-deserializer.html"><span class="identifier">Deserializer</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-boolean.html">readBoolean</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readBoolean</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-boolean-array.html">readBooleanArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readBooleanArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean-array/index.html"><span class="identifier">BooleanArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-byte.html">readByte</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readByte</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-byte-array.html">readByteArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readByteArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-cache.html">readCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../cac7er/-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-char.html">readChar</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readChar</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html"><span class="identifier">Char</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-char-array.html">readCharArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readCharArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-array/index.html"><span class="identifier">CharArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-double.html">readDouble</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readDouble</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-double-array.html">readDoubleArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readDoubleArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double-array/index.html"><span class="identifier">DoubleArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-float.html">readFloat</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readFloat</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-float-array.html">readFloatArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readFloatArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float-array/index.html"><span class="identifier">FloatArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-int.html">readInt</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readInt</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-int-array.html">readIntArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readIntArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html"><span class="identifier">IntArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-lazy-cache.html">readLazyCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readLazyCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../cac7er/-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-long.html">readLong</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readLong</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-long-array.html">readLongArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readLongArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long-array/index.html"><span class="identifier">LongArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-nullable.html">readNullable</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readNullable</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$readNullable(cac7er.serializer.CacheInput, kotlin.Function1((cac7er.serializer.CacheInput, cac7er.serializer.readNullable.T)))/deserializer">deserializer</span><span class="symbol">:</span>&nbsp;<a href="-deserializer.html"><span class="identifier">Deserializer</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-short.html">readShort</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readShort</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short/index.html"><span class="identifier">Short</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-short-array.html">readShortArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readShortArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short-array/index.html"><span class="identifier">ShortArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-string.html">readString</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-utf8.html">readUtf8</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readUtf8</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-weak-cache.html">readWeakCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readWeakCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../cac7er/-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-writable-cache.html">readWritableCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readWritableCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../cac7er/-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-writable-lazy-cache.html">readWritableLazyCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readWritableLazyCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../cac7er/-writable-lazy-cache/index.html"><span class="identifier">WritableLazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="read-writable-weak-cache.html">readWritableWeakCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-input.html"><span class="identifier">CacheInput</span></a><span class="symbol">.</span><span class="identifier">readWritableWeakCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../cac7er/-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-array.html">writeArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeArray(cac7er.serializer.CacheOutput, kotlin.Array((cac7er.serializer.writeArray.T)), kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.serializer.writeArray.T, kotlin.Unit)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.serializer$writeArray(cac7er.serializer.CacheOutput, kotlin.Array((cac7er.serializer.writeArray.T)), kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.serializer.writeArray.T, kotlin.Unit)))/elementSerializer">elementSerializer</span><span class="symbol">:</span>&nbsp;<a href="-serializer.html"><span class="identifier">Serializer</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-boolean.html">writeBoolean</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeBoolean</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeBoolean(cac7er.serializer.CacheOutput, kotlin.Boolean)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-boolean-array.html">writeBooleanArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeBooleanArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeBooleanArray(cac7er.serializer.CacheOutput, kotlin.BooleanArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean-array/index.html"><span class="identifier">BooleanArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-byte.html">writeByte</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeByte</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeByte(cac7er.serializer.CacheOutput, kotlin.Byte)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-byte-array.html">writeByteArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeByteArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeByteArray(cac7er.serializer.CacheOutput, kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-cache.html">writeCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeCache(cac7er.serializer.CacheOutput, cac7er.Cache((cac7er.serializer.writeCache.T)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="../cac7er/-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-char.html">writeChar</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeChar</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeChar(cac7er.serializer.CacheOutput, kotlin.Char)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html"><span class="identifier">Char</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-char-array.html">writeCharArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeCharArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeCharArray(cac7er.serializer.CacheOutput, kotlin.CharArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-array/index.html"><span class="identifier">CharArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-double.html">writeDouble</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeDouble</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeDouble(cac7er.serializer.CacheOutput, kotlin.Double)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-double-array.html">writeDoubleArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeDoubleArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeDoubleArray(cac7er.serializer.CacheOutput, kotlin.DoubleArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double-array/index.html"><span class="identifier">DoubleArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-float.html">writeFloat</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeFloat</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeFloat(cac7er.serializer.CacheOutput, kotlin.Float)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-float-array.html">writeFloatArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeFloatArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeFloatArray(cac7er.serializer.CacheOutput, kotlin.FloatArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float-array/index.html"><span class="identifier">FloatArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-int.html">writeInt</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeInt</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeInt(cac7er.serializer.CacheOutput, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-int-array.html">writeIntArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeIntArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeIntArray(cac7er.serializer.CacheOutput, kotlin.IntArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html"><span class="identifier">IntArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-lazy-cache.html">writeLazyCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeLazyCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeLazyCache(cac7er.serializer.CacheOutput, cac7er.LazyCache((cac7er.serializer.writeLazyCache.T)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="../cac7er/-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-long.html">writeLong</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeLong</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeLong(cac7er.serializer.CacheOutput, kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-long-array.html">writeLongArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeLongArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeLongArray(cac7er.serializer.CacheOutput, kotlin.LongArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long-array/index.html"><span class="identifier">LongArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-nullable.html">writeNullable</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeNullable</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeNullable(cac7er.serializer.CacheOutput, cac7er.serializer.writeNullable.T, kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.serializer.writeNullable.T, kotlin.Unit)))/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="cac7er.serializer$writeNullable(cac7er.serializer.CacheOutput, cac7er.serializer.writeNullable.T, kotlin.Function2((cac7er.serializer.CacheOutput, cac7er.serializer.writeNullable.T, kotlin.Unit)))/serializer">serializer</span><span class="symbol">:</span>&nbsp;<a href="-serializer.html"><span class="identifier">Serializer</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-short.html">writeShort</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeShort</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeShort(cac7er.serializer.CacheOutput, kotlin.Short)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short/index.html"><span class="identifier">Short</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-short-array.html">writeShortArray</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeShortArray</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeShortArray(cac7er.serializer.CacheOutput, kotlin.ShortArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short-array/index.html"><span class="identifier">ShortArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-string.html">writeString</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeString</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeString(cac7er.serializer.CacheOutput, kotlin.String)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-utf8.html">writeUtf8</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeUtf8</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeUtf8(cac7er.serializer.CacheOutput, kotlin.String)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-weak-cache.html">writeWeakCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeWeakCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeWeakCache(cac7er.serializer.CacheOutput, cac7er.WeakCache((cac7er.serializer.writeWeakCache.T)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="../cac7er/-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-writable-cache.html">writeWritableCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeWritableCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeWritableCache(cac7er.serializer.CacheOutput, cac7er.WritableCache((cac7er.serializer.writeWritableCache.T)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="../cac7er/-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-writable-lazy-cache.html">writeWritableLazyCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeWritableLazyCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeWritableLazyCache(cac7er.serializer.CacheOutput, cac7er.WritableLazyCache((cac7er.serializer.writeWritableLazyCache.T)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="../cac7er/-writable-lazy-cache/index.html"><span class="identifier">WritableLazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="write-writable-weak-cache.html">writeWritableWeakCache</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="-cache-output.html"><span class="identifier">CacheOutput</span></a><span class="symbol">.</span><span class="identifier">writeWritableWeakCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.serializer$writeWritableWeakCache(cac7er.serializer.CacheOutput, cac7er.WritableWeakCache((cac7er.serializer.writeWritableWeakCache.T)))/value">value</span><span class="symbol">:</span>&nbsp;<a href="../cac7er/-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

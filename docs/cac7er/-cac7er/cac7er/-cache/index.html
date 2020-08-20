@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Cache - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="./index.html">Cache</a><br/>
+<br/>
+<h1>Cache</h1>
+<code><span class="keyword">interface </span><span class="identifier">Cache</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-observable/index.html"><span class="identifier">Observable</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/Cache.kt#L13">(source)</a>
+<p>The interface between a Kotlin instance and a file.</p>
+<p>NOTE: It looks like immutable but actually not. <a href="../-writable-repository/save.html">save</a>
+or other functions may replace the instance.</p>
+<h3>Parameters</h3>
+<p><a name="T"></a>
+<code>T</code> - The type of the cached instance.</p>
+<p><strong>See Also</strong><br/>
+<p><a href="../-cac7er/index.html">Cac7er</a></p>
+</p>
+<p><strong>Since</strong><br/>
+0.1.0</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="get.html">get</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="cac7er.Cache$get(kotlin.Long, kotlin.Float)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.Cache$get(kotlin.Long, kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="cac7er.Cache$get(kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="to-lazy-cache.html">toLazyCache</a></h4>
+</td>
+<td>
+<p>converts this Cache to <a href="../-lazy-cache/index.html">LazyCache</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toLazyCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-lazy-cache/index.html"><span class="identifier">LazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="to-weak-cache.html">toWeakCache</a></h4>
+</td>
+<td>
+<p>converts this Cache to <a href="../-weak-cache/index.html">WeakCache</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toWeakCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="../-writable-cache/index.html">WritableCache</a></h4>
+</td>
+<td>
+<p>Writable Cache. The name says it all.</p>
+<code><span class="keyword">interface </span><span class="identifier">WritableCache</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

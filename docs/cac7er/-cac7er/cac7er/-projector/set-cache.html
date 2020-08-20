@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Projector.setCache - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="index.html">Projector</a>&nbsp;/&nbsp;<a href="./set-cache.html">setCache</a><br/>
+<br/>
+<h1>setCache</h1>
+<a name="cac7er.Projector$setCache(cac7er.Cache((cac7er.Projector.T)), kotlin.Float)"></a>
+<code><span class="keyword">fun </span><span class="identifier">setCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.Projector$setCache(cac7er.Cache((cac7er.Projector.T)), kotlin.Float)/cache">cache</span><span class="symbol">:</span>&nbsp;<a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="cac7er.Projector$setCache(cac7er.Cache((cac7er.Projector.T)), kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/Projector.kt#L203">(source)</a>
+<p>set a <a href="../-cache/index.html">Cache</a> to this projector.</p>
+<p>This must be invoked on the UI thread.</p>
+<p>This will invoke onCacheUpdate to project the cache, and will increase
+accessCount of the <a href="../-cache/index.html">Cache</a> is increased immediately.</p>
+<p>At some future time, the cache being updated,
+onCacheUpdate will be invoked again but it will not affect accessCount.
+accessCount increases only for the first time.</p>
+<p><strong>Since</strong><br/>
+0.4.0</p>
+</BODY>
+</HTML>

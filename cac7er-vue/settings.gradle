@@ -1,0 +1,5 @@
+
+rootProject.name = 'Cac7er-Vue'
+
+include 'Cac7er'
+project(':Cac7er').projectDir = file('../cac7er')

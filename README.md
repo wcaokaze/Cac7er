@@ -1,17 +1,6 @@
 
 Cac7er
 ================================================================================
-[Cac2er](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac2er) works too slowly.
-Cac2er's encapsulation is too poor. Cac2er has many similar functions.
-
-Cac7er decided to stop using reflection (including Serializable) even though we
-must write a great number of functions to serialize. Cac7er decided to make core
-functions private even though its extendability becomes poor. Cac7er decided to
-rename functions as readable even though them names becomes longer.
-
-
-Introduction
---------------------------------------------------------------------------------
 Cac7er is a library for 2wiqua. It provides simple APIs to cache instances into
 files. Cac7er is written in [Kotlin](http://kotlinlang.org) and suited for
 Kotlin.
@@ -27,7 +16,7 @@ Requirements
 Documents
 --------------------------------------------------------------------------------
 
-[KDoc](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/pages/-cac7er/index.html)
+[KDoc](https://wcaokaze.github.io/Cac7er/-cac7er/index.html)
 
 
 Tutorial
@@ -122,9 +111,9 @@ for performance. But it's not so troublesome, is it?
 
 In fact, we have more complex construction.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/timeline.svg)
+![](http://raw.github.com/wcaokaze/Cac7er/master/imgs/timeline.svg)
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/badInstances.svg)
+![](http://raw.github.com/wcaokaze/Cac7er/master/imgs/badInstances.svg)
 
 ```kotlin
 data class Status(
@@ -181,11 +170,11 @@ There is a unique instance for `User` "Alex". However, as serialized,
 
 "Alex" is written twice! Moreover, de-serialized instances are twice too.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/badInstances2.svg)
+![](http://raw.github.com/wcaokaze/Cac7er/master/imgs/badInstances2.svg)
 
 To avoid this, let `Status` have `Cache`.
 
-![](http://2wiqua.wcaokaze.com/gitbucket/wcaokaze/Cac7er/raw/master/imgs/goodInstances.svg)
+![](http://raw.github.com/wcaokaze/Cac7er/master/imgs/goodInstances.svg)
 
 ```kotlin
 class Status(

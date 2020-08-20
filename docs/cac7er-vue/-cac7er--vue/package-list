@@ -1,0 +1,7 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:cac7er.vue$toReactiveField(cac7er.Cache((cac7er.vue.toReactiveField.T)))cac7er.vue/cac7er.-cache/to-reactive-field.html
+$dokka.location:cac7er.vue$toReactiveField(cac7er.FutureCache((cac7er.vue.toReactiveField.T)))cac7er.vue/cac7er.-future-cache/to-reactive-field.html
+$dokka.location:cac7er.vue$toReactiveField(cac7er.LazyCache((cac7er.vue.toReactiveField.T)))cac7er.vue/cac7er.-lazy-cache/to-reactive-field.html
+$dokka.location:cac7er.vue$toReactiveField(cac7er.WeakCache((cac7er.vue.toReactiveField.T)))cac7er.vue/cac7er.-weak-cache/to-reactive-field.html
+cac7er.vue

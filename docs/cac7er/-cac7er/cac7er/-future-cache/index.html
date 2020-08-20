@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>FutureCache - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="./index.html">FutureCache</a><br/>
+<br/>
+<h1>FutureCache</h1>
+<code><span class="keyword">interface </span><span class="identifier">FutureCache</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-observable/index.html"><span class="identifier">Observable</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/FutureCache.kt#L24">(source)</a>
+<p>Cache which denotes an empty file.</p>
+<p>This can instantiate without any saving process, and can observe the file in
+which the content will be written at some future time.</p>
+<pre><code>fun fetchStatus(statusId: Long): FutureCache&lt;Status&gt; {
+   launch(Dispatchers.IO) {
+      // ...
+      repository.save(statusId, status)
+   }
+
+   return repository.getFuture(statusId)
+}
+</code></pre>
+<p><strong>Since</strong><br/>
+0.8.0</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="get-if-already-saved.html">getIfAlreadySaved</a></h4>
+</td>
+<td>
+<p>returns the content is already saved, or null if not saved yet.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getIfAlreadySaved</span><span class="symbol">(</span><span class="identifier" id="cac7er.FutureCache$getIfAlreadySaved(kotlin.Long, kotlin.Float)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;System.currentTimeMillis()<span class="symbol">, </span><span class="identifier" id="cac7er.FutureCache$getIfAlreadySaved(kotlin.Long, kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="load.html">load</a></h4>
+</td>
+<td>
+<p>Basically, FutureCache denotes an empty file. But Cac7er may have
+the file by coincidence.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">load</span><span class="symbol">(</span><span class="identifier" id="cac7er.FutureCache$load(kotlin.Long, kotlin.Float)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="cac7er.FutureCache$load(kotlin.Long, kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="load-async.html">loadAsync</a></h4>
+</td>
+<td>
+<p>loads the content in the background.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">loadAsync</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

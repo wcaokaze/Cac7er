@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WritableRepository - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="./index.html">WritableRepository</a><br/>
+<br/>
+<h1>WritableRepository</h1>
+<code><span class="keyword">interface </span><span class="identifier">WritableRepository</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-repository/index.html"><span class="identifier">Repository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/Repository.kt#L67">(source)</a>
+<p>Writable Repository. The name says it all.</p>
+<p><strong>Since</strong><br/>
+0.1.0</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="load.html">load</a></h4>
+</td>
+<td>
+<p>loads a <a href="../-cache/index.html">Cache</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">load</span><span class="symbol">(</span><span class="identifier" id="cac7er.WritableRepository$load(cac7er.WritableRepository.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="load-lazy-cache.html">loadLazyCache</a></h4>
+</td>
+<td>
+<p>returns a <a href="../-lazy-cache/index.html">LazyCache</a>. This is not a suspend function since loading is
+lazy (see <a href="../-lazy-cache/get.html">LazyCache.get</a>).</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">loadLazyCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.WritableRepository$loadLazyCache(cac7er.WritableRepository.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-lazy-cache/index.html"><span class="identifier">WritableLazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="load-weak-cache.html">loadWeakCache</a></h4>
+</td>
+<td>
+<p>loads a <a href="../-weak-cache/index.html">WeakCache</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">loadWeakCache</span><span class="symbol">(</span><span class="identifier" id="cac7er.WritableRepository$loadWeakCache(cac7er.WritableRepository.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="save.html">save</a></h4>
+</td>
+<td>
+<p>saves a cache.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">save</span><span class="symbol">(</span><span class="identifier" id="cac7er.WritableRepository$save(cac7er.WritableRepository.K, cac7er.WritableRepository.V)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">, </span><span class="identifier" id="cac7er.WritableRepository$save(cac7er.WritableRepository.K, cac7er.WritableRepository.V)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">V</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="../load-or-cancel.html">loadOrCancel</a></h4>
+</td>
+<td>
+<p>loads a <a href="../-cache/index.html">Cache</a> or throws <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-cancellation-exception.html">CancellationException</a> if failed</p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="./index.html"><span class="identifier">WritableRepository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadOrCancel</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadOrCancel(cac7er.WritableRepository((cac7er.loadOrCancel.K, cac7er.loadOrCancel.V)), cac7er.loadOrCancel.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="../-repository/index.html"><span class="identifier">Repository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadOrCancel</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadOrCancel(cac7er.Repository((cac7er.loadOrCancel.K, cac7er.loadOrCancel.V)), cac7er.loadOrCancel.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../load-or-null.html">loadOrNull</a></h4>
+</td>
+<td>
+<p>loads a <a href="../-cache/index.html">Cache</a> or returns null if failed</p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="./index.html"><span class="identifier">WritableRepository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadOrNull</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadOrNull(cac7er.WritableRepository((cac7er.loadOrNull.K, cac7er.loadOrNull.V)), cac7er.loadOrNull.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-cache/index.html"><span class="identifier">WritableCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">?</span></code><br/>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="../-repository/index.html"><span class="identifier">Repository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadOrNull</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadOrNull(cac7er.Repository((cac7er.loadOrNull.K, cac7er.loadOrNull.V)), cac7er.loadOrNull.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../load-weak-cache-or-cancel.html">loadWeakCacheOrCancel</a></h4>
+</td>
+<td>
+<p>loads a <a href="../-weak-cache/index.html">WeakCache</a> or throws <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-cancellation-exception.html">CancellationException</a> if failed</p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="./index.html"><span class="identifier">WritableRepository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadWeakCacheOrCancel</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadWeakCacheOrCancel(cac7er.WritableRepository((cac7er.loadWeakCacheOrCancel.K, cac7er.loadWeakCacheOrCancel.V)), cac7er.loadWeakCacheOrCancel.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="../-repository/index.html"><span class="identifier">Repository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadWeakCacheOrCancel</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadWeakCacheOrCancel(cac7er.Repository((cac7er.loadWeakCacheOrCancel.K, cac7er.loadWeakCacheOrCancel.V)), cac7er.loadWeakCacheOrCancel.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../load-weak-cache-or-null.html">loadWeakCacheOrNull</a></h4>
+</td>
+<td>
+<p>loads a <a href="../-weak-cache/index.html">WeakCache</a> or returns null if failed</p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="./index.html"><span class="identifier">WritableRepository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadWeakCacheOrNull</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadWeakCacheOrNull(cac7er.WritableRepository((cac7er.loadWeakCacheOrNull.K, cac7er.loadWeakCacheOrNull.V)), cac7er.loadWeakCacheOrNull.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">?</span></code><br/>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="../-repository/index.html"><span class="identifier">Repository</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">loadWeakCacheOrNull</span><span class="symbol">(</span><span class="identifier" id="cac7er$loadWeakCacheOrNull(cac7er.Repository((cac7er.loadWeakCacheOrNull.K, cac7er.loadWeakCacheOrNull.V)), cac7er.loadWeakCacheOrNull.K)/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">K</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-weak-cache/index.html"><span class="identifier">WeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

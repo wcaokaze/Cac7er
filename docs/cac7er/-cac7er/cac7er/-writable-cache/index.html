@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WritableCache - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="./index.html">WritableCache</a><br/>
+<br/>
+<h1>WritableCache</h1>
+<code><span class="keyword">interface </span><span class="identifier">WritableCache</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-cache/index.html"><span class="identifier">Cache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/Cache.kt#L55">(source)</a>
+<p>Writable Cache. The name says it all.</p>
+<p><strong>Since</strong><br/>
+0.1.0</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="save.html">save</a></h4>
+</td>
+<td>
+<p>caches the new instance.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">save</span><span class="symbol">(</span><span class="identifier" id="cac7er.WritableCache$save(cac7er.WritableCache.T)/content">content</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="to-lazy-cache.html">toLazyCache</a></h4>
+</td>
+<td>
+<p>converts this WritableCache to <a href="../-writable-lazy-cache/index.html">WritableLazyCache</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toLazyCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-lazy-cache/index.html"><span class="identifier">WritableLazyCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="to-weak-cache.html">toWeakCache</a></h4>
+</td>
+<td>
+<p>converts this WritableCache to <a href="../-writable-weak-cache/index.html">WritableWeakCache</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toWeakCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-writable-weak-cache/index.html"><span class="identifier">WritableWeakCache</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
