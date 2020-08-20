@@ -1,0 +1,13 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:cac7er$Projector(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.Projector.T, kotlin.Unit)))cac7er/kotlinx.coroutines.-coroutine-scope/-projector.html
+$dokka.location:cac7er$Projector(kotlinx.coroutines.CoroutineScope, kotlin.Function0((kotlin.Unit)), kotlin.Function1((java.lang.Exception, kotlin.Unit)), kotlin.Function1((cac7er.WeakCache((cac7er.Projector.T)), kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function1((cac7er.Projector.T, kotlin.Unit)))cac7er/kotlinx.coroutines.-coroutine-scope/-projector.html
+cac7er
+cac7er.serializer
+cac7er.serializer.collection
+cac7er.serializer.date
+cac7er.serializer.net
+cac7er.serializer.ranges
+cac7er.serializer.util
+cac7er.util
+cac7er.util.io

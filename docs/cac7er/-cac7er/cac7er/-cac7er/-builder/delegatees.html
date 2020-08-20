@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Cac7er.Builder.delegatees - Cac7er</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../../index.html">cac7er</a>&nbsp;/&nbsp;<a href="../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="index.html">Builder</a>&nbsp;/&nbsp;<a href="./delegatees.html">delegatees</a><br/>
+<br/>
+<h1>delegatees</h1>
+<a name="cac7er.Cac7er.Builder$delegatees"></a>
+<code><span class="keyword">val </span><span class="identifier">delegatees</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="../index.html"><span class="identifier">Cac7er</span></a><span class="symbol">&gt;</span></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/Cac7er.kt#L158">(source)</a>
+<p>Normally, a instance of Cac7er cannot manage repositories in another
+Cac7er.</p>
+<pre><code class="lang-kotlin">lateinit var statusRepository: Repository&lt;Long, Status&gt;
+lateinit var userRepository:   Repository&lt;Long, User&gt;
+
+val statusCac7er = Cac7er("status", File("statuses")) {
+   statusRepository = createRepository("statuses",
+         CacheOutput::writeStatus, CacheInput::readStatus)
+}
+
+val userCac7er = Cac7er("user", File("users")) {
+   userRepository = createRepository("users",
+         CacheOutput::writeUser, CacheInput::readUser)
+}
+
+data class Status(
+      val id: Long,
+      val content: String,
+      val userCache: Cache&lt;User&gt;
+)
+
+data class User(
+      val id: Long,
+      val name: String
+)
+</code></pre>
+<p>Here, <code>statusCac7er</code> can load a Cache of <code>Status</code>, but <code>statusCac7er</code>
+<em>cannot</em> load a Cache of <code>User</code>. However <code>Status</code> has a Cache of <code>User</code>,
+this causes a Exception.</p>
+<p>Yes, this is a solution.</p>
+<pre><code class="lang-kotlin">val statusCac7er = Cac7er("status", File("statuses")) {
+   delegatees += userCac7er
+
+   statusRepository = createRepository("statuses",
+         CacheOutput::writeStatus, CacheInput::readStatus)
+}
+</code></pre>
+<p><strong>Since</strong><br/>
+0.1.0</p>
+</BODY>
+</HTML>

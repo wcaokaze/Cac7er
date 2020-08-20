@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>LazyCache.getIfAlreadyLoaded - Cac7er</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Cac7er</a>&nbsp;/&nbsp;<a href="../index.html">cac7er</a>&nbsp;/&nbsp;<a href="index.html">LazyCache</a>&nbsp;/&nbsp;<a href="./get-if-already-loaded.html">getIfAlreadyLoaded</a><br/>
+<br/>
+<h1>getIfAlreadyLoaded</h1>
+<a name="cac7er.LazyCache$getIfAlreadyLoaded(kotlin.Long, kotlin.Float)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getIfAlreadyLoaded</span><span class="symbol">(</span><span class="identifier" id="cac7er.LazyCache$getIfAlreadyLoaded(kotlin.Long, kotlin.Float)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;System.currentTimeMillis()<span class="symbol">, </span><span class="identifier" id="cac7er.LazyCache$getIfAlreadyLoaded(kotlin.Long, kotlin.Float)/accessCount">accessCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0f<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code> <a href="http://github.com/wcaokaze/Cac7er/blob/master/cac7er/src/main/java/cac7er/LazyCache.kt#L64">(source)</a>
+<p>returns the cached instance if it already exists on JVM memory, otherwise
+returns <code>null</code>.</p>
+<p>time and accessCount only affect when the cached instance is returned.</p>
+<h3>Exceptions</h3>
+<p><a name="ClassCastException"></a>
+<code>ClassCastException</code> - </p>
+<p><strong>Return</strong><br/>
+the cached instance if it exists on JVM memory, otherwise <code>null</code>.</p>
+<p><strong>Since</strong><br/>
+0.1.0</p>
+</BODY>
+</HTML>
